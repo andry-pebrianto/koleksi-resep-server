@@ -21,5 +21,15 @@
   "bugs": {
     "url": "https://github.com/andry-pebrianto/food-recipe-api/issues"
   },
-  "homepage": "https://github.com/andry-pebrianto/food-recipe-api#readme"
+  "homepage": "https://github.com/andry-pebrianto/food-recipe-api#readme",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "helmet": "^5.0.2",
+    "http-errors": "^2.0.0",
+    "pg": "^8.7.3",
+    "xss": "^1.0.11"
+  }
 }
