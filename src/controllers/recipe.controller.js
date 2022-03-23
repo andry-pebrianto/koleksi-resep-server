@@ -32,7 +32,7 @@ module.exports = {
     const { body } = req;
 
     try {
-      await recipeModel.store(body);
+      await recipeModel.store({ ...body, date: new Date() });
 
       res.status(201).json({
         message: 'Insert data success',

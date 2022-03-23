@@ -17,12 +17,14 @@ module.exports = {
       resolve(result);
     });
   }),
-  store: ({
-    name, email, phone, password, photo = '',
-  }) => new Promise((resolve, reject) => {
+  store: (body) => new Promise((resolve, reject) => {
+    const {
+      title, ingredients, video = '', date, user_id, photo = '',
+    } = body;
+
     db.query(
-      'INSERT INTO users (name, email, phone, password, photo) VALUES ($1, $2, $3, $4, $5)',
-      [name, email, phone, password, photo],
+      'INSERT INTO recipe (title, ingredients, video, date, user_id, photo) VALUES ($1, $2, $3, $4, $5, $6)',
+      [title, ingredients, video, date, user_id, photo],
       (error, result) => {
         if (error) {
           reject(error);
@@ -46,15 +48,11 @@ module.exports = {
     );
   }),
   removeById: (id) => new Promise((resolve, reject) => {
-    db.query(
-      'DELETE FROM users WHERE id=$1',
-      [id],
-      (error, result) => {
-        if (error) {
-          reject(error);
-        }
-        resolve(result);
-      },
-    );
+    db.query('DELETE FROM users WHERE id=$1', [id], (error, result) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(result);
+    });
   }),
 };
