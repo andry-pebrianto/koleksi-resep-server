@@ -3,9 +3,10 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const createError = require('http-errors');
 const chalk = require('chalk');
+require('dotenv').config();
+
 const userRouter = require('./src/router/user.route');
 const recipeRouter = require('./src/router/recipe.route');
-require('dotenv').config();
 
 // deklarasi express
 const app = express();
