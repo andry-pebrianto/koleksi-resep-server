@@ -10,10 +10,10 @@ const {
 const router = express.Router();
 
 router
-  .get('/user', list)
-  .get('/user/:id', detail)
-  .post('/user', insert)
-  .put('/user/:id', update)
-  .delete('/user/:id', remove);
+  .get('/recipe', list)
+  .get('/recipe/:id', detail)
+  .post('/recipe', insert)
+  .put('/recipe/:id', update)
+  .delete('/recipe/:id', remove);
 
 module.exports = router;

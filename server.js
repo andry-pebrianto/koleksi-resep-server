@@ -3,6 +3,7 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const createError = require('http-errors');
 const chalk = require('chalk');
+const userRouter = require('./src/router/user.route');
 require('dotenv').config();
 
 // deklarasi express
@@ -17,10 +18,9 @@ app.use(express.json());
 app.use(helmet());
 app.use(xss());
 
-// routes middleware
-app.get('/', (req, res) => res.send('Recipe Food API'));
-app.use(require('./src/router/user.route'));
-// users routes
+// router middleware
+app.get('/', (req, res) => res.send('Recipe Food API')); // root
+app.use(userRouter); // users
 app.use(async (req, res, next) => next(createError.NotFound())); // 404 not found
 
 // error handler middleware
