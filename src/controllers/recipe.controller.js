@@ -15,14 +15,15 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const user = await recipeModel.selectById(id);
+      const recipe = await recipeModel.selectById(id);
 
-      // jika user tidak ditemukan
-      if (!user.rows.length) {
-        next(createError(404, 'No user found'));
+      // jika recipe tidak ditemukan
+      if (!recipe.rows.length) {
+        next(createError(404, 'No recipe found'));
+        return;
       }
 
-      res.json(user.rows[0]);
+      res.json(recipe.rows[0]);
     } catch (error) {
       next(error);
     }

@@ -10,7 +10,7 @@ module.exports = {
     });
   }),
   selectById: (id) => new Promise((resolve, reject) => {
-    db.query('SELECT * FROM users WHERE id=$1', [id], (error, result) => {
+    db.query('SELECT * FROM recipe WHERE id=$1', [id], (error, result) => {
       if (error) {
         reject(error);
       }
