@@ -46,10 +46,10 @@ module.exports = {
     const { body } = req;
 
     try {
-      // mengecek user apakah ada
-      const user = await recipeModel.selectById(id);
-      if (!user.rows[0]) {
-        next(createError(404, 'No user found'));
+      // mengecek recipe apakah ada
+      const recipe = await recipeModel.selectById(id);
+      if (!recipe.rows[0]) {
+        next(createError(404, 'No recipe found'));
       }
       await recipeModel.updateById({ ...body, id });
 

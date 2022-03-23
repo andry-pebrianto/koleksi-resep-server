@@ -33,12 +33,14 @@ module.exports = {
       },
     );
   }),
-  updateById: ({
-    name, email, phone, password, photo = '', id,
-  }) => new Promise((resolve, reject) => {
+  updateById: (body) => new Promise((resolve, reject) => {
+    const {
+      title, ingredients, video = '', date, user_id, photo = '', id,
+    } = body;
+
     db.query(
-      'UPDATE users SET name=$1, email=$2, phone=$3, password=$4, photo=$5 WHERE id=$6',
-      [name, email, phone, password, photo, id],
+      'UPDATE recipe SET title=$1, ingredients=$2, video=$3, date=$4, user_id=$5, photo=$6 WHERE id=$7',
+      [title, ingredients, video, date, user_id, photo, id],
       (error, result) => {
         if (error) {
           reject(error);
