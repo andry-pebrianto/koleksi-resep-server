@@ -20,15 +20,16 @@ app.use(xss());
 // routes middleware
 app.get("/", (req, res) => res.send("Recipe Food API"));
 app.use(require("./src/router/user.route")); // users routes
+app.use(async (req, res, next) => next(createError.NotFound())); // 404 not found
 
 // error handler middleware
-app.use((err, req, res, next) => {
-  let status = err.status || 500;
+app.use((error, req, res, next) => {
+  let status = error.status || 500;
 
   res.status(status).json({
     error: {
       status,
-      message: err.message || "Internal Server Error",
+      message: error.message || "Internal Server Error",
     },
   });
 });
