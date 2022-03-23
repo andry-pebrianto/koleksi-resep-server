@@ -4,6 +4,7 @@ const xss = require('xss-clean');
 const createError = require('http-errors');
 const chalk = require('chalk');
 const userRouter = require('./src/router/user.route');
+const recipeRouter = require('./src/router/recipe.route');
 require('dotenv').config();
 
 // deklarasi express
@@ -20,7 +21,8 @@ app.use(xss());
 
 // router middleware
 app.get('/', (req, res) => res.send('Recipe Food API')); // root
-app.use(userRouter); // users
+app.use(userRouter); // user
+app.use(recipeRouter); // recipe
 app.use((req, res, next) => next(createError.NotFound())); // 404 not found
 
 // error handler middleware

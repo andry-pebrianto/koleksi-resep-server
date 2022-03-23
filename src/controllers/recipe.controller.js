@@ -1,12 +1,12 @@
 const createError = require('http-errors');
-const userModel = require('../models/user.model');
+const recipeModel = require('../models/recipe.model');
 
 module.exports = {
   list: async (req, res, next) => {
     try {
-      const users = await userModel.selectAll();
+      const recipes = await recipeModel.selectAll();
 
-      res.json(users.rows);
+      res.json(recipes.rows);
     } catch (error) {
       next(error);
     }
@@ -15,7 +15,7 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const user = await userModel.selectById(id);
+      const user = await recipeModel.selectById(id);
 
       // jika user tidak ditemukan
       if (!user.rows.length) {
@@ -31,7 +31,7 @@ module.exports = {
     const { body } = req;
 
     try {
-      await userModel.store(body);
+      await recipeModel.store(body);
 
       res.status(201).json({
         message: 'Insert data success',
@@ -46,11 +46,11 @@ module.exports = {
 
     try {
       // mengecek user apakah ada
-      const user = await userModel.selectById(id);
+      const user = await recipeModel.selectById(id);
       if (!user.rows[0]) {
         next(createError(404, 'No user found'));
       }
-      await userModel.updateById({ ...body, id });
+      await recipeModel.updateById({ ...body, id });
 
       res.json({
         message: 'Update data success',
@@ -64,11 +64,11 @@ module.exports = {
 
     try {
       // mengecek user apakah ada
-      const user = await userModel.selectById(id);
+      const user = await recipeModel.selectById(id);
       if (!user.rows[0]) {
         next(createError(404, 'No user found'));
       }
-      await userModel.removeById(id);
+      await recipeModel.removeById(id);
 
       res.json({
         message: 'Delete data success',
