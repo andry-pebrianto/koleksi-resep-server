@@ -1,5 +1,5 @@
-const createError = require("http-errors");
-const userModel = require("../models/user.model.js");
+const createError = require('http-errors');
+const userModel = require('../models/user.model');
 
 module.exports = {
   list: async (req, res, next) => {
@@ -19,7 +19,7 @@ module.exports = {
 
       // jika user tidak ditemukan
       if (!user.rows.length) {
-        next(createError(404, "No user found"));
+        next(createError(404, 'No user found'));
       }
 
       res.json(user.rows[0]);
@@ -28,13 +28,13 @@ module.exports = {
     }
   },
   insert: async (req, res, next) => {
-    const body = req.body;
+    const { body } = req;
 
     try {
       await userModel.store(body);
 
       res.status(201).json({
-        message: "Insert data success",
+        message: 'Insert data success',
       });
     } catch (error) {
       next(error);
@@ -42,18 +42,18 @@ module.exports = {
   },
   update: async (req, res, next) => {
     const { id } = req.params;
-    const body = req.body;
+    const { body } = req;
 
     try {
       // mengecek user apakah ada
       const user = await userModel.selectById(id);
       if (!user.rows[0]) {
-        next(createError(404, "No user found"));
+        next(createError(404, 'No user found'));
       }
       await userModel.updateById({ ...body, id });
 
       res.json({
-        message: "Update data success",
+        message: 'Update data success',
       });
     } catch (error) {
       next(error);
@@ -66,12 +66,12 @@ module.exports = {
       // mengecek user apakah ada
       const user = await userModel.selectById(id);
       if (!user.rows[0]) {
-        next(createError(404, "No user found"));
+        next(createError(404, 'No user found'));
       }
       await userModel.removeById(id);
 
       res.json({
-        message: "Delete data success",
+        message: 'Delete data success',
       });
     } catch (error) {
       next(error);

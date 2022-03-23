@@ -1,7 +1,9 @@
-const { Pool } = require("pg");
-require("dotenv").config();
+const { Pool } = require('pg');
+require('dotenv').config();
 
-const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE, DB_PORT } = process.env;
+const {
+  DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE, DB_PORT,
+} = process.env;
 
 const db = new Pool({
   host: DB_HOST,
@@ -16,7 +18,7 @@ db.connect((err) => {
     console.log(err.message);
     process.exit(1);
   }
-  console.log("Database berhasil terhubung.");
+  console.log('Database berhasil terhubung.');
 });
 
 module.exports = db;

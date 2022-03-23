@@ -1,15 +1,15 @@
-const express = require("express");
-const helmet = require("helmet");
-const xss = require("xss-clean");
-const createError = require("http-errors");
-const chalk = require("chalk");
-require("dotenv").config();
+const express = require('express');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const createError = require('http-errors');
+const chalk = require('chalk');
+require('dotenv').config();
 
 // deklarasi express
 const app = express();
 
 // env variabel
-const NODE_ENV = process.env.NODE_ENV || "development";
+const NODE_ENV = process.env.NODE_ENV || 'development';
 const PORT = process.env.PORT || 5000;
 
 // middleware
@@ -18,19 +18,20 @@ app.use(helmet());
 app.use(xss());
 
 // routes middleware
-app.get("/", (req, res) => res.send("Recipe Food API"));
-app.use(require("./src/router/user.route")); // users routes
+app.get('/', (req, res) => res.send('Recipe Food API'));
+app.use(require('./src/router/user.route'));
+// users routes
 app.use(async (req, res, next) => next(createError.NotFound())); // 404 not found
 
 // error handler middleware
-app.use((error, req, res, next) => {
+app.use((error, req, res) => {
   console.log(error);
-  let status = error.status || 500;
+  const status = error.status || 500;
 
   res.status(status).json({
     error: {
       status,
-      message: error.message || "Internal Server Error",
+      message: error.message || 'Internal Server Error',
     },
   });
 });
