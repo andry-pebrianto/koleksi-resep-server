@@ -1,8 +1,9 @@
 const express = require("express");
 const helmet = require("helmet");
 const chalk = require("chalk");
-const xss = require('xss-clean')
+const xss = require("xss-clean");
 require("dotenv").config();
+const { selectAll } = require("./src/models/user.model");
 
 // deklarasi express
 const app = express();
@@ -17,8 +18,9 @@ app.use(helmet());
 app.use(xss());
 
 // routes
-app.get("/", (req, res) => {
-  res.send("Home Page");
+app.get("/", async (req, res) => {
+  const data = await selectAll();
+  res.json(data.rows);
 });
 
 // running server
