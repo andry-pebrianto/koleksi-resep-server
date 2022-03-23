@@ -51,7 +51,7 @@ module.exports = {
       if (!recipe.rows[0]) {
         next(createError(404, 'No recipe found'));
       }
-      await recipeModel.updateById({ ...body, id });
+      await recipeModel.updateById(id, body);
 
       res.json({
         message: 'Update data recipe success',

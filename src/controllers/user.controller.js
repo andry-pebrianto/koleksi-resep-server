@@ -52,7 +52,7 @@ module.exports = {
         next(createError(404, 'No user found'));
         return;
       }
-      await userModel.updateById({ ...body, id });
+      await userModel.updateById(id, body);
 
       res.json({
         message: 'Update data user success',
