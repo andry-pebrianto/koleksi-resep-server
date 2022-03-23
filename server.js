@@ -21,13 +21,11 @@ app.use(xss());
 // router middleware
 app.get('/', (req, res) => res.send('Recipe Food API')); // root
 app.use(userRouter); // users
-app.use(async (req, res, next) => next(createError.NotFound())); // 404 not found
+app.use((req, res, next) => next(createError.NotFound())); // 404 not found
 
 // error handler middleware
 // eslint-disable-next-line no-unused-vars
 app.use((error, req, res, next) => {
-  console.log(error);
-
   const status = error.status || 500;
   res.status(status).json({
     error: {
