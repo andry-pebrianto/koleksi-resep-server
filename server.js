@@ -1,7 +1,8 @@
 const express = require("express");
 const helmet = require("helmet");
-const chalk = require("chalk");
 const xss = require("xss-clean");
+const createError = require("http-errors");
+const chalk = require("chalk");
 require("dotenv").config();
 
 // deklarasi express
@@ -16,9 +17,21 @@ app.use(express.json());
 app.use(helmet());
 app.use(xss());
 
-// routes
+// routes middleware
 app.get("/", (req, res) => res.send("Recipe Food API"));
 app.use(require("./src/router/user.route")); // users routes
+
+// error handler middleware
+app.use((err, req, res, next) => {
+  let status = err.status || 500;
+
+  res.status(status).json({
+    error: {
+      status,
+      message: err.message || "Internal Server Error",
+    },
+  });
+});
 
 // running server
 app.listen(PORT, () => {

@@ -1,13 +1,13 @@
 const { selectAll } = require("../models/user.model.js");
 
 module.exports = {
-  list: async (req, res) => {
+  list: async (req, res, next) => {
     try {
       const data = await selectAll();
 
       res.json(data.rows);
-    } catch (error) {
-      res.json(error.message);
+    } catch (err) {
+      next(err);
     }
   },
   detail: async (req, res) => {},
