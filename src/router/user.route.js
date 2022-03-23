@@ -5,7 +5,7 @@ const {
   insert,
   update,
   remove,
-} = require('../controllers/recipe.controller');
+} = require('../controllers/user.controller');
 
 const router = express.Router();
 

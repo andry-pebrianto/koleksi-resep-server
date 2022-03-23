@@ -24,10 +24,11 @@ app.use(userRouter); // users
 app.use(async (req, res, next) => next(createError.NotFound())); // 404 not found
 
 // error handler middleware
-app.use((error, req, res) => {
+// eslint-disable-next-line no-unused-vars
+app.use((error, req, res, next) => {
   console.log(error);
-  const status = error.status || 500;
 
+  const status = error.status || 500;
   res.status(status).json({
     error: {
       status,

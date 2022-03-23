@@ -20,6 +20,7 @@ module.exports = {
       // jika user tidak ditemukan
       if (!user.rows.length) {
         next(createError(404, 'No user found'));
+        return;
       }
 
       res.json(user.rows[0]);
@@ -49,6 +50,7 @@ module.exports = {
       const user = await userModel.selectById(id);
       if (!user.rows[0]) {
         next(createError(404, 'No user found'));
+        return;
       }
       await userModel.updateById({ ...body, id });
 
@@ -67,6 +69,7 @@ module.exports = {
       const user = await userModel.selectById(id);
       if (!user.rows[0]) {
         next(createError(404, 'No user found'));
+        return;
       }
       await userModel.removeById(id);
 
