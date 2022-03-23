@@ -13,7 +13,7 @@ router
   .get("/user", list)
   .get("/user/:id", detail)
   .post("/user", insert)
-  .put("/use/:id", update)
+  .put("/user/:id", update)
   .delete("/user/:id", remove);
 
 module.exports = router;

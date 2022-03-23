@@ -1,5 +1,11 @@
 const createError = require("http-errors");
-const { selectAll, selectById, store } = require("../models/user.model.js");
+const {
+  selectAll,
+  selectById,
+  store,
+  update,
+  remove,
+} = require("../models/user.model.js");
 
 module.exports = {
   list: async (req, res, next) => {
@@ -43,6 +49,33 @@ module.exports = {
       next(error);
     }
   },
-  update: async (req, res, next) => {},
-  remove: async (req, res, next) => {},
+  update: async (req, res, next) => {
+    const { id } = req.params;
+    const body = req.body;
+
+    try {
+      await update({ ...body, id });
+
+      res.status(201).json({
+        message: "Update data success",
+      });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  },
+  remove: async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+      await remove(id);
+
+      res.status(201).json({
+        message: "Delete data success",
+      });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  },
 };
