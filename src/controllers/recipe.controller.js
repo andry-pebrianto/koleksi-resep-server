@@ -35,7 +35,7 @@ module.exports = {
       await recipeModel.store({ ...body, date: new Date() });
 
       res.status(201).json({
-        message: 'Insert data success',
+        message: 'Insert data recipe success',
       });
     } catch (error) {
       next(error);
@@ -54,7 +54,7 @@ module.exports = {
       await recipeModel.updateById({ ...body, id });
 
       res.json({
-        message: 'Update data success',
+        message: 'Update data recipe success',
       });
     } catch (error) {
       next(error);
@@ -72,7 +72,7 @@ module.exports = {
       await recipeModel.removeById(id);
 
       res.json({
-        message: 'Delete data success',
+        message: 'Delete data recipe success',
       });
     } catch (error) {
       next(error);

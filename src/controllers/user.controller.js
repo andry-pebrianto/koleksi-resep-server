@@ -35,7 +35,7 @@ module.exports = {
       await userModel.store(body);
 
       res.status(201).json({
-        message: 'Insert data success',
+        message: 'Insert data user success',
       });
     } catch (error) {
       next(error);
@@ -55,7 +55,7 @@ module.exports = {
       await userModel.updateById({ ...body, id });
 
       res.json({
-        message: 'Update data success',
+        message: 'Update data user success',
       });
     } catch (error) {
       next(error);
@@ -74,7 +74,7 @@ module.exports = {
       await userModel.removeById(id);
 
       res.json({
-        message: 'Delete data success',
+        message: 'Delete data user success',
       });
     } catch (error) {
       next(error);
