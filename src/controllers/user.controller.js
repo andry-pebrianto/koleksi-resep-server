@@ -1,20 +1,13 @@
 const createError = require("http-errors");
-const {
-  selectAll,
-  selectById,
-  store,
-  update,
-  remove,
-} = require("../models/user.model.js");
+const userModel = require("../models/user.model.js");
 
 module.exports = {
   list: async (req, res, next) => {
     try {
-      const data = await selectAll();
+      const users = await userModel.selectAll();
 
-      res.json(data.rows);
+      res.json(users.rows);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   },
@@ -22,16 +15,15 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const data = await selectById(id);
+      const user = await userModel.selectById(id);
 
       // jika user tidak ditemukan
-      if (!data.rows.length) {
+      if (!user.rows.length) {
         next(createError(404, "No user found"));
       }
 
-      res.json(data.rows[0]);
+      res.json(user.rows[0]);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   },
@@ -39,13 +31,12 @@ module.exports = {
     const body = req.body;
 
     try {
-      await store(body);
+      await userModel.store(body);
 
       res.status(201).json({
         message: "Insert data success",
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   },
@@ -54,13 +45,17 @@ module.exports = {
     const body = req.body;
 
     try {
-      await update({ ...body, id });
+      // mengecek user apakah ada
+      const user = await userModel.selectById(id);
+      if (!user.rows[0]) {
+        next(createError(404, "No user found"));
+      }
+      await userModel.updateById({ ...body, id });
 
-      res.status(201).json({
+      res.json({
         message: "Update data success",
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   },
@@ -68,13 +63,17 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      await remove(id);
+      // mengecek user apakah ada
+      const user = await userModel.selectById(id);
+      if (!user.rows[0]) {
+        next(createError(404, "No user found"));
+      }
+      await userModel.removeById(id);
 
-      res.status(201).json({
+      res.json({
         message: "Delete data success",
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   },

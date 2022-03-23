@@ -35,7 +35,7 @@ module.exports = {
       );
     });
   },
-  update: ({ id, name, email, phone, password, photo = "" }) => {
+  updateById: ({ id, name, email, phone, password, photo = "" }) => {
     return new Promise((resolve, reject) => {
       db.query(
         `UPDATE users SET name=$1, email=$2, phone=$3, password=$4, photo=$5 WHERE id=$6`,
@@ -49,7 +49,7 @@ module.exports = {
       );
     });
   },
-  remove: (id) => {
+  removeById: (id) => {
     return new Promise((resolve, reject) => {
       db.query(
         `DELETE FROM users WHERE id=$1`,

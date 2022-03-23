@@ -24,6 +24,7 @@ app.use(async (req, res, next) => next(createError.NotFound())); // 404 not foun
 
 // error handler middleware
 app.use((error, req, res, next) => {
+  console.log(error);
   let status = error.status || 500;
 
   res.status(status).json({
