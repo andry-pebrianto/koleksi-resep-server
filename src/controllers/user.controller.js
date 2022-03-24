@@ -114,4 +114,20 @@ module.exports = {
       });
     }
   },
+  listRecipe: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const userRecipes = await userModel.selectAllRecipeByUser(id);
+
+      res.json(userRecipes.rows);
+    } catch (error) {
+      res.status(500).json({
+        error: {
+          status: 500,
+          message: error.message,
+        },
+      });
+    }
+  },
 };

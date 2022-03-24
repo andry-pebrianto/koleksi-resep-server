@@ -118,9 +118,9 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const comments = await recipeModel.selectAllCommentByRecipe(id);
+      const recipeComments = await recipeModel.selectAllCommentByRecipe(id);
 
-      res.json(comments.rows);
+      res.json(recipeComments.rows);
     } catch (error) {
       res.status(500).json({
         error: {
