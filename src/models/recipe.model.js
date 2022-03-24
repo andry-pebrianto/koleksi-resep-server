@@ -83,7 +83,7 @@ module.exports = {
     }),
   selectLatest: () =>
     new Promise((resolve, reject) => {
-      db.query('SELECT * FROM recipe ORDER BY date ASC LIMIT 5', (error, result) => {
+      db.query('SELECT * FROM recipe ORDER BY date DESC LIMIT 5', (error, result) => {
         if (error) {
           reject(error);
         }
