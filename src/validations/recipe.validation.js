@@ -4,13 +4,13 @@ module.exports = {
 
     // validasi untuk title
     if (typeof title !== 'string') {
-      return { bad: true, message: 'Title harus diisi dan bertipe string.' };
+      return { bad: true, message: 'Title harus bertipe string' };
     }
     if (title.length < 1 || title.length > 100) {
       return {
         bad: true,
         message:
-          'Title harus diisi minimal 1 karakter dan maksimal 100 karakter.',
+          'Title harus diisi minimal 1 karakter dan maksimal 100 karakter',
       };
     }
 
@@ -18,7 +18,7 @@ module.exports = {
     if (typeof ingredients !== 'string') {
       return {
         bad: true,
-        message: 'Ingredients harus diisi dan bertipe string.',
+        message: 'Ingredients harus bertipe string',
       };
     }
 
