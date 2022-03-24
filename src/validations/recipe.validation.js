@@ -21,6 +21,13 @@ module.exports = {
         message: 'Ingredients harus bertipe string',
       };
     }
+    if (ingredients.length < 1) {
+      return {
+        bad: true,
+        message:
+          'Ingredients harus diisi minimal 1 karakter',
+      };
+    }
 
     // validasi berhasil
     return { bad: false, body };
