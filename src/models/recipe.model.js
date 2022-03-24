@@ -26,13 +26,13 @@ module.exports = {
         ingredients,
         video = '',
         date,
-        user_id,
+        userId,
         photo = '',
       } = body;
 
       db.query(
-        'INSERT INTO recipe (title, ingredients, video, date, user_id, photo) VALUES ($1, $2, $3, $4, $5, $6)',
-        [title, ingredients, video, date, user_id, photo],
+        'INSERT INTO recipe (title, ingredients, video, date, userId, photo) VALUES ($1, $2, $3, $4, $5, $6)',
+        [title, ingredients, video, date, userId, photo],
         (error, result) => {
           if (error) {
             reject(error);
@@ -48,13 +48,13 @@ module.exports = {
         ingredients,
         video = '',
         date,
-        user_id,
+        userId,
         photo = '',
       } = body;
 
       db.query(
         'UPDATE recipe SET title=$1, ingredients=$2, video=$3, date=$4, user_id=$5, photo=$6 WHERE id=$7',
-        [title, ingredients, video, date, user_id, photo, id],
+        [title, ingredients, video, date, userId, photo, id],
         (error, result) => {
           if (error) {
             reject(error);

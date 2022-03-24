@@ -19,11 +19,11 @@ module.exports = {
         resolve(result);
       });
     }),
-  store: (data) =>
+  store: (body) =>
     new Promise((resolve, reject) => {
       const {
         name, email, phone, password, photo = '',
-      } = data;
+      } = body;
 
       db.query(
         'INSERT INTO users (name, email, phone, password, photo) VALUES ($1, $2, $3, $4, $5)',
@@ -36,11 +36,11 @@ module.exports = {
         },
       );
     }),
-  updateById: (id, data) =>
+  updateById: (id, body) =>
     new Promise((resolve, reject) => {
       const {
         name, email, phone, password, photo = '',
-      } = data;
+      } = body;
 
       db.query(
         'UPDATE users SET name=$1, email=$2, phone=$3, password=$4, photo=$5 WHERE id=$6',

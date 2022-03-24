@@ -21,11 +21,11 @@ module.exports = {
     }),
   store: (body) =>
     new Promise((resolve, reject) => {
-      const { recipe_id, comment_text, user_id } = body;
+      const { recipeId, commentText, userId } = body;
 
       db.query(
         'INSERT INTO comment (recipe_id, comment_text, user_id) VALUES ($1, $2, $3)',
-        [recipe_id, comment_text, user_id],
+        [recipeId, commentText, userId],
         (error, result) => {
           if (error) {
             reject(error);
@@ -36,11 +36,11 @@ module.exports = {
     }),
   updateById: (id, body) =>
     new Promise((resolve, reject) => {
-      const { recipe_id, comment_text, user_id } = body;
+      const { recipeId, commentText, userId } = body;
 
       db.query(
         'UPDATE comment SET recipe_id=$1, comment_text=$2, user_id=$3 WHERE id=$4',
-        [recipe_id, comment_text, user_id, id],
+        [recipeId, commentText, userId, id],
         (error, result) => {
           if (error) {
             reject(error);
