@@ -51,7 +51,7 @@ module.exports = {
     }),
   removeById: (id) =>
     new Promise((resolve, reject) => {
-      db.query('DELETE FROM recipe WHERE id=$1', [id], (error, result) => {
+      db.query('DELETE FROM comment WHERE id=$1', [id], (error, result) => {
         if (error) {
           reject(error);
         }
