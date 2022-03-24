@@ -1,4 +1,5 @@
 const commentModel = require('../models/comment.model');
+const commentValidation = require('../validations/comment.validation');
 
 module.exports = {
   list: async (req, res) => {
@@ -38,7 +39,16 @@ module.exports = {
     }
   },
   insert: async (req, res) => {
-    const { body } = req;
+    const { bad, message, body } = commentValidation.insertValidation(req.body);
+
+    // jika ada error saat validasi
+    if (bad) {
+      res.status(400).json({
+        status: 400,
+        message,
+      });
+      return;
+    }
 
     try {
       await commentModel.store(body);
@@ -57,7 +67,16 @@ module.exports = {
   },
   update: async (req, res) => {
     const { id } = req.params;
-    const { body } = req;
+    const { bad, message, body } = commentValidation.insertValidation(req.body);
+
+    // jika ada error saat validasi
+    if (bad) {
+      res.status(400).json({
+        status: 400,
+        message,
+      });
+      return;
+    }
 
     try {
       // mengecek comment apakah ada

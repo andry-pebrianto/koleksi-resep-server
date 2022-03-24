@@ -3,7 +3,7 @@ const db = require('../config/db');
 module.exports = {
   selectAll: (search = '') =>
     new Promise((resolve, reject) => {
-      db.query('SELECT * FROM users WHERE LOWER(name) LIKE \'%\'||LOWER($1)||\'%\'', [search], (error, result) => {
+      db.query('SELECT * FROM recipe WHERE LOWER(title) LIKE \'%\'||LOWER($1)||\'%\'', [search], (error, result) => {
         if (error) {
           reject(error);
         }
@@ -31,7 +31,7 @@ module.exports = {
       } = body;
 
       db.query(
-        'INSERT INTO recipe (title, ingredients, video, date, userId, photo) VALUES ($1, $2, $3, $4, $5, $6)',
+        'INSERT INTO recipe (title, ingredients, video, date, user_id, photo) VALUES ($1, $2, $3, $4, $5, $6)',
         [title, ingredients, video, date, userId, photo],
         (error, result) => {
           if (error) {

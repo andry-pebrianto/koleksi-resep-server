@@ -1,6 +1,6 @@
 module.exports = {
   insertValidation: (body) => {
-    const { title, ingredients, userId } = body;
+    const { title, ingredients } = body;
 
     // validasi untuk title
     if (typeof title !== 'string') {
