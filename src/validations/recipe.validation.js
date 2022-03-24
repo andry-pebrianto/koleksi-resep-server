@@ -22,11 +22,6 @@ module.exports = {
       };
     }
 
-    // validasi untuk userId
-    if (typeof userId !== 'string') {
-      return { bad: true, message: 'User Id harus diisi dan bertipe string.' };
-    }
-
     // validasi berhasil
     return { bad: false, body };
   },
