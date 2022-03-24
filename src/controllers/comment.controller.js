@@ -1,12 +1,12 @@
 const createError = require('http-errors');
-const recipeModel = require('../models/recipe.model');
+const commentModel = require('../models/comment.model');
 
 module.exports = {
   list: async (req, res, next) => {
     try {
-      const recipes = await recipeModel.selectAll();
+      const comments = await commentModel.selectAll();
 
-      res.json(recipes.rows);
+      res.json(comments.rows);
     } catch (error) {
       next(error);
     }
@@ -15,7 +15,7 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const recipe = await recipeModel.selectById(id);
+      const recipe = await commentModel.selectById(id);
 
       // jika recipe tidak ditemukan
       if (!recipe.rows.length) {
@@ -32,7 +32,7 @@ module.exports = {
     const { body } = req;
 
     try {
-      await recipeModel.store({ ...body, date: new Date() });
+      await commentModel.store({ ...body, date: new Date() });
 
       res.status(201).json({
         message: 'Insert data recipe success',
@@ -47,11 +47,11 @@ module.exports = {
 
     try {
       // mengecek recipe apakah ada
-      const recipe = await recipeModel.selectById(id);
+      const recipe = await commentModel.selectById(id);
       if (!recipe.rows[0]) {
         next(createError(404, 'No recipe found'));
       }
-      await recipeModel.updateById(id, body);
+      await commentModel.updateById(id, body);
 
       res.json({
         message: 'Update data recipe success',
@@ -65,11 +65,11 @@ module.exports = {
 
     try {
       // mengecek recipe apakah ada
-      const recipe = await recipeModel.selectById(id);
+      const recipe = await commentModel.selectById(id);
       if (!recipe.rows[0]) {
         next(createError(404, 'No recipe found'));
       }
-      await recipeModel.removeById(id);
+      await commentModel.removeById(id);
 
       res.json({
         message: 'Delete data recipe success',

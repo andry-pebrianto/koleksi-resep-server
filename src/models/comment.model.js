@@ -3,7 +3,7 @@ const db = require('../config/db');
 module.exports = {
   selectAll: () =>
     new Promise((resolve, reject) => {
-      db.query('SELECT * FROM recipe', (error, result) => {
+      db.query('SELECT * FROM comment', (error, result) => {
         if (error) {
           reject(error);
         }
