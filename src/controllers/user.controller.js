@@ -2,8 +2,10 @@ const userModel = require('../models/user.model');
 
 module.exports = {
   list: async (req, res) => {
+    const { search } = req.query;
+
     try {
-      const users = await userModel.selectAll();
+      const users = await userModel.selectAll(search);
 
       res.json(users.rows);
     } catch (error) {

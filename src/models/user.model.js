@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
 module.exports = {
-  selectAll: () =>
+  selectAll: (search = '') =>
     new Promise((resolve, reject) => {
-      db.query('SELECT * FROM users', (error, result) => {
+      db.query('SELECT * FROM users WHERE LOWER(name) LIKE \'%\'||LOWER($1)||\'%\'', [search], (error, result) => {
         if (error) {
           reject(error);
         }
