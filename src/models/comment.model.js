@@ -36,18 +36,11 @@ module.exports = {
     }),
   updateById: (id, body) =>
     new Promise((resolve, reject) => {
-      const {
-        title,
-        ingredients,
-        video = '',
-        date,
-        user_id,
-        photo = '',
-      } = body;
+      const { recipe_id, comment_text, user_id } = body;
 
       db.query(
-        'UPDATE recipe SET title=$1, ingredients=$2, video=$3, date=$4, user_id=$5, photo=$6 WHERE id=$7',
-        [title, ingredients, video, date, user_id, photo, id],
+        'UPDATE comment SET recipe_id=$1, comment_text=$2, user_id=$3 WHERE id=$4',
+        [recipe_id, comment_text, user_id, id],
         (error, result) => {
           if (error) {
             reject(error);
