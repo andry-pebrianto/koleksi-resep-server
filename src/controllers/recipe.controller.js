@@ -2,8 +2,10 @@ const recipeModel = require('../models/recipe.model');
 
 module.exports = {
   list: async (req, res) => {
+    const { search } = req.query;
+
     try {
-      const recipes = await recipeModel.selectAll();
+      const recipes = await recipeModel.selectAll(search);
 
       res.json(recipes.rows);
     } catch (error) {
