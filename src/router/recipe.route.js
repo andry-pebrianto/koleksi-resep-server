@@ -6,12 +6,14 @@ const {
   update,
   remove,
   listComment,
+  latest,
 } = require('../controllers/recipe.controller');
 
 const router = express.Router();
 
 router
   .get('/recipe', list)
+  .get('/recipe/latest', latest)
   .get('/recipe/:id', detail)
   .post('/recipe', insert)
   .put('/recipe/:id', update)

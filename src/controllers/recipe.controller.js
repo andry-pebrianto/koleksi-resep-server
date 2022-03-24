@@ -130,4 +130,18 @@ module.exports = {
       });
     }
   },
+  latest: async (req, res) => {
+    try {
+      const latestRecipe = await recipeModel.selectLatest();
+
+      res.json(latestRecipe.rows);
+    } catch (error) {
+      res.status(500).json({
+        error: {
+          status: 500,
+          message: error.message,
+        },
+      });
+    }
+  },
 };
