@@ -114,4 +114,20 @@ module.exports = {
       });
     }
   },
+  listComment: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const comments = await recipeModel.selectAllCommentByRecipe(id);
+
+      res.json(comments.rows);
+    } catch (error) {
+      res.status(500).json({
+        error: {
+          status: 500,
+          message: error.message,
+        },
+      });
+    }
+  },
 };

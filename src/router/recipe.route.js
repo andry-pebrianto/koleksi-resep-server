@@ -5,6 +5,7 @@ const {
   insert,
   update,
   remove,
+  listComment,
 } = require('../controllers/recipe.controller');
 
 const router = express.Router();
@@ -14,6 +15,7 @@ router
   .get('/recipe/:id', detail)
   .post('/recipe', insert)
   .put('/recipe/:id', update)
-  .delete('/recipe/:id', remove);
+  .delete('/recipe/:id', remove)
+  .get('/recipe/:id/comment', listComment);
 
 module.exports = router;
