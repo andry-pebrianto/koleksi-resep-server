@@ -19,7 +19,7 @@ app.use(xss());
 app.use(cors());
 
 // root router
-app.get('/', (req, res) => res.send('Recipe Food API'));
+app.get('/', (req, res) => res.send('Food Recipe API'));
 // main router
 app.use(require('./src/router/user.route'));
 app.use(require('./src/router/recipe.route'));

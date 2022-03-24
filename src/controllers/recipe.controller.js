@@ -6,7 +6,7 @@ module.exports = {
     const { search } = req.query;
 
     try {
-      const recipes = await recipeModel.selectAll(search);
+      const recipes = await recipeModel.selectAll(search.trim());
 
       res.json(recipes.rows);
     } catch (error) {
