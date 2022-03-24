@@ -67,7 +67,16 @@ module.exports = {
   },
   update: async (req, res) => {
     const { id } = req.params;
-    const { body } = req;
+    const { bad, message, body } = userValidation.insertValidation(req.body);
+
+    // jika ada error saat validasi
+    if (bad) {
+      res.status(400).json({
+        status: 400,
+        message,
+      });
+      return;
+    }
 
     try {
       // mengecek user apakah ada
