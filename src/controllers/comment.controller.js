@@ -15,15 +15,15 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const recipe = await commentModel.selectById(id);
+      const comment = await commentModel.selectById(id);
 
-      // jika recipe tidak ditemukan
-      if (!recipe.rows.length) {
-        next(createError(404, 'No recipe found'));
+      // jika comment tidak ditemukan
+      if (!comment.rows.length) {
+        next(createError(404, 'No comment found'));
         return;
       }
 
-      res.json(recipe.rows[0]);
+      res.json(comment.rows[0]);
     } catch (error) {
       next(error);
     }
@@ -32,10 +32,10 @@ module.exports = {
     const { body } = req;
 
     try {
-      await commentModel.store({ ...body, date: new Date() });
+      await commentModel.store(body);
 
       res.status(201).json({
-        message: 'Insert data recipe success',
+        message: 'Insert data comment success',
       });
     } catch (error) {
       next(error);

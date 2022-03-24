@@ -12,7 +12,7 @@ module.exports = {
     }),
   selectById: (id) =>
     new Promise((resolve, reject) => {
-      db.query('SELECT * FROM recipe WHERE id=$1', [id], (error, result) => {
+      db.query('SELECT * FROM comment WHERE id=$1', [id], (error, result) => {
         if (error) {
           reject(error);
         }
@@ -21,18 +21,11 @@ module.exports = {
     }),
   store: (body) =>
     new Promise((resolve, reject) => {
-      const {
-        title,
-        ingredients,
-        video = '',
-        date,
-        user_id,
-        photo = '',
-      } = body;
+      const { recipe_id, comment_text, user_id } = body;
 
       db.query(
-        'INSERT INTO recipe (title, ingredients, video, date, user_id, photo) VALUES ($1, $2, $3, $4, $5, $6)',
-        [title, ingredients, video, date, user_id, photo],
+        'INSERT INTO comment (recipe_id, comment_text, user_id) VALUES ($1, $2, $3)',
+        [recipe_id, comment_text, user_id],
         (error, result) => {
           if (error) {
             reject(error);
