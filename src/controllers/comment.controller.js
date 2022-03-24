@@ -1,17 +1,21 @@
-const createError = require('http-errors');
 const commentModel = require('../models/comment.model');
 
 module.exports = {
-  list: async (req, res, next) => {
+  list: async (req, res) => {
     try {
       const comments = await commentModel.selectAll();
 
       res.json(comments.rows);
     } catch (error) {
-      next(error);
+      res.status(500).json({
+        error: {
+          status: 500,
+          message: error.message,
+        },
+      });
     }
   },
-  detail: async (req, res, next) => {
+  detail: async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -19,16 +23,21 @@ module.exports = {
 
       // jika comment tidak ditemukan
       if (!comment.rows.length) {
-        next(createError(404, 'No comment found'));
+        res.json({});
         return;
       }
 
       res.json(comment.rows[0]);
     } catch (error) {
-      next(error);
+      res.status(500).json({
+        error: {
+          status: 500,
+          message: error.message,
+        },
+      });
     }
   },
-  insert: async (req, res, next) => {
+  insert: async (req, res) => {
     const { body } = req;
 
     try {
@@ -38,10 +47,15 @@ module.exports = {
         message: 'Insert data comment success',
       });
     } catch (error) {
-      next(error);
+      res.status(500).json({
+        error: {
+          status: 500,
+          message: error.message,
+        },
+      });
     }
   },
-  update: async (req, res, next) => {
+  update: async (req, res) => {
     const { id } = req.params;
     const { body } = req;
 
@@ -49,7 +63,13 @@ module.exports = {
       // mengecek comment apakah ada
       const comment = await commentModel.selectById(id);
       if (!comment.rows[0]) {
-        next(createError(404, 'No comment found'));
+        res.status(404).json({
+          error: {
+            status: 404,
+            message: 'Comment with that Id not found',
+          },
+        });
+        return;
       }
       await commentModel.updateById(id, body);
 
@@ -57,17 +77,28 @@ module.exports = {
         message: 'Update data comment success',
       });
     } catch (error) {
-      next(error);
+      res.status(500).json({
+        error: {
+          status: 500,
+          message: error.message,
+        },
+      });
     }
   },
-  remove: async (req, res, next) => {
+  remove: async (req, res) => {
     const { id } = req.params;
 
     try {
       // mengecek comment apakah ada
       const comment = await commentModel.selectById(id);
       if (!comment.rows[0]) {
-        next(createError(404, 'No comment found'));
+        res.status(404).json({
+          error: {
+            status: 404,
+            message: 'Comment with that Id not found',
+          },
+        });
+        return;
       }
       await commentModel.removeById(id);
 
@@ -75,7 +106,12 @@ module.exports = {
         message: 'Delete data comment success',
       });
     } catch (error) {
-      next(error);
+      res.status(500).json({
+        error: {
+          status: 500,
+          message: error.message,
+        },
+      });
     }
   },
 };

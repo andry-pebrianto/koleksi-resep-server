@@ -1,7 +1,6 @@
 const express = require('express');
 const helmet = require('helmet');
 const xss = require('xss-clean');
-const createError = require('http-errors');
 const chalk = require('chalk');
 require('dotenv').config();
 
@@ -22,22 +21,15 @@ app.use(helmet());
 app.use(xss());
 
 // router middleware
-app.get('/', (req, res) => res.send('Recipe Food API')); // root
-app.use(userRouter); // user
-app.use(recipeRouter); // recipe
-app.use(commentRouter); // recipe
-app.use((req, res, next) => next(createError.NotFound())); // 404 not found
-
-// error handler middleware
-// eslint-disable-next-line no-unused-vars
-app.use((error, req, res, next) => {
-  console.log(error);
-
-  const status = error.status || 500;
-  res.status(status).json({
+app.get('/', (req, res) => res.send('Recipe Food API'));
+app.use(userRouter);
+app.use(recipeRouter);
+app.use(commentRouter);
+app.use((req, res) => { // 404 not found
+  res.status(404).json({
     error: {
-      status,
-      message: error.message || 'Internal Server Error',
+      status: 404,
+      message: 'Not Found',
     },
   });
 });

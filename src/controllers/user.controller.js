@@ -1,17 +1,21 @@
-const createError = require('http-errors');
 const userModel = require('../models/user.model');
 
 module.exports = {
-  list: async (req, res, next) => {
+  list: async (req, res) => {
     try {
       const users = await userModel.selectAll();
 
       res.json(users.rows);
     } catch (error) {
-      next(error);
+      res.status(500).json({
+        error: {
+          status: 500,
+          message: error.message,
+        },
+      });
     }
   },
-  detail: async (req, res, next) => {
+  detail: async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -19,16 +23,21 @@ module.exports = {
 
       // jika user tidak ditemukan
       if (!user.rows.length) {
-        next(createError(404, 'No user found'));
+        res.json({});
         return;
       }
 
       res.json(user.rows[0]);
     } catch (error) {
-      next(error);
+      res.status(500).json({
+        error: {
+          status: 500,
+          message: error.message,
+        },
+      });
     }
   },
-  insert: async (req, res, next) => {
+  insert: async (req, res) => {
     const { body } = req;
 
     try {
@@ -38,10 +47,15 @@ module.exports = {
         message: 'Insert data user success',
       });
     } catch (error) {
-      next(error);
+      res.status(500).json({
+        error: {
+          status: 500,
+          message: error.message,
+        },
+      });
     }
   },
-  update: async (req, res, next) => {
+  update: async (req, res) => {
     const { id } = req.params;
     const { body } = req;
 
@@ -49,7 +63,12 @@ module.exports = {
       // mengecek user apakah ada
       const user = await userModel.selectById(id);
       if (!user.rows[0]) {
-        next(createError(404, 'No user found'));
+        res.status(404).json({
+          error: {
+            status: 404,
+            message: 'User with that Id not found',
+          },
+        });
         return;
       }
       await userModel.updateById(id, body);
@@ -58,17 +77,27 @@ module.exports = {
         message: 'Update data user success',
       });
     } catch (error) {
-      next(error);
+      res.status(500).json({
+        error: {
+          status: 500,
+          message: error.message,
+        },
+      });
     }
   },
-  remove: async (req, res, next) => {
+  remove: async (req, res) => {
     const { id } = req.params;
 
     try {
       // mengecek user apakah ada
       const user = await userModel.selectById(id);
       if (!user.rows[0]) {
-        next(createError(404, 'No user found'));
+        res.status(404).json({
+          error: {
+            status: 404,
+            message: 'User with that Id not found',
+          },
+        });
         return;
       }
       await userModel.removeById(id);
@@ -77,7 +106,12 @@ module.exports = {
         message: 'Delete data user success',
       });
     } catch (error) {
-      next(error);
+      res.status(500).json({
+        error: {
+          status: 500,
+          message: error.message,
+        },
+      });
     }
   },
 };
