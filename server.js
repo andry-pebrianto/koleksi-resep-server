@@ -2,11 +2,8 @@ const express = require('express');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const chalk = require('chalk');
+const cors = require('cors');
 require('dotenv').config();
-
-const userRouter = require('./src/router/user.route');
-const recipeRouter = require('./src/router/recipe.route');
-const commentRouter = require('./src/router/comment.route');
 
 // deklarasi express
 const app = express();
@@ -19,13 +16,16 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(helmet());
 app.use(xss());
+app.use(cors());
 
-// router middleware
+// root router
 app.get('/', (req, res) => res.send('Recipe Food API'));
-app.use(userRouter);
-app.use(recipeRouter);
-app.use(commentRouter);
-app.use((req, res) => { // 404 not found
+// main router
+app.use(require('./src/router/user.route'));
+app.use(require('./src/router/recipe.route'));
+app.use(require('./src/router/comment.route'));
+// 404 router
+app.use((req, res) => {
   res.status(404).json({
     error: {
       status: 404,
