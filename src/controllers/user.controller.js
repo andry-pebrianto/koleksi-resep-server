@@ -1,4 +1,5 @@
 const userModel = require('../models/user.model');
+const userValidation = require('../validations/user.validation');
 
 module.exports = {
   list: async (req, res) => {
@@ -38,7 +39,16 @@ module.exports = {
     }
   },
   insert: async (req, res) => {
-    const { body } = req;
+    const { bad, message, body } = userValidation.insertValidation(req.body);
+
+    // jika ada error saat validasi
+    if (bad) {
+      res.status(400).json({
+        status: 400,
+        message,
+      });
+      return;
+    }
 
     try {
       await userModel.store(body);
