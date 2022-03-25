@@ -5,8 +5,7 @@ Tugas Bootcamp Pijar Camp Minggu Ketiga Untuk Beginner Backend.
 ## Soal
 
 1. Buatlah API dari aplikasi dibawah ini
-https://www.figma.com/file/SUbBTYCq1e4ngRt20lSdqr/Food-Recipe?node-id=47
-%3A1273
+https://www.figma.com/file/SUbBTYCq1e4ngRt20lSdqr/Food-Recipe?node-id=47%3A1273
 
 Requirements:
 
