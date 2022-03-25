@@ -3,8 +3,23 @@ const commentValidation = require('../validations/comment.validation');
 
 module.exports = {
   list: async (req, res) => {
+    const { page } = req.query;
+    let limit = 'ALL';
+    let offset = 0;
+
+    // menentukan limit & offset berdasarkan page
+    if (/[\d]/.test(page)) {
+      limit = 3;
+      offset = (page - 1) * limit;
+    }
+
+    const paging = {
+      limit,
+      offset,
+    };
+
     try {
-      const comments = await commentModel.selectAll();
+      const comments = await commentModel.selectAll(paging);
 
       res.json(comments.rows);
     } catch (error) {

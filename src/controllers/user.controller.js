@@ -3,8 +3,23 @@ const userValidation = require('../validations/user.validation');
 
 module.exports = {
   list: async (req, res) => {
+    const { page } = req.query;
+    let limit = 'ALL';
+    let offset = 0;
+
+    // menentukan limit & offset berdasarkan page
+    if (/[\d]/.test(page)) {
+      limit = 3;
+      offset = (page - 1) * limit;
+    }
+
+    const paging = {
+      limit,
+      offset,
+    };
+
     try {
-      const users = await userModel.selectAll();
+      const users = await userModel.selectAll(paging);
 
       res.json(users.rows);
     } catch (error) {
