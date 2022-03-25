@@ -3,10 +3,23 @@ const recipeValidation = require('../validations/recipe.validation');
 
 module.exports = {
   list: async (req, res) => {
-    const { search } = req.query;
+    const { search, page } = req.query;
+    let limit = 'ALL';
+    let offset = 0;
+
+    // menentukan limit & offset berdasarkan page
+    if (/[\d]/.test(page)) {
+      limit = 3;
+      offset = (page - 1) * limit;
+    }
+
+    const paging = {
+      limit,
+      offset,
+    };
 
     try {
-      const recipes = await recipeModel.selectAll(search.trim());
+      const recipes = await recipeModel.selectAll(paging, search);
 
       res.json(recipes.rows);
     } catch (error) {
