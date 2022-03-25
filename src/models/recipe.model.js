@@ -72,9 +72,9 @@ module.exports = {
         resolve(result);
       });
     }),
-  selectAllCommentByRecipe: (id) =>
+  selectAllRecipeByUser: (id) =>
     new Promise((resolve, reject) => {
-      db.query('SELECT * FROM comment WHERE recipe_id=$1', [id], (error, result) => {
+      db.query('SELECT * FROM recipe WHERE user_id=$1', [id], (error, result) => {
         if (error) {
           reject(error);
         }

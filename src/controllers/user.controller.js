@@ -1,4 +1,5 @@
 const userModel = require('../models/user.model');
+const recipeModel = require('../models/recipe.model');
 const userValidation = require('../validations/user.validation');
 
 module.exports = {
@@ -152,7 +153,7 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const userRecipes = await userModel.selectAllRecipeByUser(id);
+      const userRecipes = await recipeModel.selectAllRecipeByUser(id);
 
       res.json(userRecipes.rows);
     } catch (error) {

@@ -58,4 +58,13 @@ module.exports = {
         resolve(result);
       });
     }),
+  selectAllCommentByRecipe: (id) =>
+    new Promise((resolve, reject) => {
+      db.query('SELECT * FROM comment WHERE recipe_id=$1', [id], (error, result) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(result);
+      });
+    }),
 };

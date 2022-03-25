@@ -1,4 +1,5 @@
 const recipeModel = require('../models/recipe.model');
+const commentModel = require('../models/comment.model');
 const recipeValidation = require('../validations/recipe.validation');
 
 module.exports = {
@@ -152,7 +153,7 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const recipeComments = await recipeModel.selectAllCommentByRecipe(id);
+      const recipeComments = await commentModel.selectAllCommentByRecipe(id);
 
       res.json(recipeComments.rows);
     } catch (error) {

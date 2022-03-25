@@ -62,13 +62,4 @@ module.exports = {
         resolve(result);
       });
     }),
-  selectAllRecipeByUser: (id) =>
-    new Promise((resolve, reject) => {
-      db.query('SELECT * FROM recipe WHERE user_id=$1', [id], (error, result) => {
-        if (error) {
-          reject(error);
-        }
-        resolve(result);
-      });
-    }),
 };
