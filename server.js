@@ -19,7 +19,8 @@ app.use(xss());
 app.use(cors());
 
 // root router
-app.get('/', (req, res) => res.send('Food Recipe API'));
+app.get('/', (req, res) =>
+  res.send(`Food Recipe API - ${NODE_ENV[0].toUpperCase() + NODE_ENV.slice(1)}`));
 // main router
 app.use(require('./src/router/user.route'));
 app.use(require('./src/router/recipe.route'));

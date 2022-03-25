@@ -44,9 +44,13 @@ Requirements:
 ○ Presentasikan apa yang telah Anda lakukan dalam minggu ini
 
 ○ Jelaskan dengan bahasa kalian sendiri apa itu dan konsep tentang:
+
 ■ Node JS
+
 ■ Express
+
 ■ postgreSQL
+
 ■ REST API
 
 ○ Ceritakan dan Demokan tentang proyek ini
