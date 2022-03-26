@@ -1,23 +1,12 @@
 const recipeModel = require('../models/recipe.model');
 const commentModel = require('../models/comment.model');
 const recipeValidation = require('../validations/recipe.validation');
+const createPagination = require('../utils/createPagination');
 
 module.exports = {
   list: async (req, res) => {
     const { search, page } = req.query;
-    let limit = 'ALL';
-    let offset = 0;
-
-    // menentukan limit & offset berdasarkan page
-    if (/[\d]/.test(page)) {
-      limit = 3;
-      offset = (page - 1) * limit;
-    }
-
-    const paging = {
-      limit,
-      offset,
-    };
+    const paging = createPagination(page);
 
     try {
       const recipes = await recipeModel.selectAll(paging, search);

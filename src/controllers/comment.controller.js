@@ -1,22 +1,11 @@
 const commentModel = require('../models/comment.model');
 const commentValidation = require('../validations/comment.validation');
+const createPagination = require('../utils/createPagination');
 
 module.exports = {
   list: async (req, res) => {
     const { page } = req.query;
-    let limit = 'ALL';
-    let offset = 0;
-
-    // menentukan limit & offset berdasarkan page
-    if (/[\d]/.test(page)) {
-      limit = 3;
-      offset = (page - 1) * limit;
-    }
-
-    const paging = {
-      limit,
-      offset,
-    };
+    const paging = createPagination(page);
 
     try {
       const comments = await commentModel.selectAll(paging);
