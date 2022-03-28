@@ -5,8 +5,8 @@ const createPagination = require('../utils/createPagination');
 
 module.exports = {
   list: async (req, res) => {
-    const { search, page } = req.query;
-    const paging = createPagination(page);
+    const { search, page, limit } = req.query;
+    const paging = createPagination(page, limit);
 
     try {
       const recipes = await recipeModel.selectAll(paging, search);
