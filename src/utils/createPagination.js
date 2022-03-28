@@ -1,17 +1,17 @@
 require('dotenv').config();
 
-module.exports = (page) => {
-  let limit = 'ALL';
+module.exports = (page, limit) => {
+  let item = 'ALL';
   let offset = 0;
 
   // menentukan limit & offset berdasarkan page
   if (/[\d]/.test(page)) {
-    limit = process.env.ITEM_PER_PAGE || 1;
-    offset = (page - 1) * limit;
+    item = /[\d]/.test(limit) ? limit : 3;
+    offset = (page - 1) * item;
   }
 
   return {
-    limit,
+    item,
     offset,
   };
 };

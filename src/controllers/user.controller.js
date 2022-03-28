@@ -5,8 +5,8 @@ const createPagination = require('../utils/createPagination');
 
 module.exports = {
   list: async (req, res) => {
-    const { page } = req.query;
-    const paging = createPagination(page);
+    const { page, limit } = req.query;
+    const paging = createPagination(page, limit);
 
     try {
       const users = await userModel.selectAll(paging);
