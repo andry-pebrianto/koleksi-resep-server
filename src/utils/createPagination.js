@@ -1,17 +1,19 @@
 require('dotenv').config();
 
-module.exports = (page, limit) => {
-  let item = 'ALL';
+module.exports = (pageValue, limitValue) => {
+  let limit = 'ALL';
   let offset = 0;
 
   // menentukan limit & offset berdasarkan page
-  if (/[\d]/.test(page)) {
-    item = /[\d]/.test(limit) ? limit : 3;
-    offset = (page - 1) * item;
+  if (/[\d]/.test(pageValue)) {
+    if (pageValue > 0) {
+      limit = /[\d]/.test(limitValue) ? limitValue : 3;
+      offset = (pageValue - 1) * limit;
+    }
   }
 
   return {
-    item,
+    limit,
     offset,
   };
 };
