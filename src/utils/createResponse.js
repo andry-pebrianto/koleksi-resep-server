@@ -7,8 +7,8 @@ module.exports = {
     const responseData = {
       code,
       status: 'success',
-      data: payload,
       message,
+      data: payload,
     };
 
     // jika terdapat pagination
@@ -32,8 +32,8 @@ module.exports = {
     const responseData = {
       code,
       status: 'failed',
-      error: payload,
       message,
+      error: payload,
     };
 
     res.status(code).json(responseData);

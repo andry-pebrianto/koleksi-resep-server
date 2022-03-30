@@ -62,4 +62,13 @@ module.exports = {
         resolve(result);
       });
     }),
+  countAll: () =>
+    new Promise((resolve, reject) => {
+      db.query('SELECT COUNT(*) FROM users', (error, result) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(result);
+      });
+    }),
 };
