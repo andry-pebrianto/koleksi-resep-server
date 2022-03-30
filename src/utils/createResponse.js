@@ -1,12 +1,12 @@
 module.exports = {
   success: (res, data) => {
     const {
-      code, payload, status, message, pagination = false, token = false,
+      code, payload, message, pagination = false, token = false,
     } = data;
 
     const responseData = {
       code,
-      status,
+      status: 'success',
       data: payload,
       message,
     };
@@ -22,20 +22,20 @@ module.exports = {
       delete responseData.data;
     }
 
-    res.json(responseData);
+    res.status(code).json(responseData);
   },
   failed: (res, data) => {
     const {
-      code, payload, status, message,
+      code, payload, message,
     } = data;
 
     const responseData = {
       code,
-      status,
+      status: 'failed',
       error: payload,
       message,
     };
 
-    res.json(responseData);
+    res.status(code).json(responseData);
   },
 };

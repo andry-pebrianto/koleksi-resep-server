@@ -1,140 +1,149 @@
 const userModel = require('../models/user.model');
 const recipeModel = require('../models/recipe.model');
 const userValidation = require('../validations/user.validation');
+const createResponse = require('../utils/createResponse');
 const createPagination = require('../utils/createPagination');
 
 module.exports = {
   list: async (req, res) => {
-    const { page, limit } = req.query;
-    const paging = createPagination(page, limit);
-
     try {
+      const { page, limit } = req.query;
+      const paging = createPagination(page, limit);
       const users = await userModel.selectAll(paging);
 
-      res.json(users.rows);
+      createResponse.success(res, {
+        code: 200,
+        payload: users.rows,
+        message: 'Select list user success',
+      });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          status: 500,
-          message: error.message,
-        },
+      createResponse.failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Something wrong on server',
       });
     }
   },
   detail: async (req, res) => {
-    const { id } = req.params;
-
     try {
+      const { id } = req.params;
       const user = await userModel.selectById(id);
 
       // jika user tidak ditemukan
-      if (!user.rows.length) {
-        res.json({});
+      if (!user.rowCount) {
+        createResponse.failed(res, {
+          code: 404,
+          payload: 'User with that id not found',
+          message: 'Select detail user failed',
+        });
         return;
       }
 
-      res.json(user.rows[0]);
+      createResponse.success(res, {
+        code: 200,
+        payload: user.rows[0],
+        message: 'Select detail user success',
+      });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          status: 500,
-          message: error.message,
-        },
+      createResponse.failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Something wrong on server',
       });
     }
   },
   insert: async (req, res) => {
-    const { bad, message, body } = userValidation.insertValidation(req.body);
-
-    // jika ada error saat validasi
-    if (bad) {
-      res.status(400).json({
-        status: 400,
-        message,
-      });
-      return;
-    }
-
     try {
+      const { bad, message, body } = userValidation.insertValidation(req.body);
+
+      // jika ada error saat validasi
+      if (bad) {
+        res.status(400).json({
+          status: 400,
+          message,
+        });
+        return;
+      }
       await userModel.store(body);
 
-      res.status(201).json({
-        message: 'Insert data user success',
+      createResponse.success(res, {
+        code: 201,
+        payload: null,
+        message: 'Insert user data success',
       });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          status: 500,
-          message: error.message,
-        },
+      createResponse.failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Something wrong on server',
       });
     }
   },
   update: async (req, res) => {
-    const { id } = req.params;
-    const { bad, message, body } = userValidation.insertValidation(req.body);
-
-    // jika ada error saat validasi
-    if (bad) {
-      res.status(400).json({
-        status: 400,
-        message,
-      });
-      return;
-    }
-
     try {
-      // mengecek user apakah ada
+      const { id } = req.params;
+      const { bad, message, body } = userValidation.insertValidation(req.body);
+
+      // jika ada error saat validasi
+      if (bad) {
+        res.status(400).json({
+          status: 400,
+          message,
+        });
+        return;
+      }
+
       const user = await userModel.selectById(id);
-      if (!user.rows[0]) {
-        res.status(404).json({
-          error: {
-            status: 404,
-            message: 'User with that Id not found',
-          },
+      // jika user tidak ditemukan
+      if (!user.rowCount) {
+        createResponse.failed(res, {
+          code: 404,
+          payload: 'User with that id not found',
+          message: 'Update user data failed',
         });
         return;
       }
       await userModel.updateById(id, body);
 
-      res.json({
-        message: 'Update data user success',
+      createResponse.success(res, {
+        code: 200,
+        payload: null,
+        message: 'Update user data success',
       });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          status: 500,
-          message: error.message,
-        },
+      createResponse.failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Something wrong on server',
       });
     }
   },
   remove: async (req, res) => {
-    const { id } = req.params;
-
     try {
-      // mengecek user apakah ada
+      const { id } = req.params;
       const user = await userModel.selectById(id);
-      if (!user.rows[0]) {
-        res.status(404).json({
-          error: {
-            status: 404,
-            message: 'User with that Id not found',
-          },
+
+      // jika user tidak ditemukan
+      if (!user.rowCount) {
+        createResponse.failed(res, {
+          code: 404,
+          payload: 'User with that id not found',
+          message: 'Delete user data failed',
         });
         return;
       }
       await userModel.removeById(id);
 
-      res.json({
-        message: 'Delete data user success',
+      createResponse.success(res, {
+        code: 200,
+        payload: null,
+        message: 'Delete user data success',
       });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          status: 500,
-          message: error.message,
-        },
+      createResponse.failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Something wrong on server',
       });
     }
   },
@@ -144,13 +153,16 @@ module.exports = {
     try {
       const userRecipes = await recipeModel.selectAllRecipeByUser(id);
 
-      res.json(userRecipes.rows);
+      createResponse.success(res, {
+        code: 200,
+        payload: userRecipes.rows,
+        message: 'Select list recipe by user success',
+      });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          status: 500,
-          message: error.message,
-        },
+      createResponse.failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Something wrong on server',
       });
     }
   },
