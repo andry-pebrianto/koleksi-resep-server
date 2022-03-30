@@ -1,156 +1,171 @@
 const recipeModel = require('../models/recipe.model');
 const commentModel = require('../models/comment.model');
 const recipeValidation = require('../validations/recipe.validation');
+const createResponse = require('../utils/createResponse');
 const createPagination = require('../utils/createPagination');
 
 module.exports = {
   list: async (req, res) => {
-    const { search, page, limit } = req.query;
-    const paging = createPagination(page, limit);
-
     try {
+      const { search, page, limit } = req.query;
+      const paging = createPagination(page, limit);
       const recipes = await recipeModel.selectAll(paging, search);
 
-      res.json(recipes.rows);
+      createResponse.success(res, {
+        code: 200,
+        payload: recipes.rows,
+        message: 'Select list recipe success',
+      });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          status: 500,
-          message: error.message,
-        },
+      createResponse.failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Something wrong on server',
       });
     }
   },
   detail: async (req, res) => {
-    const { id } = req.params;
-
     try {
+      const { id } = req.params;
       const recipe = await recipeModel.selectById(id);
 
       // jika recipe tidak ditemukan
-      if (!recipe.rows.length) {
-        res.json({});
+      if (!recipe.rowCount) {
+        createResponse.failed(res, {
+          code: 404,
+          payload: 'Recipe with that id not found',
+          message: 'Select detail recipe failed',
+        });
         return;
       }
 
-      res.json(recipe.rows[0]);
+      createResponse.success(res, {
+        code: 200,
+        payload: recipe.rows[0],
+        message: 'Select detail recipe success',
+      });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          status: 500,
-          message: error.message,
-        },
+      createResponse.failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Something wrong on server',
       });
     }
   },
   insert: async (req, res) => {
-    const { bad, message, body } = recipeValidation.insertValidation(req.body);
-
-    // jika ada error saat validasi
-    if (bad) {
-      res.status(400).json({
-        status: 400,
-        message,
-      });
-      return;
-    }
-
     try {
+      const { bad, message, body } = recipeValidation.insertValidation(
+        req.body,
+      );
+
+      // jika ada error saat validasi
+      if (bad) {
+        res.status(400).json({
+          status: 400,
+          message,
+        });
+        return;
+      }
       await recipeModel.store({ ...body, date: new Date() });
 
-      res.status(201).json({
-        message: 'Insert data recipe success',
+      createResponse.success(res, {
+        code: 201,
+        payload: null,
+        message: 'Insert recipe data success',
       });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          status: 500,
-          message: error.message,
-        },
+      createResponse.failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Something wrong on server',
       });
     }
   },
   update: async (req, res) => {
-    const { id } = req.params;
-    const { bad, message, body } = recipeValidation.insertValidation(req.body);
-
-    // jika ada error saat validasi
-    if (bad) {
-      res.status(400).json({
-        status: 400,
-        message,
-      });
-      return;
-    }
-
     try {
-      // mengecek recipe apakah ada
+      const { id } = req.params;
+      const { bad, message, body } = recipeValidation.insertValidation(
+        req.body,
+      );
+
+      // jika ada error saat validasi
+      if (bad) {
+        res.status(400).json({
+          status: 400,
+          message,
+        });
+        return;
+      }
+
       const recipe = await recipeModel.selectById(id);
-      if (!recipe.rows[0]) {
-        res.status(404).json({
-          error: {
-            status: 404,
-            message: 'Recipe with that Id not found',
-          },
+      // jika recipe tidak ditemukan
+      if (!recipe.rowCount) {
+        createResponse.failed(res, {
+          code: 404,
+          payload: 'Recipe with that id not found',
+          message: 'Update recipe data failed',
         });
         return;
       }
       await recipeModel.updateById(id, body);
 
-      res.json({
-        message: 'Update data recipe success',
+      createResponse.success(res, {
+        code: 200,
+        payload: null,
+        message: 'Update recipe data success',
       });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          status: 500,
-          message: error.message,
-        },
+      createResponse.failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Something wrong on server',
       });
     }
   },
   remove: async (req, res) => {
-    const { id } = req.params;
-
     try {
-      // mengecek recipe apakah ada
+      const { id } = req.params;
       const recipe = await recipeModel.selectById(id);
-      if (!recipe.rows[0]) {
-        res.status(404).json({
-          error: {
-            status: 404,
-            message: 'User with that Id not found',
-          },
+
+      // jika recipe tidak ditemukan
+      if (!recipe.rowCount) {
+        createResponse.failed(res, {
+          code: 404,
+          payload: 'Recipe with that id not found',
+          message: 'Delete recipe data failed',
         });
         return;
       }
       await recipeModel.removeById(id);
 
-      res.json({
-        message: 'Delete data recipe success',
+      createResponse.success(res, {
+        code: 200,
+        payload: null,
+        message: 'Delete recipe data success',
       });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          status: 500,
-          message: error.message,
-        },
+      createResponse.failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Something wrong on server',
       });
     }
   },
   listComment: async (req, res) => {
-    const { id } = req.params;
-
     try {
+      const { id } = req.params;
       const recipeComments = await commentModel.selectAllCommentByRecipe(id);
 
-      res.json(recipeComments.rows);
+      createResponse.success(res, {
+        code: 200,
+        payload: recipeComments.rows,
+        message: 'Select list comment by recipe success',
+      });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          status: 500,
-          message: error.message,
-        },
+      createResponse.failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Something wrong on server',
       });
     }
   },
@@ -158,13 +173,16 @@ module.exports = {
     try {
       const latestRecipe = await recipeModel.selectLatest();
 
-      res.json(latestRecipe.rows);
+      createResponse.success(res, {
+        code: 200,
+        payload: latestRecipe.rows,
+        message: 'Select latest recipe success',
+      });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          status: 500,
-          message: error.message,
-        },
+      createResponse.failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Something wrong on server',
       });
     }
   },
