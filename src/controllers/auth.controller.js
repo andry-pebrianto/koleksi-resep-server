@@ -8,8 +8,8 @@ const jwtToken = require('../utils/generateJwtToken');
 module.exports = {
   register: async (req, res) => {
     try {
-      const user = await userModel.selectByEmail();
-      if (!user.countRow) {
+      const user = await userModel.selectByEmail(req.body.email);
+      if (user.rowCount) {
         failed(res, {
           code: 400,
           payload: 'Email already exist',
