@@ -4,12 +4,12 @@ module.exports = {
   register: (body) =>
     new Promise((resolve, reject) => {
       const {
-        name, email, phone, password, photo = '',
+        id, name, email, phone, password, photo = '', level,
       } = body;
 
       db.query(
-        'INSERT INTO users (name, email, phone, password, photo) VALUES ($1, $2, $3, $4, $5)',
-        [name, email, phone, password, photo],
+        'INSERT INTO users (id, name, email, phone, password, photo, level) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+        [id, name, email, phone, password, photo, level],
         (error, result) => {
           if (error) {
             reject(error);

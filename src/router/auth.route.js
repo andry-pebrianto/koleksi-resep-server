@@ -1,4 +1,5 @@
 const express = require('express');
+const upload = require('../middlewares/upload');
 const {
   register,
   login,
@@ -7,7 +8,7 @@ const {
 const router = express.Router();
 
 router
-  .post('/auth/register', register)
+  .post('/auth/register', upload, register)
   .post('/auth/login', login);
 
 module.exports = router;

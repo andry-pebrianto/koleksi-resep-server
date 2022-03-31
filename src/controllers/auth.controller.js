@@ -1,13 +1,27 @@
 const bcrypt = require('bcrypt');
+const { v4: uuidv4 } = require('uuid');
 const authModel = require('../models/auth.model');
+const userModel = require('../models/user.model');
 const { success, failed } = require('../utils/createResponse');
 const jwtToken = require('../utils/generateJwtToken');
 
 module.exports = {
   register: async (req, res) => {
     try {
+      const user = await userModel.selectByEmail();
+      if (!user.countRow) {
+        failed(res, {
+          code: 400,
+          payload: 'Email already exist',
+          message: 'Register failed',
+        });
+        return;
+      }
+
       const password = await bcrypt.hash(req.body.password, 10);
-      await authModel.register({ ...req.body, password });
+      await authModel.register({
+        ...req.body, password, level: 1, id: uuidv4(),
+      });
 
       success(res, {
         code: 201,
