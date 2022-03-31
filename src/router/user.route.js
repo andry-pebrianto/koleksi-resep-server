@@ -1,4 +1,5 @@
 const express = require('express');
+const staticAuth = require('../middlewares/staticAuth');
 const {
   list,
   detail,
@@ -11,7 +12,7 @@ const {
 const router = express.Router();
 
 router
-  .get('/user', list)
+  .get('/user', staticAuth, list)
   .get('/user/:id', detail)
   .post('/user', insert)
   .put('/user/:id', update)
