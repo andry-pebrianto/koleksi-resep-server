@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
-const { v4: uuidv4 } = require('uuid');
 const crypto = require('crypto');
+const { v4: uuidv4 } = require('uuid');
 const authModel = require('../models/auth.model');
 const userModel = require('../models/user.model');
 const { success, failed } = require('../utils/createResponse');
@@ -25,7 +25,12 @@ module.exports = {
       const photo = req.file.filename;
       const token = crypto.randomBytes(30).toString('hex');
       await authModel.register({
-        ...req.body, password, level: 1, id: uuidv4(), photo, token,
+        ...req.body,
+        password,
+        level: 1,
+        id: uuidv4(),
+        photo,
+        token,
       });
 
       // send email for activate account
@@ -77,6 +82,34 @@ module.exports = {
         code: 401,
         payload: 'Wrong email or password',
         message: 'Login failed',
+      });
+    } catch (error) {
+      failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Something wrong on server',
+      });
+    }
+  },
+  activation: async (req, res) => {
+    try {
+      const { token } = req.params;
+      const user = await authModel.checkEmailToken(token);
+
+      if (!user.rowCount) {
+        failed(res, {
+          code: 401,
+          payload: 'Token invalid',
+          message: 'Activation failed',
+        });
+        return;
+      }
+      await authModel.activateEmail(user.rows[0].id);
+
+      success(res, {
+        code: 200,
+        payload: null,
+        message: 'User activation success',
       });
     } catch (error) {
       failed(res, {
