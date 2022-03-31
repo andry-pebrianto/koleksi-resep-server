@@ -1,19 +1,23 @@
 require('dotenv').config();
 
-module.exports = (pageValue, limitValue) => {
-  let limit = 'ALL';
+module.exports = (count, page = 1, limit = 10) => {
   let offset = 0;
+  const response = {
+    currentPage: /[\d]/.test(page) ? parseInt(page, 10) : 1,
+    dataPerPage: parseInt(limit, 10),
+    totalPage: Math.ceil(Number(count / limit)),
+  };
 
-  // menentukan limit & offset berdasarkan page
-  if (/[\d]/.test(pageValue)) {
-    if (pageValue > 0) {
-      limit = /[\d]/.test(limitValue) ? limitValue : 3;
-      offset = (pageValue - 1) * limit;
+  // cek apakah ada query param page dan tidak mengandung selain angka
+  if (/[\d]/.test(page)) {
+    if (parseInt(page, 10) > 0) {
+      offset = (parseInt(page, 10) - 1) * limit;
     }
   }
 
   return {
     limit,
     offset,
+    response,
   };
 };

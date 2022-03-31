@@ -7,13 +7,15 @@ module.exports = {
   list: async (req, res) => {
     try {
       const { page, limit } = req.query;
-      const paging = createPagination(page, limit);
+      const count = await commentModel.countAll();
+      const paging = createPagination(count.rows[0].count, page, limit);
       const comments = await commentModel.selectAll(paging);
 
       createResponse.success(res, {
         code: 200,
         payload: comments.rows,
         message: 'Select list comment success',
+        pagination: paging.response,
       });
     } catch (error) {
       createResponse.failed(res, {

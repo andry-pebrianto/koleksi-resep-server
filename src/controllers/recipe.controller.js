@@ -8,13 +8,15 @@ module.exports = {
   list: async (req, res) => {
     try {
       const { search, page, limit } = req.query;
-      const paging = createPagination(page, limit);
+      const count = await recipeModel.countAll();
+      const paging = createPagination(count.rows[0].count, page, limit);
       const recipes = await recipeModel.selectAll(paging, search);
 
       createResponse.success(res, {
         code: 200,
         payload: recipes.rows,
         message: 'Select list recipe success',
+        pagination: paging.response,
       });
     } catch (error) {
       createResponse.failed(res, {

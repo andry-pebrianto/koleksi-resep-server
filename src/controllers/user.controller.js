@@ -3,22 +3,20 @@ const recipeModel = require('../models/recipe.model');
 const userValidation = require('../validations/user.validation');
 const createResponse = require('../utils/createResponse');
 const createPagination = require('../utils/createPagination');
-const createPaginationResponse = require('../utils/createPaginationResponse');
 
 module.exports = {
   list: async (req, res) => {
     try {
       const { page, limit } = req.query;
-      const paging = createPagination(page, limit);
-      const users = await userModel.selectAll(paging);
       const count = await userModel.countAll();
-      const pagination = createPaginationResponse(count.rows[0].count, page, limit);
+      const paging = createPagination(count.rows[0].count, page, limit);
+      const users = await userModel.selectAll(paging);
 
       createResponse.success(res, {
         code: 200,
         payload: users.rows,
         message: 'Select list user success',
-        pagination,
+        pagination: paging.response,
       });
     } catch (error) {
       createResponse.failed(res, {

@@ -67,4 +67,13 @@ module.exports = {
         resolve(result);
       });
     }),
+  countAll: () =>
+    new Promise((resolve, reject) => {
+      db.query('SELECT COUNT(*) FROM comment', (error, result) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(result);
+      });
+    }),
 };
