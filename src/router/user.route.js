@@ -1,5 +1,5 @@
 const express = require('express');
-const staticAuth = require('../middlewares/staticAuth');
+const jwtAuth = require('../middlewares/jwtAuth');
 const {
   list,
   detail,
@@ -12,11 +12,11 @@ const {
 const router = express.Router();
 
 router
-  .get('/user', staticAuth, list)
-  .get('/user/:id', detail)
-  .post('/user', insert)
-  .put('/user/:id', update)
-  .delete('/user/:id', remove)
-  .get('/user/:id/recipe', listRecipe);
+  .get('/user', jwtAuth, list)
+  .get('/user/:id', jwtAuth, detail)
+  .post('/user', jwtAuth, insert)
+  .put('/user/:id', jwtAuth, update)
+  .delete('/user/:id', jwtAuth, remove)
+  .get('/user/:id/recipe', jwtAuth, listRecipe);
 
 module.exports = router;
