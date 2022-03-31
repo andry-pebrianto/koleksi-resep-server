@@ -1,6 +1,6 @@
 const commentModel = require('../models/comment.model');
 const commentValidation = require('../validations/comment.validation');
-const createResponse = require('../utils/createResponse');
+const { success, failed } = require('../utils/createResponse');
 const createPagination = require('../utils/createPagination');
 
 module.exports = {
@@ -11,14 +11,14 @@ module.exports = {
       const paging = createPagination(count.rows[0].count, page, limit);
       const comments = await commentModel.selectAll(paging);
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: comments.rows,
         message: 'Select list comment success',
         pagination: paging.response,
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -32,7 +32,7 @@ module.exports = {
 
       // jika comment tidak ditemukan
       if (!comment.rowCount) {
-        createResponse.failed(res, {
+        failed(res, {
           code: 404,
           payload: 'Comment with that id not found',
           message: 'Select detail comment failed',
@@ -40,13 +40,13 @@ module.exports = {
         return;
       }
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: comment.rows[0],
         message: 'Select detail comment success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -69,13 +69,13 @@ module.exports = {
       }
       await commentModel.store(body);
 
-      createResponse.success(res, {
+      success(res, {
         code: 201,
         payload: null,
         message: 'Insert comment data success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -101,7 +101,7 @@ module.exports = {
       const comment = await commentModel.selectById(id);
       // jika comment tidak ditemukan
       if (!comment.rowCount) {
-        createResponse.failed(res, {
+        failed(res, {
           code: 404,
           payload: 'Comment with that id not found',
           message: 'Update comment data failed',
@@ -110,13 +110,13 @@ module.exports = {
       }
       await commentModel.updateById(id, body);
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: null,
         message: 'Update comment data success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -130,7 +130,7 @@ module.exports = {
 
       // jika comment tidak ditemukan
       if (!comment.rowCount) {
-        createResponse.failed(res, {
+        failed(res, {
           code: 404,
           payload: 'Comment with that id not found',
           message: 'Delete comment data failed',
@@ -139,13 +139,13 @@ module.exports = {
       }
       await commentModel.removeById(id);
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: null,
         message: 'Delete comment data success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',

@@ -1,7 +1,7 @@
 const recipeModel = require('../models/recipe.model');
 const commentModel = require('../models/comment.model');
 const recipeValidation = require('../validations/recipe.validation');
-const createResponse = require('../utils/createResponse');
+const { success, failed } = require('../utils/createResponse');
 const createPagination = require('../utils/createPagination');
 
 module.exports = {
@@ -12,14 +12,14 @@ module.exports = {
       const paging = createPagination(count.rows[0].count, page, limit);
       const recipes = await recipeModel.selectAll(paging, search);
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: recipes.rows,
         message: 'Select list recipe success',
         pagination: paging.response,
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -33,7 +33,7 @@ module.exports = {
 
       // jika recipe tidak ditemukan
       if (!recipe.rowCount) {
-        createResponse.failed(res, {
+        failed(res, {
           code: 404,
           payload: 'Recipe with that id not found',
           message: 'Select detail recipe failed',
@@ -41,13 +41,13 @@ module.exports = {
         return;
       }
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: recipe.rows[0],
         message: 'Select detail recipe success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -70,13 +70,13 @@ module.exports = {
       }
       await recipeModel.store({ ...body, date: new Date() });
 
-      createResponse.success(res, {
+      success(res, {
         code: 201,
         payload: null,
         message: 'Insert recipe data success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -102,7 +102,7 @@ module.exports = {
       const recipe = await recipeModel.selectById(id);
       // jika recipe tidak ditemukan
       if (!recipe.rowCount) {
-        createResponse.failed(res, {
+        failed(res, {
           code: 404,
           payload: 'Recipe with that id not found',
           message: 'Update recipe data failed',
@@ -111,13 +111,13 @@ module.exports = {
       }
       await recipeModel.updateById(id, body);
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: null,
         message: 'Update recipe data success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -131,7 +131,7 @@ module.exports = {
 
       // jika recipe tidak ditemukan
       if (!recipe.rowCount) {
-        createResponse.failed(res, {
+        failed(res, {
           code: 404,
           payload: 'Recipe with that id not found',
           message: 'Delete recipe data failed',
@@ -140,13 +140,13 @@ module.exports = {
       }
       await recipeModel.removeById(id);
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: null,
         message: 'Delete recipe data success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -158,13 +158,13 @@ module.exports = {
       const { id } = req.params;
       const recipeComments = await commentModel.selectAllCommentByRecipe(id);
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: recipeComments.rows,
         message: 'Select list comment by recipe success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -175,13 +175,13 @@ module.exports = {
     try {
       const latestRecipe = await recipeModel.selectLatest();
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: latestRecipe.rows,
         message: 'Select latest recipe success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',

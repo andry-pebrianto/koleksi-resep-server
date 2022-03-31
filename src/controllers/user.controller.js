@@ -1,7 +1,7 @@
 const userModel = require('../models/user.model');
 const recipeModel = require('../models/recipe.model');
 const userValidation = require('../validations/user.validation');
-const createResponse = require('../utils/createResponse');
+const { success, failed } = require('../utils/createResponse');
 const createPagination = require('../utils/createPagination');
 
 module.exports = {
@@ -12,14 +12,14 @@ module.exports = {
       const paging = createPagination(count.rows[0].count, page, limit);
       const users = await userModel.selectAll(paging);
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: users.rows,
         message: 'Select list user success',
         pagination: paging.response,
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -33,7 +33,7 @@ module.exports = {
 
       // jika user tidak ditemukan
       if (!user.rowCount) {
-        createResponse.failed(res, {
+        failed(res, {
           code: 404,
           payload: 'User with that id not found',
           message: 'Select detail user failed',
@@ -41,13 +41,13 @@ module.exports = {
         return;
       }
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: user.rows[0],
         message: 'Select detail user success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -68,13 +68,13 @@ module.exports = {
       }
       await userModel.store(body);
 
-      createResponse.success(res, {
+      success(res, {
         code: 201,
         payload: null,
         message: 'Insert user data success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -98,7 +98,7 @@ module.exports = {
       const user = await userModel.selectById(id);
       // jika user tidak ditemukan
       if (!user.rowCount) {
-        createResponse.failed(res, {
+        failed(res, {
           code: 404,
           payload: 'User with that id not found',
           message: 'Update user data failed',
@@ -107,13 +107,13 @@ module.exports = {
       }
       await userModel.updateById(id, body);
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: null,
         message: 'Update user data success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -127,7 +127,7 @@ module.exports = {
 
       // jika user tidak ditemukan
       if (!user.rowCount) {
-        createResponse.failed(res, {
+        failed(res, {
           code: 404,
           payload: 'User with that id not found',
           message: 'Delete user data failed',
@@ -136,13 +136,13 @@ module.exports = {
       }
       await userModel.removeById(id);
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: null,
         message: 'Delete user data success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
@@ -155,13 +155,13 @@ module.exports = {
     try {
       const userRecipes = await recipeModel.selectAllRecipeByUser(id);
 
-      createResponse.success(res, {
+      success(res, {
         code: 200,
         payload: userRecipes.rows,
         message: 'Select list recipe by user success',
       });
     } catch (error) {
-      createResponse.failed(res, {
+      failed(res, {
         code: 500,
         payload: error.message,
         message: 'Something wrong on server',
