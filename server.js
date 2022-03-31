@@ -3,14 +3,10 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const chalk = require('chalk');
 const cors = require('cors');
-require('dotenv').config();
+const { NODE_ENV, PORT } = require('./src/utils/env');
 
 // deklarasi express
 const app = express();
-
-// env variabel
-const NODE_ENV = process.env.NODE_ENV || 'development';
-const PORT = process.env.PORT || 5000;
 
 // middleware
 app.use(express.json());
