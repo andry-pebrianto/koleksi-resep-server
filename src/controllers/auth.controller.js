@@ -1,8 +1,11 @@
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
+const crypto = require('crypto');
 const authModel = require('../models/auth.model');
 const userModel = require('../models/user.model');
 const { success, failed } = require('../utils/createResponse');
+const sendEmail = require('../utils/email/sendEmail');
+const activateAccountEmail = require('../utils/email/activateAccountEmail');
 const jwtToken = require('../utils/generateJwtToken');
 
 module.exports = {
@@ -19,9 +22,22 @@ module.exports = {
       }
 
       const password = await bcrypt.hash(req.body.password, 10);
+      const photo = req.file.filename;
+      const token = crypto.randomBytes(30).toString('hex');
       await authModel.register({
-        ...req.body, password, level: 1, id: uuidv4(),
+        ...req.body, password, level: 1, id: uuidv4(), photo, token,
       });
+
+      // send email for activate account
+      const templateEmail = {
+        from: `"${process.env.APP_NAME}" <${process.env.EMAIL_FROM}>`,
+        to: req.body.email.toLowerCase(),
+        subject: 'Activate Your Account!',
+        html: activateAccountEmail(
+          `${process.env.CLIENT_URL}/auth/activate/${token}`,
+        ),
+      };
+      sendEmail(templateEmail);
 
       success(res, {
         code: 201,
