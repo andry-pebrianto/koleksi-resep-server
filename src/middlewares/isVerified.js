@@ -3,9 +3,11 @@ const { failed } = require('../utils/createResponse');
 
 module.exports = async (req, res, next) => {
   try {
-    const user = await userModel.selectById(req.APP_DATA.tokenDecoded.id);
+    const user = await userModel.selectByEmail(req.body.email);
 
-    if (user.rows[0].verified === 1) {
+    if (!user.rowCount) {
+      next();
+    } else if (user.rows[0].verified === 1) {
       next();
     } else {
       failed(res, {
@@ -16,9 +18,9 @@ module.exports = async (req, res, next) => {
     }
   } catch (error) {
     failed(res, {
-      code: 401,
+      code: 500,
       payload: error.message,
-      message: 'Something wrong on server',
+      message: 'Internal Server Error',
     });
   }
 };
