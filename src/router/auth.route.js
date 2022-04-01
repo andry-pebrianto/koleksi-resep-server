@@ -11,7 +11,7 @@ const {
 const router = express.Router();
 
 router
-  .post('/auth/register', validation.register, runValidation, register)
+  .post('/auth/register', upload, validation.register, runValidation, register)
   .post('/auth/login', login)
   .get('/auth/activation/:token', activation);
 

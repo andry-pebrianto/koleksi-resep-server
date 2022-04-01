@@ -1,15 +1,17 @@
 const path = require('path');
 const multer = require('multer');
+const crypto = require('crypto');
 
 // management file
 const multerUpload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, './public');
+      cb(null, './public/photo');
     },
     filename: (req, file, cb) => {
+      const name = crypto.randomBytes(30).toString('hex');
       const ext = path.extname(file.originalname);
-      const filename = `${Date.now()}${ext}`;
+      const filename = `${name}${ext}`;
       cb(null, filename);
     },
   }),
@@ -18,9 +20,7 @@ const multerUpload = multer({
     if (ext === '.jpg' || ext === '.png') {
       cb(null, true);
     } else {
-      cb({
-        message: 'File extension is not valid',
-      }, false);
+      cb({ message: 'Photo extension only can .jpg or .png' }, false);
     }
   },
 });
@@ -30,9 +30,14 @@ module.exports = (req, res, next) => {
   const multerSingle = multerUpload.single('photo');
   multerSingle(req, res, (err) => {
     if (err) {
-      res.json({
-        msg: err.message,
-      });
+      req.APP_DATA = {
+        photoError: {
+          msg: err.message,
+          param: 'photo',
+          location: 'body',
+        },
+      };
+      next();
     } else {
       next();
     }
