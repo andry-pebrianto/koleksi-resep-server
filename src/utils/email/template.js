@@ -54,7 +54,7 @@ const htmlTemplateTop = `
 
 <body style="background-color: #17a2b8; padding: 20px;">
   <h1 class="auth-title">
-    Mernuas
+    Food Recipe
   </h1>
 
   <div class="auth-content" style="background-color: white;">

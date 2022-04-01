@@ -23,6 +23,7 @@ const multerUpload = multer({
       cb({ message: 'Photo extension only can .jpg or .png' }, false);
     }
   },
+  limits: { fileSize: 2000000 },
 });
 
 // middleware

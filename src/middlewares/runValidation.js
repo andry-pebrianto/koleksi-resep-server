@@ -6,8 +6,10 @@ module.exports = (req, res, next) => {
     const errors = validationResult(req).array({ onlyFirstError: true });
 
     // jika terdapat error validasi photo
-    if (req.APP_DATA.photoError) {
-      errors.push(req.APP_DATA.photoError);
+    if (req.APP_DATA) {
+      if (req.APP_DATA.photoError) {
+        errors.push(req.APP_DATA.photoError);
+      }
     }
 
     // jika validasi gagal

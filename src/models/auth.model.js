@@ -9,7 +9,7 @@ module.exports = {
 
       db.query(
         'INSERT INTO users (id, name, email, phone, password, photo, level, email_token) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-        [id, name, email, phone, password, photo, level, token],
+        [id, name, email.toLowerCase(), phone, password, photo, level, token],
         (error, result) => {
           if (error) {
             reject(error);

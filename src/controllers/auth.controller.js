@@ -7,19 +7,17 @@ const { success, failed } = require('../utils/createResponse');
 const sendEmail = require('../utils/email/sendEmail');
 const activateAccountEmail = require('../utils/email/activateAccountEmail');
 const jwtToken = require('../utils/generateJwtToken');
+const { APP_NAME, EMAIL_FROM, CLIENT_URL } = require('../utils/env');
 
 module.exports = {
   register: async (req, res) => {
-    res.json("Berhasil");
-    return;
-
     try {
       const user = await userModel.selectByEmail(req.body.email);
       if (user.rowCount) {
         failed(res, {
-          code: 400,
+          code: 409,
           payload: 'Email already exist',
-          message: 'Register failed',
+          message: 'Register Failed',
         });
         return;
       }
@@ -28,21 +26,21 @@ module.exports = {
       const photo = req.file.filename;
       const token = crypto.randomBytes(30).toString('hex');
       await authModel.register({
+        id: uuidv4(),
         ...req.body,
         password,
-        level: 1,
-        id: uuidv4(),
         photo,
+        level: 1,
         token,
       });
 
       // send email for activate account
       const templateEmail = {
-        from: `"${process.env.APP_NAME}" <${process.env.EMAIL_FROM}>`,
+        from: `"${APP_NAME}" <${EMAIL_FROM}>`,
         to: req.body.email.toLowerCase(),
         subject: 'Activate Your Account!',
         html: activateAccountEmail(
-          `${process.env.CLIENT_URL}/auth/activate/${token}`,
+          `${CLIENT_URL}/auth/activate/${token}`,
         ),
       };
       sendEmail(templateEmail);
@@ -50,13 +48,13 @@ module.exports = {
       success(res, {
         code: 201,
         payload: null,
-        message: 'Register success',
+        message: 'Register Success',
       });
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'InternalServer Error',
       });
     }
   },

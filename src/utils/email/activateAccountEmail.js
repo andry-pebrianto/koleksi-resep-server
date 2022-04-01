@@ -11,8 +11,6 @@ const activateAccount = (link) => {
   <a href="${link}" style="color: white;" class="auth-button">Aktifkan Akun</a>
   
   <p>
-    Link tersebut akan kedaluwarsa dalam 30 menit.
-    <br>
     Jika Anda tidak merasa melakukan Registrasi Akun di Food Recipe, abaikan email ini.
     <br>
     Link alternatif: <a href="${link}">${link}</a>
