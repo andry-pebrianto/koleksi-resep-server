@@ -1,9 +1,9 @@
 const express = require('express');
 const jwtAuth = require('../middlewares/jwtAuth');
+const isVerified = require('../middlewares/isVerified');
 const {
   list,
   detail,
-  insert,
   update,
   remove,
   listRecipe,
@@ -12,11 +12,10 @@ const {
 const router = express.Router();
 
 router
-  .get('/user', jwtAuth, list)
-  .get('/user/:id', jwtAuth, detail)
-  .post('/user', jwtAuth, insert)
-  .put('/user/:id', jwtAuth, update)
-  .delete('/user/:id', jwtAuth, remove)
-  .get('/user/:id/recipe', jwtAuth, listRecipe);
+  .get('/user', jwtAuth, isVerified, list)
+  .get('/user/:id', jwtAuth, isVerified, detail)
+  .put('/user/:id', jwtAuth, isVerified, update)
+  .delete('/user/:id', jwtAuth, isVerified, remove)
+  .get('/user/:id/recipe', jwtAuth, isVerified, listRecipe);
 
 module.exports = router;

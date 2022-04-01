@@ -28,23 +28,6 @@ module.exports = {
         resolve(result);
       });
     }),
-  store: (body) =>
-    new Promise((resolve, reject) => {
-      const {
-        name, email, phone, password, photo = '',
-      } = body;
-
-      db.query(
-        'INSERT INTO users (name, email, phone, password, photo) VALUES ($1, $2, $3, $4, $5)',
-        [name, email, phone, password, photo],
-        (error, result) => {
-          if (error) {
-            reject(error);
-          }
-          resolve(result);
-        },
-      );
-    }),
   updateById: (id, body) =>
     new Promise((resolve, reject) => {
       const {

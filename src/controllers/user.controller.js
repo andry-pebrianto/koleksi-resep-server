@@ -54,33 +54,6 @@ module.exports = {
       });
     }
   },
-  insert: async (req, res) => {
-    try {
-      const { bad, message, body } = userValidation.insertValidation(req.body);
-
-      // jika ada error saat validasi
-      if (bad) {
-        res.status(400).json({
-          status: 400,
-          message,
-        });
-        return;
-      }
-      await userModel.store(body);
-
-      success(res, {
-        code: 201,
-        payload: null,
-        message: 'Insert user data success',
-      });
-    } catch (error) {
-      failed(res, {
-        code: 500,
-        payload: error.message,
-        message: 'Something wrong on server',
-      });
-    }
-  },
   update: async (req, res) => {
     try {
       const { id } = req.params;
