@@ -4,6 +4,7 @@ const xss = require('xss-clean');
 const chalk = require('chalk');
 const cors = require('cors');
 const { NODE_ENV, PORT } = require('./src/utils/env');
+const { failed } = require('./src/utils/createResponse');
 
 // deklarasi express
 const app = express();
@@ -24,11 +25,10 @@ app.use(require('./src/router/recipe.route'));
 app.use(require('./src/router/comment.route'));
 // 404 router
 app.use((req, res) => {
-  res.status(404).json({
-    error: {
-      status: 404,
-      message: 'Not Found',
-    },
+  failed(res, {
+    code: 404,
+    payload: 'Resource on that url not found',
+    message: 'Not Found',
   });
 });
 

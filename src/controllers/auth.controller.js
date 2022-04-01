@@ -10,6 +10,9 @@ const jwtToken = require('../utils/generateJwtToken');
 
 module.exports = {
   register: async (req, res) => {
+    res.json("Berhasil");
+    return;
+
     try {
       const user = await userModel.selectByEmail(req.body.email);
       if (user.rowCount) {
