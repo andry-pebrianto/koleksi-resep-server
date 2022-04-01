@@ -40,7 +40,7 @@ module.exports = {
         to: req.body.email.toLowerCase(),
         subject: 'Activate Your Account!',
         html: activateAccountEmail(
-          `${CLIENT_URL}/auth/activate/${token}`,
+          `${CLIENT_URL}/auth/activation/${token}`,
         ),
       };
       sendEmail(templateEmail);
@@ -70,7 +70,7 @@ module.exports = {
         if (match) {
           const token = await jwtToken(user.rows[0]);
           success(res, {
-            code: 201,
+            code: 200,
             payload: null,
             message: 'Login Success',
             token,
@@ -101,7 +101,7 @@ module.exports = {
         failed(res, {
           code: 401,
           payload: 'Token invalid',
-          message: 'Activation failed',
+          message: 'Activation Failed',
         });
         return;
       }
@@ -110,13 +110,13 @@ module.exports = {
       success(res, {
         code: 200,
         payload: null,
-        message: 'User activation success',
+        message: 'Activation Success',
       });
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'Internal Server Error',
       });
     }
   },
