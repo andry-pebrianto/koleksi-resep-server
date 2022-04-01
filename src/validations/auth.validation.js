@@ -19,4 +19,12 @@ const register = [
   check('password', "Password can't above 100 characters").isLength({ max: 100 }),
 ];
 
-module.exports = { register };
+const login = [
+  // email
+  check('email', 'Email required').not().isEmpty(),
+  check('email', 'Please include a valid email').isEmail(),
+  // password
+  check('password', 'Password required').not().isEmpty(),
+];
+
+module.exports = { register, login };

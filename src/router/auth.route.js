@@ -12,7 +12,7 @@ const router = express.Router();
 
 router
   .post('/auth/register', uploadPhoto, validation.register, runValidation, register)
-  .post('/auth/login', login)
+  .post('/auth/login', validation.login, runValidation, login)
   .get('/auth/activation/:token', activation);
 
 module.exports = router;

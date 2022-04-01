@@ -72,7 +72,7 @@ module.exports = {
           success(res, {
             code: 201,
             payload: null,
-            message: 'Login success',
+            message: 'Login Success',
             token,
           });
           return;
@@ -81,14 +81,14 @@ module.exports = {
 
       failed(res, {
         code: 401,
-        payload: 'Wrong email or password',
-        message: 'Login failed',
+        payload: 'Wrong Email or Password',
+        message: 'Login Failed',
       });
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'Internal Server Error',
       });
     }
   },
