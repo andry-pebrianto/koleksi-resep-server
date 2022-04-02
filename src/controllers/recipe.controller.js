@@ -15,14 +15,14 @@ module.exports = {
       success(res, {
         code: 200,
         payload: recipes.rows,
-        message: 'Select list recipe success',
         pagination: paging.response,
+        message: 'Select List Recipe Success',
       });
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'Internal Server Error',
       });
     }
   },
@@ -35,8 +35,8 @@ module.exports = {
       if (!recipe.rowCount) {
         failed(res, {
           code: 404,
-          payload: 'Recipe with that id not found',
-          message: 'Select detail recipe failed',
+          payload: `Recipe with Id ${id} not found`,
+          message: 'Select Detail Recipe Failed',
         });
         return;
       }
@@ -44,13 +44,13 @@ module.exports = {
       success(res, {
         code: 200,
         payload: recipe.rows[0],
-        message: 'Select detail recipe success',
+        message: 'Select Detail Recipe Success',
       });
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'Internal Server Error',
       });
     }
   },
@@ -79,7 +79,7 @@ module.exports = {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'Internal Server Error',
       });
     }
   },
@@ -120,7 +120,7 @@ module.exports = {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'Internal Server Error',
       });
     }
   },
@@ -149,7 +149,7 @@ module.exports = {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'Internal Server Error',
       });
     }
   },
@@ -167,7 +167,7 @@ module.exports = {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'Internal Server Error',
       });
     }
   },
@@ -184,7 +184,7 @@ module.exports = {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'Internal Server Error',
       });
     }
   },

@@ -93,8 +93,8 @@ module.exports = {
       if (!user.rowCount) {
         failed(res, {
           code: 404,
-          payload: 'User with that id not found',
-          message: 'Delete user data failed',
+          payload: `User with Id ${id} not found`,
+          message: 'Delete User Failed',
         });
         return;
       }
@@ -103,7 +103,7 @@ module.exports = {
       success(res, {
         code: 200,
         payload: null,
-        message: 'Delete user data success',
+        message: 'Delete User Success',
       });
     } catch (error) {
       failed(res, {
@@ -113,6 +113,7 @@ module.exports = {
       });
     }
   },
+  // belum
   listRecipe: async (req, res) => {
     const { id } = req.params;
 

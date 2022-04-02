@@ -18,7 +18,7 @@ router
   .get('/user', jwtAuth, list)
   .get('/user/:id', jwtAuth, detail)
   .put('/user/:id', jwtAuth, uploadPhoto, validation.update, runValidation, myself, update)
-  .delete('/user/:id', jwtAuth, remove)
-  .get('/user/:id/recipe', jwtAuth, listRecipe);
+  .delete('/user/:id', jwtAuth, myself, remove)
+  .get('/user/:id/recipe', jwtAuth, listRecipe); // belum
 
 module.exports = router;
