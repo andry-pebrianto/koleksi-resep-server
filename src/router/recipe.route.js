@@ -1,5 +1,8 @@
 const express = require('express');
 const jwtAuth = require('../middlewares/jwtAuth');
+const validation = require('../validations/recipe.validation');
+const runValidation = require('../middlewares/runValidation');
+const upload = require('../middlewares/upload');
 const {
   list,
   detail,
@@ -16,7 +19,7 @@ router
   .get('/recipe', jwtAuth, list)
   .get('/recipe/latest', latest)
   .get('/recipe/:id', jwtAuth, detail)
-  .post('/recipe', jwtAuth, insert)
+  .post('/recipe', jwtAuth, upload, validation.insert, runValidation, insert)
   .put('/recipe/:id', jwtAuth, update)
   .delete('/recipe/:id', jwtAuth, remove)
   .get('/recipe/:id/comment', jwtAuth, listComment);

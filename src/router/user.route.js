@@ -2,7 +2,7 @@ const express = require('express');
 const jwtAuth = require('../middlewares/jwtAuth');
 const validation = require('../validations/user.validation');
 const runValidation = require('../middlewares/runValidation');
-const uploadPhoto = require('../middlewares/uploadPhoto');
+const upload = require('../middlewares/upload');
 const {
   list,
   detail,
@@ -17,7 +17,7 @@ const router = express.Router();
 router
   .get('/user', jwtAuth, list)
   .get('/user/:id', jwtAuth, detail)
-  .put('/user/:id', jwtAuth, uploadPhoto, validation.update, runValidation, myself, update)
+  .put('/user/:id', jwtAuth, upload, validation.update, runValidation, myself, update)
   .delete('/user/:id', jwtAuth, myself, remove)
   .get('/user/:id/recipe', jwtAuth, listRecipe); // belum
 

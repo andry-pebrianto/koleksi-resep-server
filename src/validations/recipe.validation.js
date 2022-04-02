@@ -1,35 +1,12 @@
-module.exports = {
-  insertValidation: (body) => {
-    const { title, ingredients } = body;
+const { check } = require('express-validator');
 
-    // validasi untuk title
-    if (typeof title !== 'string') {
-      return { bad: true, message: 'Title harus bertipe string' };
-    }
-    if (title.length < 1 || title.length > 100) {
-      return {
-        bad: true,
-        message:
-          'Title harus diisi minimal 1 karakter dan maksimal 100 karakter',
-      };
-    }
+const insert = [
+  // title
+  check('title', 'Title required').not().isEmpty(),
+  check('title', 'Title only can contains alphabet and number').isAlphanumeric('en-US', { ignore: ' ' }),
+  check('title', 'Title maximum length is 105 characters').isLength({ max: 50 }),
+  // ingredients
+  check('ingredients', 'Ingredients required').not().isEmpty(),
+];
 
-    // validasi untuk ingredients
-    if (typeof ingredients !== 'string') {
-      return {
-        bad: true,
-        message: 'Ingredients harus bertipe string',
-      };
-    }
-    if (ingredients.length < 1) {
-      return {
-        bad: true,
-        message:
-          'Ingredients harus diisi minimal 1 karakter',
-      };
-    }
-
-    // validasi berhasil
-    return { bad: false, body };
-  },
-};
+module.exports = { insert };

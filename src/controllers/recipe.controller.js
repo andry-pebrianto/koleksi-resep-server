@@ -55,6 +55,8 @@ module.exports = {
     }
   },
   insert: async (req, res) => {
+    res.json("Y")
+    return
     try {
       const { bad, message, body } = recipeValidation.insertValidation(
         req.body,
