@@ -1,6 +1,5 @@
 const userModel = require('../models/user.model');
 const recipeModel = require('../models/recipe.model');
-const userValidation = require('../validations/user.validation');
 const { success, failed } = require('../utils/createResponse');
 const createPagination = require('../utils/createPagination');
 
@@ -55,36 +54,27 @@ module.exports = {
     }
   },
   update: async (req, res) => {
-    res.json('Berhasil');
     try {
       const { id } = req.params;
-      const { bad, message, body } = userValidation.insertValidation(req.body);
-
-      // jika ada error saat validasi
-      if (bad) {
-        res.status(400).json({
-          status: 400,
-          message,
-        });
-        return;
-      }
 
       const user = await userModel.selectById(id);
       // jika user tidak ditemukan
       if (!user.rowCount) {
         failed(res, {
           code: 404,
-          payload: 'User with that id not found',
-          message: 'Update user data failed',
+          payload: `User with Id ${id} not found`,
+          message: 'Update User Failed',
         });
         return;
       }
-      await userModel.updateById(id, body);
+
+      const photo = req.file ? req.file.filename : '';
+      await userModel.updateById(id, { ...req.body, photo });
 
       success(res, {
         code: 200,
         payload: null,
-        message: 'Update user data success',
+        message: 'Update User Success',
       });
     } catch (error) {
       failed(res, {

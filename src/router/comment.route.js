@@ -1,6 +1,5 @@
 const express = require('express');
 const jwtAuth = require('../middlewares/jwtAuth');
-const isVerified = require('../middlewares/isVerified');
 const {
   list,
   detail,
@@ -12,10 +11,10 @@ const {
 const router = express.Router();
 
 router
-  .get('/comment', jwtAuth, isVerified, list)
-  .get('/comment/:id', jwtAuth, isVerified, detail)
-  .post('/comment', jwtAuth, isVerified, insert)
-  .put('/comment/:id', jwtAuth, isVerified, update)
-  .delete('/comment/:id', jwtAuth, isVerified, remove);
+  .get('/comment', jwtAuth, list)
+  .get('/comment/:id', jwtAuth, detail)
+  .post('/comment', jwtAuth, insert)
+  .put('/comment/:id', jwtAuth, update)
+  .delete('/comment/:id', jwtAuth, remove);
 
 module.exports = router;

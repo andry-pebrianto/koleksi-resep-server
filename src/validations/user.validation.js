@@ -1,68 +1,18 @@
-module.exports = {
-  insertValidation: (body) => {
-    const {
-      name, email, phone, password,
-    } = body;
+const { check } = require('express-validator');
 
-    // validasi untuk name
-    if (typeof name !== 'string') {
-      return { bad: true, message: 'Name harus bertipe string' };
-    }
-    if (name.length < 1 || name.length > 50) {
-      return {
-        bad: true,
-        message: 'Name harus diisi minimal 1 karakter dan maksimal 50 karakter',
-      };
-    }
+const update = [
+  // name
+  check('name', 'Name required').not().isEmpty(),
+  check('name', 'Name only can contains alphabet').isAlpha('en-US', { ignore: ' ' }),
+  check('name', 'Name maximum length is 50 characters').isLength({ max: 50 }),
+  // email
+  check('email', 'Email required').not().isEmpty(),
+  check('email', 'Please include a valid email').isEmail(),
+  check('email', 'Email maximum length is 50 characters').isLength({ max: 50 }),
+  // phone
+  check('phone', 'Phone required').not().isEmpty(),
+  check('phone', 'Phone only can contains number').isNumeric(),
+  check('phone', 'Phone maximum length is 13 characters').isLength({ max: 13 }),
+];
 
-    // validasi untuk email
-    if (typeof email !== 'string') {
-      return { bad: true, message: 'Email harus bertipe string' };
-    }
-    if (email.length < 1 || email.length > 100) {
-      return {
-        bad: true,
-        message:
-          'Email harus diisi minimal 1 karakter dan maksimal 100 karakter',
-      };
-    }
-
-    // validasi untuk phone
-    if (typeof phone !== 'string') {
-      return { bad: true, message: 'Phone harus bertipe string' };
-    }
-    if (phone.length < 1 || phone.length > 13) {
-      return {
-        bad: true,
-        message:
-          'Phone harus diisi minimal 1 karakter dan maksimal 13 karakter',
-      };
-    }
-
-    // validasi untuk password
-    if (typeof password !== 'string') {
-      return { bad: true, message: 'Password harus bertipe string' };
-    }
-    if (password.length < 8 || password.length > 100) {
-      return {
-        bad: true,
-        message:
-          'Password harus diisi minimal 8 karakter dan maksimal 100 karakter',
-      };
-    }
-    if (
-      !/[a-z]/.test(password)
-      || !/[A-Z]/.test(password)
-      || !/[0-9]/.test(password)
-    ) {
-      return {
-        bad: true,
-        message:
-          'Password harus mengandung setidaknya satu huruf kecil, satu huruf besar, dan satu angka',
-      };
-    }
-
-    // validasi berhasil
-    return { bad: false, body };
-  },
-};
+module.exports = { update };
