@@ -68,7 +68,7 @@ module.exports = {
         const match = await bcrypt.compare(password, user.rows[0].password);
         // jika password benar
         if (match) {
-          const token = await jwtToken(user.rows[0]);
+          const token = await jwtToken({ id: user.rows[0].id });
           success(res, {
             code: 200,
             payload: null,

@@ -15,14 +15,14 @@ module.exports = {
       success(res, {
         code: 200,
         payload: users.rows,
-        message: 'Select list user success',
+        message: 'Select List User Success',
         pagination: paging.response,
       });
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'Internal Server Error',
       });
     }
   },
@@ -35,8 +35,8 @@ module.exports = {
       if (!user.rowCount) {
         failed(res, {
           code: 404,
-          payload: 'User with that id not found',
-          message: 'Select detail user failed',
+          payload: `User with Id ${id} not found`,
+          message: 'Select Detail User Failed',
         });
         return;
       }
@@ -44,13 +44,13 @@ module.exports = {
       success(res, {
         code: 200,
         payload: user.rows[0],
-        message: 'Select detail user success',
+        message: 'Select Detail User Success',
       });
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'Internal Server Error',
       });
     }
   },
@@ -89,7 +89,7 @@ module.exports = {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'Internal Server Error',
       });
     }
   },
@@ -118,7 +118,7 @@ module.exports = {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'Internal Server Error',
       });
     }
   },
@@ -137,7 +137,7 @@ module.exports = {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Something wrong on server',
+        message: 'Internal Server Error',
       });
     }
   },
