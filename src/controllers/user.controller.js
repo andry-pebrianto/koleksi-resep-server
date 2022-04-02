@@ -55,6 +55,7 @@ module.exports = {
     }
   },
   update: async (req, res) => {
+    res.json('Berhasil');
     try {
       const { id } = req.params;
       const { bad, message, body } = userValidation.insertValidation(req.body);

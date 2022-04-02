@@ -7,9 +7,9 @@ module.exports = (req, res, next) => {
     next();
   } else {
     failed(res, {
-      code: 403,
-      payload: 'Token invalid',
-      message: 'Forbidden',
+      code: 401,
+      payload: 'Token Invalid',
+      message: 'Unauthorized',
     });
   }
 };
