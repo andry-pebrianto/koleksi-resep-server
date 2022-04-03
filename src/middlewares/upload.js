@@ -2,7 +2,6 @@ const path = require("path");
 const multer = require("multer");
 const crypto = require("crypto");
 
-let fileSize = 0;
 let param = "";
 
 // management file
@@ -23,35 +22,31 @@ const multerUpload = multer({
     },
   }),
   fileFilter: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-
     if (file.fieldname === "photo") {
-      fileSize = 2000000;
       param = "photo";
 
-      if (ext === ".jpg" || ext === ".png") {
+      // filter mimetype
+      if (
+        file.mimetype === "image/png" ||
+        file.mimetype === "image/jpg" ||
+        file.mimetype === "image/jpeg"
+      ) {
         cb(null, true);
       } else {
-        cb(
-          { message: "Photo extension only can .jpg or .png", param: "photo" },
-          false
-        );
+        cb({ message: "Photo extension only can .jpg or .png" }, false);
       }
     } else {
-      fileSize = 20000000;
       param = "video";
 
-      if (ext === ".mp4" || ext === ".3gp") {
+      // filter mimetype
+      if (file.mimetype === "video/mp4" || file.mimetype === "video/3gpp") {
         cb(null, true);
       } else {
-        cb(
-          { message: "Video extension only can .mp4 or .3gp", param: "video" },
-          false
-        );
+        cb({ message: "Video extension only can .mp4 or .3gp" }, false);
       }
     }
   },
-  limits: { fileSize },
+  limits: { fileSize: 2000000 },
 });
 
 // middleware

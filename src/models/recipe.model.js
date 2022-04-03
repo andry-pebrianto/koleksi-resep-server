@@ -22,6 +22,7 @@ module.exports = {
   store: (body) =>
     new Promise((resolve, reject) => {
       const {
+        id,
         title,
         ingredients,
         video = '',
@@ -31,8 +32,8 @@ module.exports = {
       } = body;
 
       db.query(
-        'INSERT INTO recipe (title, ingredients, video, date, user_id, photo) VALUES ($1, $2, $3, $4, $5, $6)',
-        [title, ingredients, video, date, userId, photo],
+        'INSERT INTO recipe (id, title, ingredients, video, date, user_id, photo) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+        [id, title, ingredients, video, date, userId, photo],
         (error, result) => {
           if (error) {
             reject(error);

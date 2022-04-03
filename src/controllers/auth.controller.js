@@ -23,7 +23,13 @@ module.exports = {
       }
 
       const password = await bcrypt.hash(req.body.password, 10);
-      const photo = req.file ? req.file.filename : '';
+      let photo = '';
+      // jika register disertai photo
+      if(req.files) {
+        if(req.files.photo) {
+          photo = req.files.photo[0].filename;
+        }
+      }
       const token = crypto.randomBytes(30).toString('hex');
       await authModel.register({
         id: uuidv4(),

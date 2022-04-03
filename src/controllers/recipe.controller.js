@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const recipeModel = require('../models/recipe.model');
 const commentModel = require('../models/comment.model');
 const recipeValidation = require('../validations/recipe.validation');
@@ -55,27 +56,26 @@ module.exports = {
     }
   },
   insert: async (req, res) => {
-    res.json("Y")
-    return
     try {
-      const { bad, message, body } = recipeValidation.insertValidation(
-        req.body,
-      );
+      let photo = '';
+      let video = '';
 
-      // jika ada error saat validasi
-      if (bad) {
-        res.status(400).json({
-          status: 400,
-          message,
-        });
-        return;
+      // jika recipe disertai photo dan/atau video
+      if(req.files) {
+        if(req.files.photo) {
+          photo = req.files.photo[0].filename;
+        }
+        if(req.files.video) {
+          video = req.files.video[0].filename;
+        }
       }
-      await recipeModel.store({ ...body, date: new Date() });
+
+      await recipeModel.store({ id: uuidv4(), ...req.body, photo, video, date: new Date() });
 
       success(res, {
         code: 201,
         payload: null,
-        message: 'Insert recipe data success',
+        message: 'Insert Recipe Success',
       });
     } catch (error) {
       failed(res, {
