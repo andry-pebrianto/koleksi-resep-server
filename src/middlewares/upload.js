@@ -1,48 +1,43 @@
-const path = require("path");
-const multer = require("multer");
-const crypto = require("crypto");
-
-let param = "";
+const path = require('path');
+const multer = require('multer');
+const crypto = require('crypto');
+const { failed } = require('../utils/createResponse');
 
 // management file
 const multerUpload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
-      if (file.fieldname === "photo") {
-        cb(null, "./public/photo");
+      if (file.fieldname === 'photo') {
+        cb(null, './public/photo');
       } else {
-        cb(null, "./public/video");
+        cb(null, './public/video');
       }
     },
     filename: (req, file, cb) => {
-      const name = crypto.randomBytes(30).toString("hex");
+      const name = crypto.randomBytes(30).toString('hex');
       const ext = path.extname(file.originalname);
       const filename = `${name}${ext}`;
       cb(null, filename);
     },
   }),
   fileFilter: (req, file, cb) => {
-    if (file.fieldname === "photo") {
-      param = "photo";
-
+    if (file.fieldname === 'photo') {
       // filter mimetype
       if (
-        file.mimetype === "image/png" ||
-        file.mimetype === "image/jpg" ||
-        file.mimetype === "image/jpeg"
+        file.mimetype === 'image/png'
+        || file.mimetype === 'image/jpg'
+        || file.mimetype === 'image/jpeg'
       ) {
         cb(null, true);
       } else {
-        cb({ message: "Photo extension only can .jpg or .png" }, false);
+        cb({ message: 'Photo extension only can .jpg or .png' }, false);
       }
     } else {
-      param = "video";
-
       // filter mimetype
-      if (file.mimetype === "video/mp4" || file.mimetype === "video/3gpp") {
+      if (file.mimetype === 'video/mp4' || file.mimetype === 'video/3gpp') {
         cb(null, true);
       } else {
-        cb({ message: "Video extension only can .mp4 or .3gp" }, false);
+        cb({ message: 'Video extension only can .mp4 or .3gp' }, false);
       }
     }
   },
@@ -53,24 +48,25 @@ const multerUpload = multer({
 module.exports = (req, res, next) => {
   const multerFields = multerUpload.fields([
     {
-      name: "photo",
+      name: 'photo',
       maxCount: 1,
     },
     {
-      name: "video",
+      name: 'video',
       maxCount: 1,
     },
   ]);
   multerFields(req, res, (err) => {
     if (err) {
-      req.APP_DATA = {
-        fileError: {
-          msg: err.message,
-          param,
-          location: "body",
-        },
-      };
-      next();
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        err.message = `File ${err.field} too large`;
+      }
+
+      failed(res, {
+        code: 400,
+        payload: err.message,
+        message: 'Upload File Error',
+      });
     } else {
       next();
     }

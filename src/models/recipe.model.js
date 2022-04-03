@@ -48,14 +48,12 @@ module.exports = {
         title,
         ingredients,
         video = '',
-        date,
-        userId,
         photo = '',
       } = body;
 
       db.query(
-        'UPDATE recipe SET title=$1, ingredients=$2, video=$3, date=$4, user_id=$5, photo=$6 WHERE id=$7',
-        [title, ingredients, video, date, userId, photo, id],
+        'UPDATE recipe SET title=$1, ingredients=$2, video=$3, photo=$4 WHERE id=$5',
+        [title, ingredients, video, photo, id],
         (error, result) => {
           if (error) {
             reject(error);

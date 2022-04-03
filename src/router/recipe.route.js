@@ -20,7 +20,7 @@ router
   .get('/recipe/latest', latest)
   .get('/recipe/:id', jwtAuth, detail)
   .post('/recipe', jwtAuth, upload, validation.insert, runValidation, insert) // Sampai Sini
-  .put('/recipe/:id', jwtAuth, update)
+  .put('/recipe/:id', jwtAuth, upload, validation.insert, runValidation, update)
   .delete('/recipe/:id', jwtAuth, remove)
   .get('/recipe/:id/comment', jwtAuth, listComment);
 

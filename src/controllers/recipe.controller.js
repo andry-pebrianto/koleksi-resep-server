@@ -1,7 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const recipeModel = require('../models/recipe.model');
 const commentModel = require('../models/comment.model');
-const recipeValidation = require('../validations/recipe.validation');
 const { success, failed } = require('../utils/createResponse');
 const createPagination = require('../utils/createPagination');
 
@@ -57,20 +56,17 @@ module.exports = {
   },
   insert: async (req, res) => {
     try {
+      // jika recipe disertai photo
       let photo = '';
-      let video = '';
-
-      // jika recipe disertai photo dan/atau video
-      if(req.files) {
-        if(req.files.photo) {
+      if (req.files) {
+        if (req.files.photo) {
           photo = req.files.photo[0].filename;
-        }
-        if(req.files.video) {
-          video = req.files.video[0].filename;
         }
       }
 
-      await recipeModel.store({ id: uuidv4(), ...req.body, photo, video, date: new Date() });
+      await recipeModel.store({
+        id: uuidv4(), ...req.body, photo, date: new Date(),
+      });
 
       success(res, {
         code: 201,
@@ -88,35 +84,31 @@ module.exports = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
-      const { bad, message, body } = recipeValidation.insertValidation(
-        req.body,
-      );
-
-      // jika ada error saat validasi
-      if (bad) {
-        res.status(400).json({
-          status: 400,
-          message,
-        });
-        return;
-      }
 
       const recipe = await recipeModel.selectById(id);
       // jika recipe tidak ditemukan
       if (!recipe.rowCount) {
         failed(res, {
           code: 404,
-          payload: 'Recipe with that id not found',
-          message: 'Update recipe data failed',
+          payload: `Recipe with Id ${id} not found`,
+          message: 'Update Recipe Failed',
         });
         return;
       }
-      await recipeModel.updateById(id, body);
+
+      // jika recipe disertai photo
+      let photo = '';
+      if (req.files) {
+        if (req.files.photo) {
+          photo = req.files.photo[0].filename;
+        }
+      }
+      await recipeModel.updateById(id, { ...req.body, photo });
 
       success(res, {
         code: 200,
         payload: null,
-        message: 'Update recipe data success',
+        message: 'Update Recipe Success',
       });
     } catch (error) {
       failed(res, {
