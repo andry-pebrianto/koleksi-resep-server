@@ -21,11 +21,13 @@ module.exports = {
     }),
   store: (body) =>
     new Promise((resolve, reject) => {
-      const { recipeId, commentText, userId } = body;
+      const {
+        id, recipeId, commentText, userId,
+      } = body;
 
       db.query(
-        'INSERT INTO comment (recipe_id, comment_text, user_id) VALUES ($1, $2, $3)',
-        [recipeId, commentText, userId],
+        'INSERT INTO comment (id, recipe_id, comment_text, user_id) VALUES ($1, $2, $3, $4)',
+        [id, recipeId, commentText, userId],
         (error, result) => {
           if (error) {
             reject(error);
