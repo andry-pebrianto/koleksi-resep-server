@@ -1,4 +1,5 @@
 const userModel = require('../models/user.model');
+const recipeModel = require('../models/recipe.model');
 const { failed } = require('../utils/createResponse');
 
 module.exports = {
@@ -80,6 +81,35 @@ module.exports = {
           payload: 'You do not have access',
           message: 'Unauthorized',
         });
+      }
+    } catch (error) {
+      failed(res, {
+        code: 401,
+        payload: error.message,
+        message: 'Internal Server Error',
+      });
+    }
+  },
+  recipeOwner: async (req, res, next) => {
+    try {
+      const idUser = req.APP_DATA.tokenDecoded.id;
+      const idRecipe = req.params.id;
+      const recipe = await recipeModel.selectById(idRecipe);
+
+      // jika recipe tidak ditemukan
+      if (!recipe.rowCount) {
+        next();
+      } else {
+        // jika id pembuat recipe sama dengan id dari jwt
+        if (idUser === recipe.rows[0].user_id) {
+          next();
+        } else {
+          failed(res, {
+            code: 401,
+            payload: 'You do not have access',
+            message: 'Unauthorized',
+          });
+        }
       }
     } catch (error) {
       failed(res, {
