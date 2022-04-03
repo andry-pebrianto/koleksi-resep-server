@@ -171,7 +171,6 @@ module.exports = {
       });
     }
   },
-  // belum
   listRecipe: async (req, res) => {
     const { id } = req.params;
 

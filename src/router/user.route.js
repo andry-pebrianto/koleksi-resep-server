@@ -30,6 +30,6 @@ router
   // hanya admin
   .put('/user/unbanned/:id', jwtAuth, onlyAdmin, unbanned)
   // semua role
-  .get('/user/:id/recipe', jwtAuth, listRecipe); // belum
+  .get('/user/:id/recipe', jwtAuth, listRecipe);
 
 module.exports = router;

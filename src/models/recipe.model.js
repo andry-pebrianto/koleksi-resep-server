@@ -91,7 +91,7 @@ module.exports = {
     }),
   selectAllRecipeByUser: (id) =>
     new Promise((resolve, reject) => {
-      db.query('SELECT * FROM recipe WHERE user_id=$1', [id], (error, result) => {
+      db.query('SELECT recipe.id, recipe.title, recipe.ingredients, recipe.photo, recipe.date, recipe.is_active, recipe.user_id, users.name, users.email, users.phone FROM recipe INNER JOIN users ON users.id = recipe.user_id WHERE user_id=$1', [id], (error, result) => {
         if (error) {
           reject(error);
         }
