@@ -113,6 +113,64 @@ module.exports = {
       });
     }
   },
+  banned: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const user = await userModel.selectById(id);
+
+      // jika user tidak ditemukan
+      if (!user.rowCount) {
+        failed(res, {
+          code: 404,
+          payload: `User with Id ${id} not found`,
+          message: 'Banned User Failed',
+        });
+        return;
+      }
+      await userModel.bannedById(id);
+
+      success(res, {
+        code: 200,
+        payload: null,
+        message: 'Banned User Success',
+      });
+    } catch (error) {
+      failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Internal Server Error',
+      });
+    }
+  },
+  unbanned: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const user = await userModel.selectById(id);
+
+      // jika user tidak ditemukan
+      if (!user.rowCount) {
+        failed(res, {
+          code: 404,
+          payload: `User with Id ${id} not found`,
+          message: 'Unbanned User Failed',
+        });
+        return;
+      }
+      await userModel.unbannedById(id);
+
+      success(res, {
+        code: 200,
+        payload: null,
+        message: 'Unbanned User Success',
+      });
+    } catch (error) {
+      failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Internal Server Error',
+      });
+    }
+  },
   // belum
   listRecipe: async (req, res) => {
     const { id } = req.params;

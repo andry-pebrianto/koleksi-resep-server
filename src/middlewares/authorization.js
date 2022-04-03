@@ -29,7 +29,7 @@ module.exports = {
     try {
       const user = await userModel.selectById(req.APP_DATA.tokenDecoded.id);
 
-      if (user.rows[0].id === 0) {
+      if (user.rows[0].level === 0) {
         next();
       } else {
         failed(res, {
@@ -50,7 +50,7 @@ module.exports = {
     try {
       const user = await userModel.selectById(req.APP_DATA.tokenDecoded.id);
 
-      if (user.rows[0].id === 1) {
+      if (user.rows[0].level === 1) {
         next();
       } else {
         failed(res, {

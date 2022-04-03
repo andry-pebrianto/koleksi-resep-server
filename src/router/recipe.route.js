@@ -3,12 +3,15 @@ const jwtAuth = require('../middlewares/jwtAuth');
 const validation = require('../validations/recipe.validation');
 const runValidation = require('../middlewares/runValidation');
 const upload = require('../middlewares/upload');
+const { onlyUser } = require('../middlewares/authorization');
 const {
   list,
   detail,
   insert,
   update,
   remove,
+  banned,
+  unbanned,
   listComment,
   latest,
 } = require('../controllers/recipe.controller');
@@ -19,8 +22,10 @@ router
   .get('/recipe', jwtAuth, list)
   .get('/recipe/latest', latest)
   .get('/recipe/:id', jwtAuth, detail)
-  .post('/recipe', jwtAuth, upload, validation.insert, runValidation, insert) // Sampai Sini
-  .put('/recipe/:id', jwtAuth, upload, validation.insert, runValidation, update)
+  .post('/recipe', jwtAuth, onlyUser, upload, validation.insert, runValidation, insert)
+  .put('/recipe/:id', jwtAuth, onlyUser, upload, validation.insert, runValidation, update)
+  .put('/recipe/banned/:id', jwtAuth, banned)
+  .put('/recipe/unbanned/:id', jwtAuth, unbanned)
   .delete('/recipe/:id', jwtAuth, remove)
   .get('/recipe/:id/comment', jwtAuth, listComment);
 

@@ -71,6 +71,24 @@ module.exports = {
         resolve(result);
       });
     }),
+  bannedById: (id) =>
+    new Promise((resolve, reject) => {
+      db.query('UPDATE recipe SET is_active=0 WHERE id=$1', [id], (error, result) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(result);
+      });
+    }),
+  unbannedById: (id) =>
+    new Promise((resolve, reject) => {
+      db.query('UPDATE recipe SET is_active=1 WHERE id=$1', [id], (error, result) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(result);
+      });
+    }),
   selectAllRecipeByUser: (id) =>
     new Promise((resolve, reject) => {
       db.query('SELECT * FROM recipe WHERE user_id=$1', [id], (error, result) => {

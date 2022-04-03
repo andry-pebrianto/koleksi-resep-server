@@ -127,8 +127,8 @@ module.exports = {
       if (!recipe.rowCount) {
         failed(res, {
           code: 404,
-          payload: 'Recipe with that id not found',
-          message: 'Delete recipe data failed',
+          payload: `Recipe with Id ${id} not found`,
+          message: 'Delete Recipe Failed',
         });
         return;
       }
@@ -137,7 +137,65 @@ module.exports = {
       success(res, {
         code: 200,
         payload: null,
-        message: 'Delete recipe data success',
+        message: 'Delete Recipe Success',
+      });
+    } catch (error) {
+      failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Internal Server Error',
+      });
+    }
+  },
+  banned: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const recipe = await recipeModel.selectById(id);
+
+      // jika recipe tidak ditemukan
+      if (!recipe.rowCount) {
+        failed(res, {
+          code: 404,
+          payload: `Recipe with Id ${id} not found`,
+          message: 'Banned Recipe Failed',
+        });
+        return;
+      }
+      await recipeModel.bannedById(id);
+
+      success(res, {
+        code: 200,
+        payload: null,
+        message: 'Banned Recipe Success',
+      });
+    } catch (error) {
+      failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Internal Server Error',
+      });
+    }
+  },
+  unbanned: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const recipe = await recipeModel.selectById(id);
+
+      // jika recipe tidak ditemukan
+      if (!recipe.rowCount) {
+        failed(res, {
+          code: 404,
+          payload: `Recipe with Id ${id} not found`,
+          message: 'Unbanned Recipe Failed',
+        });
+        return;
+      }
+      await recipeModel.unbannedById(id);
+
+      success(res, {
+        code: 200,
+        payload: null,
+        message: 'Unbanned Recipe Success',
       });
     } catch (error) {
       failed(res, {

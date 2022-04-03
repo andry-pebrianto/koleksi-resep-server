@@ -54,6 +54,24 @@ module.exports = {
         resolve(result);
       });
     }),
+  bannedById: (id) =>
+    new Promise((resolve, reject) => {
+      db.query('UPDATE users SET is_active=0 WHERE id=$1', [id], (error, result) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(result);
+      });
+    }),
+  unbannedById: (id) =>
+    new Promise((resolve, reject) => {
+      db.query('UPDATE users SET is_active=1 WHERE id=$1', [id], (error, result) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(result);
+      });
+    }),
   countAll: () =>
     new Promise((resolve, reject) => {
       db.query('SELECT COUNT(*) FROM users', (error, result) => {
