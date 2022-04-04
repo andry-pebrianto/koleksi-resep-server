@@ -25,8 +25,8 @@ module.exports = {
       const password = await bcrypt.hash(req.body.password, 10);
       let photo = '';
       // jika register disertai photo
-      if(req.files) {
-        if(req.files.photo) {
+      if (req.files) {
+        if (req.files.photo) {
           photo = req.files.photo[0].filename;
         }
       }
@@ -71,17 +71,26 @@ module.exports = {
 
       // jika user ditemukan
       if (user.rowCount > 0) {
-        const match = await bcrypt.compare(password, user.rows[0].password);
-        // jika password benar
-        if (match) {
-          const token = await jwtToken({ id: user.rows[0].id });
-          success(res, {
-            code: 200,
-            payload: null,
-            message: 'Login Success',
-            token,
+        // jika user tidak terbanned
+        if (user.rows[0].is_active) {
+          const match = await bcrypt.compare(password, user.rows[0].password);
+          // jika password benar
+          if (match) {
+            const token = await jwtToken({ id: user.rows[0].id });
+            success(res, {
+              code: 200,
+              payload: null,
+              message: 'Login Success',
+              token,
+            });
+            return;
+          }
+        } else {
+          failed(res, {
+            code: 403,
+            payload: 'Your account has been banned',
+            message: 'Login Failed',
           });
-          return;
         }
       }
 
