@@ -68,7 +68,13 @@ module.exports = {
         return;
       }
 
-      const photo = req.file ? req.file.filename : '';
+      // jika update user disertai photo
+      let { photo } = user.rows[0];
+      if (req.files) {
+        if (req.files.photo) {
+          photo = req.files.photo[0].filename;
+        }
+      }
       await userModel.updateById(id, { ...req.body, photo });
 
       success(res, {

@@ -96,8 +96,8 @@ module.exports = {
         return;
       }
 
-      // jika recipe disertai photo
-      let photo = '';
+      // jika update recipe disertai photo
+      let { photo } = recipe.rows[0];
       if (req.files) {
         if (req.files.photo) {
           photo = req.files.photo[0].filename;
