@@ -1,5 +1,6 @@
 const userModel = require('../models/user.model');
 const recipeModel = require('../models/recipe.model');
+const commentModel = require('../models/comment.model');
 const { failed } = require('../utils/createResponse');
 
 module.exports = {
@@ -102,6 +103,35 @@ module.exports = {
       } else {
         // jika id pembuat recipe sama dengan id dari jwt
         if (idUser === recipe.rows[0].user_id) {
+          next();
+        } else {
+          failed(res, {
+            code: 401,
+            payload: 'You do not have access',
+            message: 'Unauthorized',
+          });
+        }
+      }
+    } catch (error) {
+      failed(res, {
+        code: 401,
+        payload: error.message,
+        message: 'Internal Server Error',
+      });
+    }
+  },
+  commentOwner: async (req, res, next) => {
+    try {
+      const idUser = req.APP_DATA.tokenDecoded.id;
+      const idComment = req.params.id;
+      const comment = await commentModel.selectById(idComment);
+
+      // jika comment tidak ditemukan
+      if (!comment.rowCount) {
+        next();
+      } else {
+        // jika id pembuat comment sama dengan id dari jwt
+        if (idUser === comment.rows[0].user_id) {
           next();
         } else {
           failed(res, {

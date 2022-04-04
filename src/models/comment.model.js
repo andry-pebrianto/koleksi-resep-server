@@ -38,11 +38,11 @@ module.exports = {
     }),
   updateById: (id, body) =>
     new Promise((resolve, reject) => {
-      const { recipeId, commentText, userId } = body;
+      const { commentText } = body;
 
       db.query(
-        'UPDATE comment SET recipe_id=$1, comment_text=$2, user_id=$3 WHERE id=$4',
-        [recipeId, commentText, userId, id],
+        'UPDATE comment SET comment_text=$1 WHERE id=$2',
+        [commentText, id],
         (error, result) => {
           if (error) {
             reject(error);

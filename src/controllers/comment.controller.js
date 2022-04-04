@@ -1,6 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
 const commentModel = require('../models/comment.model');
-const commentValidation = require('../validations/comment.validation');
 const { success, failed } = require('../utils/createResponse');
 const createPagination = require('../utils/createPagination');
 
@@ -74,35 +73,23 @@ module.exports = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
-      const { bad, message, body } = commentValidation.insertValidation(
-        req.body,
-      );
-
-      // jika ada error saat validasi
-      if (bad) {
-        res.status(400).json({
-          status: 400,
-          message,
-        });
-        return;
-      }
 
       const comment = await commentModel.selectById(id);
       // jika comment tidak ditemukan
       if (!comment.rowCount) {
         failed(res, {
           code: 404,
-          payload: 'Comment with that id not found',
-          message: 'Update comment data failed',
+          payload: `Comment with Id ${id} not found`,
+          message: 'Update Comment Failed',
         });
         return;
       }
-      await commentModel.updateById(id, body);
+      await commentModel.updateById(id, req.body);
 
       success(res, {
         code: 200,
         payload: null,
-        message: 'Update comment data success',
+        message: 'Update Comment Success',
       });
     } catch (error) {
       failed(res, {
@@ -121,8 +108,8 @@ module.exports = {
       if (!comment.rowCount) {
         failed(res, {
           code: 404,
-          payload: 'Comment with that id not found',
-          message: 'Delete comment data failed',
+          payload: `Comment with Id ${id} not found`,
+          message: 'Delete Comment Failed',
         });
         return;
       }
@@ -131,7 +118,7 @@ module.exports = {
       success(res, {
         code: 200,
         payload: null,
-        message: 'Delete comment data success',
+        message: 'Delete Comment Success',
       });
     } catch (error) {
       failed(res, {
