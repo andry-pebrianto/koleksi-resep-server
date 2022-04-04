@@ -100,7 +100,7 @@ module.exports = {
     }),
   selectLatest: () =>
     new Promise((resolve, reject) => {
-      db.query('SELECT id, title, photo FROM recipe INNER JOIN users ON recipe.user_id=users.id ORDER BY date DESC LIMIT 5', (error, result) => {
+      db.query('SELECT recipe.id, recipe.title, recipe.photo, recipe.date, users.name FROM recipe INNER JOIN users ON recipe.user_id=users.id ORDER BY date DESC LIMIT 5', (error, result) => {
         if (error) {
           reject(error);
         }

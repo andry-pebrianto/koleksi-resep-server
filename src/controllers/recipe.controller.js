@@ -205,7 +205,6 @@ module.exports = {
       });
     }
   },
-  // belum
   listComment: async (req, res) => {
     try {
       const { id } = req.params;
@@ -231,7 +230,7 @@ module.exports = {
       success(res, {
         code: 200,
         payload: latestRecipe.rows,
-        message: 'Select latest recipe success',
+        message: 'Select Latest Recipe Success',
       });
     } catch (error) {
       failed(res, {
