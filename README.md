@@ -1,56 +1,55 @@
-# Pijar Camp - Week 3 - Beginner Backend
+<h1 align="center">Food Recipe API</h1>
 
-Tugas Bootcamp Pijar Camp Minggu Ketiga Untuk Beginner Backend.
+## Description
 
-## Soal
+Food Recipe API merupakan sebuah Web Service yang nantinya akan menjadi Backend untuk sebuah aplikasi sharing resep makanan.
 
-1. Buatlah API dari aplikasi dibawah ini
-https://www.figma.com/file/SUbBTYCq1e4ngRt20lSdqr/Food-Recipe?node-id=47%3A1273
+## Getting Started
 
-Requirements:
+### Installing
 
-○ Flowchart Aplikasi
+* Clone this project with `git clone https://github.com/andry-pebrianto/food-recipe-api.git`
+* Install package required with `npm install`
+* Setting .env
 
-○ Table (Recipe, User, Comment)
+```bash
+APP_NAME=
+NODE_ENV=
+PORT=
+CLIENT_URL=
 
-○ CRUD
+# database
+DB_HOST=
+DB_USER=
+DB_PASSWORD=
+DB_NAME=
+DB_PORT=
 
-○ Comment by resep (opsional)
+# jwt
+JWT_SECRET=
 
-○ Resep by user (opsional)
+# google
+EMAIL_FROM=
+EMAIL_USER=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+REDIRECT_URI=
+REFRESH_TOKEN=
+```
 
-○ Pencarian Resep berdasarkan nama
+### Executing program
 
-○ Resep terbaru maksimal 5
+* Run program with `npm run dev`
 
-○ Pagination (opsional)
+## Authors
 
-○ Linter
+Contributors names and contact info
 
-○ Error Handling
+1. Andry Pebrianto
 
-○ Cors
+- [Linkedin](https://www.linkedin.com/in/andry-pebrianto)
+- [Facebook](https://web.facebook.com/andry.pebrianto)
 
-○ ENV
+## License
 
-○ Dokumentasi Postman
-
-○ Gunakan Bahasa Inggris untuk nama File dan Fungsi
-
-○ Upload/push tugas kamu ke GitHub dan gunakan nama yang profesional
-
-○ Dapat didemokan menggunakan postman
-
-○ Presentasikan apa yang telah Anda lakukan dalam minggu ini
-
-○ Jelaskan dengan bahasa kalian sendiri apa itu dan konsep tentang:
-
-■ Node JS
-
-■ Express
-
-■ postgreSQL
-
-■ REST API
-
-○ Ceritakan dan Demokan tentang proyek ini
+This project is licensed under the MIT License - see the LICENSE.md file for details
