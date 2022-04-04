@@ -65,7 +65,7 @@ module.exports = {
       }
 
       await recipeModel.store({
-        id: uuidv4(), ...req.body, photo, date: new Date(),
+        id: uuidv4(), ...req.body, userId: req.APP_DATA.tokenDecoded.id, photo, date: new Date(),
       });
 
       success(res, {
