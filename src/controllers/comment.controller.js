@@ -9,7 +9,7 @@ module.exports = {
       const { page, limit } = req.query;
       const count = await commentModel.countAll();
       const paging = createPagination(count.rows[0].count, page, limit);
-      const comments = await commentModel.selectAll(paging);
+      const comments = await commentModel.selectAll(req.APP_DATA.tokenDecoded.level, paging);
 
       success(res, {
         code: 200,

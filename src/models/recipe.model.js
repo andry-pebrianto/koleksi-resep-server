@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
 module.exports = {
-  selectAll: (paging, search = '') =>
+  selectAll: (level, paging, search = '') =>
     new Promise((resolve, reject) => {
-      db.query(`SELECT * FROM recipe WHERE LOWER(title) LIKE '%'||LOWER($1)||'%' LIMIT ${paging.limit} OFFSET ${paging.offset}`, [search.trim()], (error, result) => {
+      db.query(`SELECT * FROM recipe WHERE LOWER(title) LIKE '%'||LOWER($1)||'%' ${level === 1 ? 'AND is_active=1' : ''} LIMIT ${paging.limit} OFFSET ${paging.offset}`, [search.trim()], (error, result) => {
         if (error) {
           reject(error);
         }

@@ -9,7 +9,7 @@ module.exports = {
       const { page, limit } = req.query;
       const count = await userModel.countAll();
       const paging = createPagination(count.rows[0].count, page, limit);
-      const users = await userModel.selectAll(paging);
+      const users = await userModel.selectAll(req.APP_DATA.tokenDecoded.level, paging);
 
       success(res, {
         code: 200,

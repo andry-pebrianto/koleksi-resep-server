@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
 module.exports = {
-  selectAll: (paging) =>
+  selectAll: (level, paging) =>
     new Promise((resolve, reject) => {
-      db.query(`SELECT * FROM comment LIMIT ${paging.limit} OFFSET ${paging.offset}`, (error, result) => {
+      db.query(`SELECT * FROM comment ${level === 1 ? 'WHERE is_active=1' : ''} LIMIT ${paging.limit} OFFSET ${paging.offset}`, (error, result) => {
         if (error) {
           reject(error);
         }

@@ -76,7 +76,7 @@ module.exports = {
           const match = await bcrypt.compare(password, user.rows[0].password);
           // jika password benar
           if (match) {
-            const token = await jwtToken({ id: user.rows[0].id });
+            const token = await jwtToken({ id: user.rows[0].id, level: user.rows[0].level });
             success(res, {
               code: 200,
               payload: null,
@@ -91,6 +91,7 @@ module.exports = {
             payload: 'Your account has been banned',
             message: 'Login Failed',
           });
+          return;
         }
       }
 
