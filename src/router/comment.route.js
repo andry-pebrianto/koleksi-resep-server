@@ -2,7 +2,7 @@ const express = require('express');
 const jwtAuth = require('../middlewares/jwtAuth');
 const validation = require('../validations/comment.validation');
 const runValidation = require('../middlewares/runValidation');
-const { onlyUser, commentOwner } = require('../middlewares/authorization');
+const { onlyAdmin, onlyUser, commentOwner } = require('../middlewares/authorization');
 
 const {
   list,
@@ -10,15 +10,26 @@ const {
   insert,
   update,
   remove,
+  banned,
+  unbanned,
 } = require('../controllers/comment.controller');
 
 const router = express.Router();
 
 router
+  // semua role
   .get('/comment', jwtAuth, list)
+  // semua role
   .get('/comment/:id', jwtAuth, detail)
+  // hanya user
   .post('/comment', jwtAuth, onlyUser, validation.insert, runValidation, insert)
+  // hanya user dan pemilik
   .put('/comment/:id', jwtAuth, onlyUser, commentOwner, validation.insert, runValidation, update)
-  .delete('/comment/:id', jwtAuth, onlyUser, commentOwner, remove);
+  // hanya user dan pemilik
+  .delete('/comment/:id', jwtAuth, onlyUser, commentOwner, remove)
+  // hanya admin
+  .put('/comment/banned/:id', jwtAuth, onlyAdmin, banned)
+  // hanya admin
+  .put('/comment/unbanned/:id', jwtAuth, onlyAdmin, unbanned);
 
 module.exports = router;
