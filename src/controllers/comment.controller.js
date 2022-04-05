@@ -142,41 +142,15 @@ module.exports = {
         });
         return;
       }
-      await commentModel.bannedById(id);
+      const banned = comment.rows[0].is_active ? 0 : 1;
+      await commentModel.bannedById(id, banned);
 
       success(res, {
         code: 200,
         payload: null,
-        message: 'Banned Comment Success',
-      });
-    } catch (error) {
-      failed(res, {
-        code: 500,
-        payload: error.message,
-        message: 'Internal Server Error',
-      });
-    }
-  },
-  unbanned: async (req, res) => {
-    try {
-      const { id } = req.params;
-      const comment = await commentModel.selectById(id);
-
-      // jika comment tidak ditemukan
-      if (!comment.rowCount) {
-        failed(res, {
-          code: 404,
-          payload: `Comment with Id ${id} not found`,
-          message: 'Unbanned Comment Failed',
-        });
-        return;
-      }
-      await commentModel.unbannedById(id);
-
-      success(res, {
-        code: 200,
-        payload: null,
-        message: 'Unbanned Comment Success',
+        message: `${
+          comment.rows[0].is_active ? 'Banned' : 'Unbanned'
+        } Comment Success`,
       });
     } catch (error) {
       failed(res, {

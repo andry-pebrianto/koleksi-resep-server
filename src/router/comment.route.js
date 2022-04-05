@@ -11,7 +11,6 @@ const {
   update,
   remove,
   banned,
-  unbanned,
 } = require('../controllers/comment.controller');
 
 const router = express.Router();
@@ -28,8 +27,6 @@ router
   // hanya user dan pemilik
   .delete('/comment/:id', jwtAuth, onlyUser, commentOwner, remove)
   // hanya admin
-  .put('/comment/banned/:id', jwtAuth, onlyAdmin, banned)
-  // hanya admin
-  .put('/comment/unbanned/:id', jwtAuth, onlyAdmin, unbanned);
+  .put('/comment/banned/:id', jwtAuth, onlyAdmin, banned);
 
 module.exports = router;

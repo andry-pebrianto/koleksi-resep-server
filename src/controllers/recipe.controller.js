@@ -200,41 +200,15 @@ module.exports = {
         });
         return;
       }
-      await recipeModel.bannedById(id);
+      const banned = recipe.rows[0].is_active ? 0 : 1;
+      await recipeModel.bannedById(id, banned);
 
       success(res, {
         code: 200,
         payload: null,
-        message: 'Banned Recipe Success',
-      });
-    } catch (error) {
-      failed(res, {
-        code: 500,
-        payload: error.message,
-        message: 'Internal Server Error',
-      });
-    }
-  },
-  unbanned: async (req, res) => {
-    try {
-      const { id } = req.params;
-      const recipe = await recipeModel.selectById(id);
-
-      // jika recipe tidak ditemukan
-      if (!recipe.rowCount) {
-        failed(res, {
-          code: 404,
-          payload: `Recipe with Id ${id} not found`,
-          message: 'Unbanned Recipe Failed',
-        });
-        return;
-      }
-      await recipeModel.unbannedById(id);
-
-      success(res, {
-        code: 200,
-        payload: null,
-        message: 'Unbanned Recipe Success',
+        message: `${
+          recipe.rows[0].is_active ? 'Banned' : 'Unbanned'
+        } Recipe Success`,
       });
     } catch (error) {
       failed(res, {

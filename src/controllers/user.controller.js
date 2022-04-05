@@ -10,7 +10,10 @@ module.exports = {
       const { page, limit } = req.query;
       const count = await userModel.countAll();
       const paging = createPagination(count.rows[0].count, page, limit);
-      const users = await userModel.selectAll(req.APP_DATA.tokenDecoded.level, paging);
+      const users = await userModel.selectAll(
+        req.APP_DATA.tokenDecoded.level,
+        paging,
+      );
 
       success(res, {
         code: 200,
@@ -147,41 +150,15 @@ module.exports = {
         });
         return;
       }
-      await userModel.bannedById(id);
+      const banned = user.rows[0].is_active ? 0 : 1;
+      await userModel.bannedById(id, banned);
 
       success(res, {
         code: 200,
         payload: null,
-        message: 'Banned User Success',
-      });
-    } catch (error) {
-      failed(res, {
-        code: 500,
-        payload: error.message,
-        message: 'Internal Server Error',
-      });
-    }
-  },
-  unbanned: async (req, res) => {
-    try {
-      const { id } = req.params;
-      const user = await userModel.selectById(id);
-
-      // jika user tidak ditemukan
-      if (!user.rowCount) {
-        failed(res, {
-          code: 404,
-          payload: `User with Id ${id} not found`,
-          message: 'Unbanned User Failed',
-        });
-        return;
-      }
-      await userModel.unbannedById(id);
-
-      success(res, {
-        code: 200,
-        payload: null,
-        message: 'Unbanned User Success',
+        message: `${
+          user.rows[0].is_active ? 'Banned' : 'Unbanned'
+        } User Success`,
       });
     } catch (error) {
       failed(res, {

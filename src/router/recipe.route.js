@@ -12,7 +12,6 @@ const {
   update,
   remove,
   banned,
-  unbanned,
   listComment,
   latest,
 } = require('../controllers/recipe.controller');
@@ -34,8 +33,6 @@ router
   .delete('/recipe/:id', jwtAuth, onlyUser, recipeOwner, remove)
   // hanya admin
   .put('/recipe/banned/:id', jwtAuth, onlyAdmin, banned)
-  // hanya admin
-  .put('/recipe/unbanned/:id', jwtAuth, onlyAdmin, unbanned)
   // semua role
   .get('/recipe/:id/comment', jwtAuth, listComment);
 

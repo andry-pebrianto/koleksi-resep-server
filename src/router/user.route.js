@@ -11,7 +11,6 @@ const {
   remove,
   listRecipe,
   banned,
-  unbanned,
 } = require('../controllers/user.controller');
 const { myself, onlyAdmin } = require('../middlewares/authorization');
 
@@ -28,8 +27,6 @@ router
   .delete('/user/:id', jwtAuth, myself, remove)
   // hanya admin
   .put('/user/banned/:id', jwtAuth, onlyAdmin, banned)
-  // hanya admin
-  .put('/user/unbanned/:id', jwtAuth, onlyAdmin, unbanned)
   // semua role
   .get('/user/:id/recipe', jwtAuth, listRecipe);
 
