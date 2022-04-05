@@ -166,6 +166,13 @@ module.exports = {
       }
       await recipeModel.removeById(id);
 
+      // menghapus photo jika ada
+      deleteFile(`public/photo/${recipe.rows[0].photo}`);
+      // menghapus video dari gd jika ada
+      if (recipe.rows[0].video) {
+        await deleteGoogleDrive(recipe.rows[0].video_id);
+      }
+
       success(res, {
         code: 200,
         payload: null,
