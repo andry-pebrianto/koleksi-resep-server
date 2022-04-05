@@ -41,7 +41,7 @@ const multerUpload = multer({
       }
     }
   },
-  limits: { fileSize: 40000000 },
+  limits: { fileSize: 50000000 },
 });
 
 // middleware
@@ -59,7 +59,7 @@ module.exports = (req, res, next) => {
   multerFields(req, res, (err) => {
     if (err) {
       if (err.code === 'LIMIT_FILE_SIZE') {
-        err.message = `File ${err.field} too large`;
+        err.message = `File ${err.field} too large, max 50mb`;
       }
 
       failed(res, {

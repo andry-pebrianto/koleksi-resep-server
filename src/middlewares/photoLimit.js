@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
 
         failed(res, {
           code: 400,
-          payload: 'File photo too large',
+          payload: 'File photo too large, max 2mb',
           message: 'Upload File Error',
         });
         return;

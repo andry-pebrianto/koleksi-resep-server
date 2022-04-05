@@ -25,6 +25,7 @@ module.exports = {
         id,
         title,
         ingredients,
+        videoId = '',
         video = '',
         date,
         userId,
@@ -32,8 +33,8 @@ module.exports = {
       } = body;
 
       db.query(
-        'INSERT INTO recipe (id, title, ingredients, video, date, user_id, photo) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-        [id, title, ingredients, video, date, userId, photo],
+        'INSERT INTO recipe (id, title, ingredients, video_id, video, date, user_id, photo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+        [id, title, ingredients, videoId, video, date, userId, photo],
         (error, result) => {
           if (error) {
             reject(error);
@@ -47,13 +48,14 @@ module.exports = {
       const {
         title,
         ingredients,
+        videoId = '',
         video = '',
         photo = '',
       } = body;
 
       db.query(
-        'UPDATE recipe SET title=$1, ingredients=$2, video=$3, photo=$4 WHERE id=$5',
-        [title, ingredients, video, photo, id],
+        'UPDATE recipe SET title=$1, ingredients=$2, video_id=$3, video=$4, photo=$5 WHERE id=$6',
+        [title, ingredients, videoId, video, photo, id],
         (error, result) => {
           if (error) {
             reject(error);

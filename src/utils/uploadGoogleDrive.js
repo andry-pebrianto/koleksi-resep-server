@@ -17,6 +17,7 @@ const uploadGoogleDrive = async (file) => {
       auth: oAuth2Client,
     });
 
+    // upload to gd
     const response = await drive.files.create({
       requestBody: {
         name: file.filename,
@@ -28,6 +29,7 @@ const uploadGoogleDrive = async (file) => {
       },
     });
 
+    // set permission
     await drive.permissions.create({
       fileId: response.data.id,
       requestBody: {
@@ -36,12 +38,16 @@ const uploadGoogleDrive = async (file) => {
       },
     });
 
+    // get gd link
     const result = await drive.files.get({
       fileId: response.data.id,
       fields: 'webViewLink, webContentLink',
     });
 
-    return result.data.webViewLink;
+    return {
+      id: response.data.id,
+      gdLink: result.data.webViewLink,
+    };
   } catch (error) {
     console.log(error);
     process.exit(1);

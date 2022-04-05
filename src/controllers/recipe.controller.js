@@ -4,6 +4,8 @@ const commentModel = require('../models/comment.model');
 const { success, failed } = require('../utils/createResponse');
 const createPagination = require('../utils/createPagination');
 const uploadGoogleDrive = require('../utils/uploadGoogleDrive');
+const deleteGoogleDrive = require('../utils/deleteGoogleDrive');
+const deleteFile = require('../utils/deleteFile');
 
 module.exports = {
   list: async (req, res) => {
@@ -66,7 +68,10 @@ module.exports = {
         }
         // jika recipe disertai video
         if (req.files.video) {
+          // mengupload video baru ke gd
           video = await uploadGoogleDrive(req.files.video[0]);
+          // menghapus video setelah diupload ke gd
+          deleteFile(req.files.video[0].path);
         }
       }
 
@@ -75,7 +80,8 @@ module.exports = {
         ...req.body,
         userId: req.APP_DATA.tokenDecoded.id,
         photo,
-        video,
+        videoId: typeof video === 'object' ? video.id : '',
+        video: typeof video === 'object' ? video.gdLink : video,
         date: new Date(),
       });
 
@@ -111,13 +117,25 @@ module.exports = {
       let { photo, video } = recipe.rows[0];
       if (req.files) {
         if (req.files.photo) {
+          // menghapus photo lama
+          deleteFile(`public/photo/${recipe.rows[0].photo}`);
           photo = req.files.photo[0].filename;
         }
         if (req.files.video) {
-          video = uploadGoogleDrive(req.files.video[0]);
+          // menghapus video sebelumnya di gd
+          await deleteGoogleDrive(recipe.rows[0].video_id);
+          // upload video baru ke gd
+          video = await uploadGoogleDrive(req.files.video[0]);
+          // menghapus video setelah diupload ke gd
+          deleteFile(req.files.video[0].path);
         }
       }
-      await recipeModel.updateById(id, { ...req.body, photo, video });
+      await recipeModel.updateById(id, {
+        ...req.body,
+        photo,
+        videoId: typeof video === 'object' ? video.id : '',
+        video: typeof video === 'object' ? video.gdLink : video,
+      });
 
       success(res, {
         code: 200,

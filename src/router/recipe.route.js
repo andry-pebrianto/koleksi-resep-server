@@ -37,6 +37,6 @@ router
   // hanya admin
   .put('/recipe/unbanned/:id', jwtAuth, onlyAdmin, unbanned)
   // semua role
-  .get('/recipe/:id/comment', jwtAuth, listComment); // belum
+  .get('/recipe/:id/comment', jwtAuth, listComment);
 
 module.exports = router;
