@@ -10,7 +10,7 @@ const oAuth2Client = new google.auth.OAuth2(
 );
 oAuth2Client.setCredentials({ refresh_token: process.env.DRIVE_REFRESH_TOKEN });
 
-const sendEmail = async (file) => {
+const uploadGoogleDrive = async (file) => {
   try {
     const drive = google.drive({
       version: 'v3',
@@ -48,4 +48,4 @@ const sendEmail = async (file) => {
   }
 };
 
-module.exports = sendEmail;
+module.exports = uploadGoogleDrive;

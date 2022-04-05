@@ -2,6 +2,7 @@ const userModel = require('../models/user.model');
 const recipeModel = require('../models/recipe.model');
 const { success, failed } = require('../utils/createResponse');
 const createPagination = require('../utils/createPagination');
+const deleteFile = require('../utils/deleteFile');
 
 module.exports = {
   list: async (req, res) => {
@@ -60,6 +61,13 @@ module.exports = {
       const user = await userModel.selectById(id);
       // jika user tidak ditemukan
       if (!user.rowCount) {
+        // menghapus photo jika ada
+        if (req.files) {
+          if (req.files.photo) {
+            deleteFile(req.files.photo[0].path);
+          }
+        }
+
         failed(res, {
           code: 404,
           payload: `User with Id ${id} not found`,
@@ -72,6 +80,9 @@ module.exports = {
       let { photo } = user.rows[0];
       if (req.files) {
         if (req.files.photo) {
+          // menghapus photo lama
+          deleteFile(`public/photo/${user.rows[0].photo}`);
+          // mendapatkan name photo baru
           photo = req.files.photo[0].filename;
         }
       }
@@ -105,6 +116,9 @@ module.exports = {
         return;
       }
       await userModel.removeById(id);
+
+      // menghapus photo jika ada
+      deleteFile(`public/photo/${user.rows[0].photo}`);
 
       success(res, {
         code: 200,

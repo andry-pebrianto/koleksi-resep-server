@@ -144,9 +144,7 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/node
 
 # exclude everything
-public/photo/*
 public/video/*
 
 # exception to the rule
-!public/photo/.gitkeep
 !public/video/.gitkeep

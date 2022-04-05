@@ -3,7 +3,7 @@ const recipeModel = require('../models/recipe.model');
 const commentModel = require('../models/comment.model');
 const { success, failed } = require('../utils/createResponse');
 const createPagination = require('../utils/createPagination');
-const googleDrive = require('../utils/googleDrive');
+const uploadGoogleDrive = require('../utils/uploadGoogleDrive');
 
 module.exports = {
   list: async (req, res) => {
@@ -66,7 +66,7 @@ module.exports = {
         }
         // jika recipe disertai video
         if (req.files.video) {
-          video = await googleDrive(req.files.video[0]);
+          video = await uploadGoogleDrive(req.files.video[0]);
         }
       }
 
@@ -114,7 +114,7 @@ module.exports = {
           photo = req.files.photo[0].filename;
         }
         if (req.files.video) {
-          video = googleDrive(req.files.video[0]);
+          video = uploadGoogleDrive(req.files.video[0]);
         }
       }
       await recipeModel.updateById(id, { ...req.body, photo, video });

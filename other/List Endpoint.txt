@@ -1,0 +1,30 @@
+1. POST auth/register = public
+2. POST aut/login = public
+3. GET auth/activation/:token = public
+
+4. GET user = semua role
+5. GET user/:id = semua role
+6. PUT user/:id = hanya pemilik
+7. DELETE user/:id = hanya pemilik
+8. PUT user/banned/:id = hanya admin
+9. PUT user/unbanned/:id = hanya admin
+10. GET user/:id/recipe = semua role
+
+11. GET recipe = semua role
+12. GET recipe/latest = public
+13. GET recipe/:id = semua role
+14. POST recipe = hanya user
+15. PUT recipe/:id = hanya user & pemilik
+16. DELETE recipe/:id = hanya user & pemilik
+17. PUT recipe/banned/:id = hanya admin
+18. PUT recipe/unbanned/:id = hanya admin
+19. GET recipe/:id/comment = semua role
+
+20. GET comment = semua role
+21. GET comment/:id = semua role
+22. POST comment = hanya user
+23. PUT comment/:id = hanya user & pemilik
+24. DELETE comment/:id = hanya user & pemilik
+25. PUT comment/banned/:id = hanya admin
+26. PUT comment/unbanned/:id = hanya admin
+

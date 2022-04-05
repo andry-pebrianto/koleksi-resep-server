@@ -7,6 +7,7 @@ const { success, failed } = require('../utils/createResponse');
 const sendEmail = require('../utils/email/sendEmail');
 const activateAccountEmail = require('../utils/email/activateAccountEmail');
 const jwtToken = require('../utils/generateJwtToken');
+const deleteFile = require('../utils/deleteFile');
 const { APP_NAME, EMAIL_FROM, CLIENT_URL } = require('../utils/env');
 
 module.exports = {
@@ -14,6 +15,13 @@ module.exports = {
     try {
       const user = await userModel.selectByEmail(req.body.email);
       if (user.rowCount) {
+        // menghapus photo jika ada
+        if (req.files) {
+          if (req.files.photo) {
+            deleteFile(req.files.photo[0].path);
+          }
+        }
+
         failed(res, {
           code: 409,
           payload: 'Email already exist',
