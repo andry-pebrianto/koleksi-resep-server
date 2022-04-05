@@ -3,6 +3,7 @@ const recipeModel = require('../models/recipe.model');
 const commentModel = require('../models/comment.model');
 const { success, failed } = require('../utils/createResponse');
 const createPagination = require('../utils/createPagination');
+const googleDrive = require('../utils/googleDrive');
 
 module.exports = {
   list: async (req, res) => {
@@ -56,16 +57,26 @@ module.exports = {
   },
   insert: async (req, res) => {
     try {
-      // jika recipe disertai photo
       let photo = '';
+      let video = '';
       if (req.files) {
+        // jika recipe disertai photo
         if (req.files.photo) {
           photo = req.files.photo[0].filename;
+        }
+        // jika recipe disertai video
+        if (req.files.video) {
+          video = await googleDrive(req.files.video[0]);
         }
       }
 
       await recipeModel.store({
-        id: uuidv4(), ...req.body, userId: req.APP_DATA.tokenDecoded.id, photo, date: new Date(),
+        id: uuidv4(),
+        ...req.body,
+        userId: req.APP_DATA.tokenDecoded.id,
+        photo,
+        video,
+        date: new Date(),
       });
 
       success(res, {
@@ -97,13 +108,16 @@ module.exports = {
       }
 
       // jika update recipe disertai photo
-      let { photo } = recipe.rows[0];
+      let { photo, video } = recipe.rows[0];
       if (req.files) {
         if (req.files.photo) {
           photo = req.files.photo[0].filename;
         }
+        if (req.files.video) {
+          video = googleDrive(req.files.video[0]);
+        }
       }
-      await recipeModel.updateById(id, { ...req.body, photo });
+      await recipeModel.updateById(id, { ...req.body, photo, video });
 
       success(res, {
         code: 200,

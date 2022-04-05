@@ -5,13 +5,6 @@ module.exports = (req, res, next) => {
   try {
     const errors = validationResult(req).array({ onlyFirstError: true });
 
-    if (req.APP_DATA) {
-      // jika terdapat error validasi photo / video
-      if (req.APP_DATA.fileError) {
-        errors.push(req.APP_DATA.fileError);
-      }
-    }
-
     // jika validasi gagal
     if (errors.length) {
       failed(res, {

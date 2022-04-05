@@ -8,7 +8,7 @@ const oAuth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_SECRET,
   process.env.REDIRECT_URI,
 );
-oAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+oAuth2Client.setCredentials({ refresh_token: process.env.GMAIL_REFRESH_TOKEN });
 
 const sendEmail = async (dataEmail) => {
   try {
@@ -21,7 +21,7 @@ const sendEmail = async (dataEmail) => {
         user: process.env.EMAIL_USER,
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        refreshToken: process.env.REFRESH_TOKEN,
+        refreshToken: process.env.GMAIL_REFRESH_TOKEN,
         accessToken,
       },
     });

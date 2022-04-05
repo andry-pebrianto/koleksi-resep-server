@@ -3,6 +3,7 @@ const jwtAuth = require('../middlewares/jwtAuth');
 const validation = require('../validations/user.validation');
 const runValidation = require('../middlewares/runValidation');
 const upload = require('../middlewares/upload');
+const photoLimit = require('../middlewares/photoLimit');
 const {
   list,
   detail,
@@ -22,7 +23,7 @@ router
   // semua role
   .get('/user/:id', jwtAuth, detail)
   // hanya pemilik
-  .put('/user/:id', jwtAuth, upload, validation.update, runValidation, myself, update)
+  .put('/user/:id', jwtAuth, upload, photoLimit, validation.update, runValidation, myself, update)
   // hanya pemilik
   .delete('/user/:id', jwtAuth, myself, remove)
   // hanya admin
