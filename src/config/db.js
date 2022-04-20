@@ -9,9 +9,6 @@ const db = new Pool({
   password: DB_PASSWORD,
   database: DB_NAME,
   port: DB_PORT,
-  ssl: {
-    rejectUnauthorized: false,
-  },
 });
 
 db.connect((err) => {
