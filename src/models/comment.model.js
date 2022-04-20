@@ -71,7 +71,7 @@ module.exports = {
     }),
   selectAllCommentByRecipe: (id) =>
     new Promise((resolve, reject) => {
-      db.query('SELECT comment.comment_text, comment.user_id, comment.recipe_id, users.name FROM comment INNER JOIN users ON comment.user_id = users.id WHERE recipe_id=$1', [id], (error, result) => {
+      db.query('SELECT comment.id, comment.comment_text, comment.user_id, comment.recipe_id, users.name, users.photo FROM comment INNER JOIN users ON comment.user_id = users.id WHERE recipe_id=$1', [id], (error, result) => {
         if (error) {
           reject(error);
         }

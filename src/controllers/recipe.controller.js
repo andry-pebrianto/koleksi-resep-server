@@ -13,7 +13,9 @@ module.exports = {
       const { search, page, limit } = req.query;
       const count = await recipeModel.countAll();
       const paging = createPagination(count.rows[0].count, page, limit);
-      const recipes = await recipeModel.selectAll(req.APP_DATA.tokenDecoded.level, paging, search);
+      // const recipes = await
+      // recipeModel.selectAll(req.APP_DATA.tokenDecoded.level, paging, search);
+      const recipes = await recipeModel.selectAll(0, paging, search);
 
       success(res, {
         code: 200,

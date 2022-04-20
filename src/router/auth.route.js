@@ -1,9 +1,9 @@
 const express = require('express');
 const validation = require('../validations/auth.validation');
 const runValidation = require('../middlewares/runValidation');
+const { isVerified } = require('../middlewares/authorization');
 const upload = require('../middlewares/upload');
 const photoLimit = require('../middlewares/photoLimit');
-const { isVerified } = require('../middlewares/authorization');
 const {
   register,
   login,

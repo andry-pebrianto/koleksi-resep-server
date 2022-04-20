@@ -31,7 +31,7 @@ module.exports = {
       }
 
       const password = await bcrypt.hash(req.body.password, 10);
-      let photo = '';
+      let photo = 'profile-default.jpg';
       // jika register disertai photo
       if (req.files) {
         if (req.files.photo) {
@@ -68,7 +68,7 @@ module.exports = {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'InternalServer Error',
+        message: 'Internal Server Error',
       });
     }
   },
@@ -84,12 +84,15 @@ module.exports = {
           const match = await bcrypt.compare(password, user.rows[0].password);
           // jika password benar
           if (match) {
-            const token = await jwtToken({ id: user.rows[0].id, level: user.rows[0].level });
+            const jwt = await jwtToken({ id: user.rows[0].id, level: user.rows[0].level });
             success(res, {
               code: 200,
               payload: null,
               message: 'Login Success',
-              token,
+              token: {
+                jwt,
+                id: user.rows[0].id,
+              },
             });
             return;
           }
@@ -122,26 +125,26 @@ module.exports = {
       const user = await authModel.checkEmailToken(token);
 
       if (!user.rowCount) {
-        failed(res, {
-          code: 401,
-          payload: 'Token invalid',
-          message: 'Activation Failed',
-        });
+        res.send(`
+        <div>
+          <h1>Activation Failed</h1>
+          <h3>Token invalid</h3>
+        </div>`);
         return;
       }
       await authModel.activateEmail(user.rows[0].id);
 
-      success(res, {
-        code: 200,
-        payload: null,
-        message: 'Activation Success',
-      });
+      res.send(`
+      <div>
+        <h1>Activation Failed</h1>
+        <h3>You can Login now</h3>
+      </div>`);
     } catch (error) {
-      failed(res, {
-        code: 500,
-        payload: error.message,
-        message: 'Internal Server Error',
-      });
+      res.send(`
+      <div>
+        <h1>Activation Failed</h1>
+        <h3>${error.message}</h3>
+      </div>`);
     }
   },
 };

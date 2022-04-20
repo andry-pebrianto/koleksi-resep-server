@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const chalk = require('chalk');
@@ -23,6 +24,12 @@ app.use(require('./src/router/auth.route'));
 app.use(require('./src/router/user.route'));
 app.use(require('./src/router/recipe.route'));
 app.use(require('./src/router/comment.route'));
+// image router
+app.use('/image/:name', (req, res) => {
+  const filePath = path.join(__dirname, `/public/photo/${req.params.name}`);
+  res.setHeader('Cross-Origin-Resource-Policy', 'same-site');
+  res.sendFile(filePath);
+});
 // 404 router
 app.use((req, res) => {
   failed(res, {

@@ -12,7 +12,7 @@ module.exports = {
     }),
   selectById: (id) =>
     new Promise((resolve, reject) => {
-      db.query('SELECT * FROM recipe WHERE id=$1', [id], (error, result) => {
+      db.query('SELECT recipe.id, recipe.title, recipe.ingredients, recipe.photo, recipe.date, recipe.is_active, recipe.user_id, users.name FROM recipe INNER JOIN users ON users.id = recipe.user_id WHERE recipe.id=$1', [id], (error, result) => {
         if (error) {
           reject(error);
         }
@@ -29,7 +29,7 @@ module.exports = {
         video = '',
         date,
         userId,
-        photo = '',
+        photo = 'food-default.jpg',
       } = body;
 
       db.query(
@@ -50,7 +50,7 @@ module.exports = {
         ingredients,
         videoId = '',
         video = '',
-        photo = '',
+        photo = 'food-default.jpg',
       } = body;
 
       db.query(
@@ -93,7 +93,7 @@ module.exports = {
     }),
   selectLatest: () =>
     new Promise((resolve, reject) => {
-      db.query('SELECT recipe.id, recipe.title, recipe.photo, recipe.date, users.name FROM recipe INNER JOIN users ON recipe.user_id=users.id ORDER BY date DESC LIMIT 5', (error, result) => {
+      db.query('SELECT recipe.id, recipe.title, recipe.photo, recipe.date, users.name FROM recipe INNER JOIN users ON recipe.user_id=users.id ORDER BY date DESC LIMIT 6', (error, result) => {
         if (error) {
           reject(error);
         }

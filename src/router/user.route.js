@@ -20,7 +20,7 @@ router
   // semua role
   .get('/user', jwtAuth, list)
   // semua role
-  .get('/user/:id', jwtAuth, detail)
+  .get('/user/:id', jwtAuth, detail) // *
   // hanya pemilik
   .put('/user/:id', jwtAuth, upload, photoLimit, validation.update, runValidation, myself, update)
   // hanya pemilik
@@ -28,6 +28,6 @@ router
   // hanya admin
   .put('/user/banned/:id', jwtAuth, onlyAdmin, banned)
   // semua role
-  .get('/user/:id/recipe', jwtAuth, listRecipe);
+  .get('/user/:id/recipe', jwtAuth, listRecipe); // *
 
 module.exports = router;
