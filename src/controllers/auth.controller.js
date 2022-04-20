@@ -136,7 +136,7 @@ module.exports = {
 
       res.send(`
       <div>
-        <h1>Activation Failed</h1>
+        <h1>Activation Success</h1>
         <h3>You can Login now</h3>
       </div>`);
     } catch (error) {
