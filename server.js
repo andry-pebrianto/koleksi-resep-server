@@ -12,9 +12,13 @@ const app = express();
 
 // middleware
 app.use(express.json());
-app.use(helmet());
+app.use(helmet({
+  crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: false,
+}));
 app.use(xss());
 app.use(cors());
+app.use(express.static('public'));
 
 // root router
 app.get('/', (req, res) =>
