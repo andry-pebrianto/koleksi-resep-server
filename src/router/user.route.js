@@ -8,6 +8,7 @@ const {
   list,
   detail,
   update,
+  updatePassword,
   remove,
   listRecipe,
   banned,
@@ -23,6 +24,8 @@ router
   .get('/user/:id', jwtAuth, detail)
   // hanya pemilik
   .put('/user/:id', jwtAuth, upload, photoLimit, validation.update, runValidation, myself, update)
+  // hanya pemilik
+  .put('/user/:id/password', jwtAuth, validation.password, runValidation, myself, updatePassword)
   // hanya pemilik
   .delete('/user/:id', jwtAuth, myself, remove)
   // hanya admin
