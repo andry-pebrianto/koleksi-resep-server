@@ -30,7 +30,7 @@ const multerUpload = multer({
       ) {
         cb(null, true);
       } else {
-        cb({ message: 'Photo extension only can .jpg or .png' }, false);
+        cb({ message: 'Photo extension only can .jpg, .jpeg, and .png' }, false);
       }
     } else {
       // filter mimetype

@@ -4,7 +4,7 @@ module.exports = {
   APP_NAME: process.env.APP_NAME,
   NODE_ENV: process.env.NODE_ENV || 'development',
   PORT: process.env.PORT || 5000,
-  CLIENT_URL: process.env.CLIENT_URL,
+  API_URL: process.env.API_URL,
   // database
   DB_HOST: process.env.DB_HOST,
   DB_USER: process.env.DB_USER,

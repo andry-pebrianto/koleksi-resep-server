@@ -4,7 +4,7 @@ module.exports = {
   register: (body) =>
     new Promise((resolve, reject) => {
       const {
-        id, name, email, phone, password, photo = '', level, token,
+        id, name, email, phone, password, photo, level, token,
       } = body;
 
       db.query(
@@ -47,7 +47,7 @@ module.exports = {
   activateEmail: (id) =>
     new Promise((resolve, reject) => {
       db.query(
-        'UPDATE users SET email_token=\'\', verified=1 WHERE id=$1',
+        "UPDATE users SET email_token='', verified=1 WHERE id=$1",
         [id],
         (error, result) => {
           if (error) {

@@ -1,8 +1,8 @@
-<h1 align="center">Food Recipe API</h1>
+<h1 align="center">Koleksi Resep API</h1>
 
 ## Description
 
-Food Recipe API merupakan sebuah Web Service yang nantinya akan menjadi Backend untuk sebuah aplikasi sharing resep makanan.
+Koleksi Resep API merupakan sebuah Web Service yang nantinya akan menjadi Backend untuk sebuah aplikasi sharing resep makanan.
 
 ## Getting Started
 
@@ -16,7 +16,7 @@ Food Recipe API merupakan sebuah Web Service yang nantinya akan menjadi Backend 
 APP_NAME=
 NODE_ENV=
 PORT=
-CLIENT_URL=
+API_URL=
 
 # database
 DB_HOST=

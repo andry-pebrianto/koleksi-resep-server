@@ -8,7 +8,7 @@ const sendEmail = require('../utils/email/sendEmail');
 const activateAccountEmail = require('../utils/email/activateAccountEmail');
 const jwtToken = require('../utils/generateJwtToken');
 const deleteFile = require('../utils/deleteFile');
-const { APP_NAME, EMAIL_FROM, CLIENT_URL } = require('../utils/env');
+const { APP_NAME, EMAIL_FROM, API_URL } = require('../utils/env');
 
 module.exports = {
   register: async (req, res) => {
@@ -54,7 +54,7 @@ module.exports = {
         to: req.body.email.toLowerCase(),
         subject: 'Activate Your Account!',
         html: activateAccountEmail(
-          `${CLIENT_URL}/auth/activation/${token}`,
+          `${API_URL}/auth/activation/${token}`,
         ),
       };
       sendEmail(templateEmail);
@@ -137,7 +137,7 @@ module.exports = {
       res.send(`
       <div>
         <h1>Activation Success</h1>
-        <h3>You can Login now</h3>
+        <h3>You can login now</h3>
       </div>`);
     } catch (error) {
       res.send(`

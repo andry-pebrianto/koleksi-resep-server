@@ -6,7 +6,7 @@ const htmlTemplateTop = `
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="Aplikasi Sharing Resep Makanan">
-  <meta name="keywords" content="Food Recipe, Javascript, NodeJS, ExpressJS">
+  <meta name="keywords" content="Koleksi Resep, Javascript, NodeJS, ExpressJS">
   <meta name="author" content="Andry Pebrianto">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -54,7 +54,7 @@ const htmlTemplateTop = `
 
 <body style="background-color: #17a2b8; padding: 20px;">
   <h1 class="auth-title">
-    Food Recipe
+    Koleksi Resep
   </h1>
 
   <div class="auth-content" style="background-color: white;">
