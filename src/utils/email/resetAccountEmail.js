@@ -3,15 +3,15 @@ const { htmlTemplateTop, htmlTemplateBottom } = require('./template');
 const activateAccount = (link) => {
   const htmlContent = `
   <p>
-    Anda menerima email ini karena Anda telah melakukan Registrasi Akun di Koleksi Resep.
+    Anda menerima email ini karena Anda telah melakukan permintaan Reset Password di Koleksi Resep.
     <br>
-    Segera aktifkan akun Anda dengan click tombol di bawah ini.
+    Segera ubah sandi Anda dengan click tombol di bawah ini.
   </p>
   
-  <a href="${link}" style="color: white;" class="auth-button">Aktifkan Akun</a>
+  <a href="${link}" style="color: white;" class="auth-button">Reset Password</a>
   
   <p>
-    Jika Anda tidak merasa melakukan Registrasi Akun di Koleksi Resep, abaikan email ini.
+    Jika Anda tidak merasa melakukan permintaan Reset Password di Koleksi Resep, abaikan email ini.
     <br>
     Link alternatif: <a href="${link}">${link}</a>
   </p>
