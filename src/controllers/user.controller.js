@@ -80,7 +80,7 @@ module.exports = {
       }
 
       // jika update user disertai photo
-      let { photo, email } = user.rows[0];
+      let { photo } = user.rows[0];
       if (req.files) {
         if (req.files.photo) {
           // menghapus photo lama
@@ -89,6 +89,7 @@ module.exports = {
           photo = req.files.photo[0].filename;
         }
       }
+      const { email } = user.rows[0]; // email tidak boleh diubah
       await userModel.updateById(id, { ...req.body, photo, email });
 
       success(res, {

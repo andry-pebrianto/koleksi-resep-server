@@ -29,7 +29,7 @@ module.exports = {
         video = '',
         date,
         userId,
-        photo = 'food-default.jpg',
+        photo,
       } = body;
 
       db.query(
@@ -50,7 +50,7 @@ module.exports = {
         ingredients,
         videoId = '',
         video = '',
-        photo = 'food-default.jpg',
+        photo,
       } = body;
 
       db.query(

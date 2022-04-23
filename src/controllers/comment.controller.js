@@ -55,7 +55,7 @@ module.exports = {
   },
   insert: async (req, res) => {
     try {
-      await commentModel.store({ id: uuidv4(), ...req.body, idUser: req.APP_DATA.tokenDecoded.id });
+      await commentModel.store({ id: uuidv4(), ...req.body, userId: req.APP_DATA.tokenDecoded.id });
 
       success(res, {
         code: 201,

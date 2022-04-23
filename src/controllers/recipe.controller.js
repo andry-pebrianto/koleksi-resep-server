@@ -61,7 +61,7 @@ module.exports = {
   },
   insert: async (req, res) => {
     try {
-      let photo = '';
+      let photo = 'food-default.jpg';
       let video = '';
       if (req.files) {
         // jika recipe disertai photo
