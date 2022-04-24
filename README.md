@@ -2,7 +2,7 @@
 
 ## Description
 
-Koleksi Resep API is a Web Service which will later become the Backend for a food recipe sharing application.
+Koleksi Resep API is a Web Service which will later become the Backend for a food recipe sharing application
 
 ## Getting Started
 
@@ -49,7 +49,7 @@ DRIVE_REFRESH_TOKEN=
 
 ### Executing program
 
-- Run program with `npm run dev` for development and `npm run start` for production.
+- Run program with `npm run dev` for development and `npm run start` for production
 
 ## Endpoint List
 
@@ -57,37 +57,37 @@ DRIVE_REFRESH_TOKEN=
 
 - POST | `/auth/register`
   - Body:
-    - name (required | alphabet | max 50).
-    - email (required | valid email | max 50).
-    - phone (required | number | max 13).
-    - password (min 8 | contain lowercase, uppercase, number, and special character).
-    - photo (max 2mb | jpg, jpeg, png).
-  - Token: Not required.
-  - Desc: New user registration.
+    - name (required | alphabet | max 50)
+    - email (required | valid email | max 50)
+    - phone (required | number | max 13)
+    - password (min 8 | contain lowercase, uppercase, number, and special character)
+    - photo (max 2mb | jpg, jpeg, png)
+  - Token: Not required
+  - Desc: New user registration
 - GET | `/auth/activation/:token`
-  - Body: None.
-  - Token: Not required.
-  - Desc: User activation via a link from an email.
+  - Body: None
+  - Token: Not required
+  - Desc: User activation via a link from an email
 - POST | `/auth/login`
   - Body:
-    - email (required | valid email).
-    - password (required).
-  - Token: Not required.
-  - Desc: Login.
+    - email (required | valid email)
+    - password (required)
+  - Token: Not required
+  - Desc: Login
 - POST | `/auth/forgot`
   - Body:
-    - email (required | valid email).
-  - Token: Not required.
-  - Desc: Send an email link to reset password.
+    - email (required | valid email)
+  - Token: Not required
+  - Desc: Send an email link to reset password
 - POST | `/auth/reset`
   - Body:
-    - password (min 8 | contain lowercase, uppercase, number, and special character).
-  - Token: Not required.
-  - Desc: Reset password.
+    - password (min 8 | contain lowercase, uppercase, number, and special character)
+  - Token: Not required
+  - Desc: Reset password
 
 ## Authors
 
-Contributors names and contact info
+Contributors names and contact info:
 
 1. Andry Pebrianto
 
