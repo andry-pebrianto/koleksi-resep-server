@@ -64,30 +64,41 @@ DRIVE_REFRESH_TOKEN=
     - photo (max 2mb | jpg, jpeg, png)
   - Token: Not required
   - Desc: New user registration
-
 - GET | `/auth/activation/:token`
   - Body: None
   - Token: Not required
   - Desc: User activation via a link from an email
-
 - POST | `/auth/login`
   - Body:
     - email (required | valid email)
     - password (required)
   - Token: Not required
   - Desc: Login
-
 - POST | `/auth/forgot`
   - Body:
     - email (required | valid email)
   - Token: Not required
   - Desc: Send an email link to reset password
-  
 - POST | `/auth/reset`
   - Body:
     - password (min 8 | contain lowercase, uppercase, number, and special character)
   - Token: Not required
   - Desc: Reset password
+
+### /user
+
+- GET | `/user`
+  - Body: None
+  - Token: Required
+  - Desc: Get a list of users registered in the database
+- GET | `/user/:id`
+  - Body: None
+  - Token: Required
+  - Desc: Get detailed user data based on the entered id
+
+### /recipe
+
+### /comment
 
 ## Authors
 
