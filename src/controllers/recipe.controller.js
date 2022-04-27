@@ -10,12 +10,14 @@ const deleteFile = require('../utils/deleteFile');
 module.exports = {
   list: async (req, res) => {
     try {
-      const { search, page, limit } = req.query;
+      const {
+        search, page, limit, sort,
+      } = req.query;
       const count = await recipeModel.countAll();
       const paging = createPagination(count.rows[0].count, page, limit);
       // const recipes = await
       // recipeModel.selectAll(req.APP_DATA.tokenDecoded.level, paging, search);
-      const recipes = await recipeModel.selectAll(0, paging, search);
+      const recipes = await recipeModel.selectAll(0, paging, search, sort);
 
       success(res, {
         code: 200,
