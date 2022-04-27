@@ -192,7 +192,7 @@ module.exports = {
         failed(res, {
           code: 401,
           payload: 'Token invalid',
-          message: 'Activation Failed',
+          message: 'Reset Password Failed',
         });
         return;
       }

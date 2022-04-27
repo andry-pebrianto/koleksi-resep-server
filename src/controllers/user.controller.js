@@ -86,7 +86,9 @@ module.exports = {
       if (req.files) {
         if (req.files.photo) {
           // menghapus photo lama
-          deleteFile(`public/photo/${user.rows[0].photo}`);
+          if (user.rows[0].photo !== 'profile-default.jpg') {
+            deleteFile(`public/photo/${user.rows[0].photo}`);
+          }
           // mendapatkan name photo baru
           photo = req.files.photo[0].filename;
         }
@@ -176,7 +178,9 @@ module.exports = {
       await userModel.removeById(id);
 
       // menghapus photo jika ada
-      deleteFile(`public/photo/${user.rows[0].photo}`);
+      if (user.rows[0].photo !== 'profile-default.jpg') {
+        deleteFile(`public/photo/${user.rows[0].photo}`);
+      }
 
       success(res, {
         code: 200,

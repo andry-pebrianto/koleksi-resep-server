@@ -2,6 +2,7 @@ APP_NAME=
 NODE_ENV=
 PORT=
 API_URL=
+CLIENT_URL=
 
 # database
 DB_HOST=

@@ -12,7 +12,7 @@ module.exports = {
     }),
   selectById: (id) =>
     new Promise((resolve, reject) => {
-      db.query('SELECT recipe.id, recipe.title, recipe.ingredients, recipe.photo, recipe.date, recipe.is_active, recipe.user_id, users.name FROM recipe INNER JOIN users ON users.id = recipe.user_id WHERE recipe.id=$1', [id], (error, result) => {
+      db.query('SELECT recipe.id, recipe.title, recipe.ingredients, recipe.photo, recipe.video, recipe.video_id, recipe.date, recipe.is_active, recipe.user_id, users.name FROM recipe INNER JOIN users ON users.id = recipe.user_id WHERE recipe.id=$1', [id], (error, result) => {
         if (error) {
           reject(error);
         }

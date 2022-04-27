@@ -107,6 +107,16 @@ module.exports = {
       const recipe = await recipeModel.selectById(id);
       // jika recipe tidak ditemukan
       if (!recipe.rowCount) {
+        // menghapus photo jika ada
+        if (req.files) {
+          if (req.files.photo) {
+            deleteFile(req.files.photo[0].path);
+          }
+          if (req.files.video) {
+            deleteFile(req.files.video[0].path);
+          }
+        }
+
         failed(res, {
           code: 404,
           payload: `Recipe with Id ${id} not found`,
@@ -120,7 +130,9 @@ module.exports = {
       if (req.files) {
         if (req.files.photo) {
           // menghapus photo lama
-          deleteFile(`public/photo/${recipe.rows[0].photo}`);
+          if (recipe.rows[0].photo !== 'food-default.jpg') {
+            deleteFile(`public/photo/${recipe.rows[0].photo}`);
+          }
           photo = req.files.photo[0].filename;
         }
         if (req.files.video) {
@@ -169,7 +181,9 @@ module.exports = {
       await recipeModel.removeById(id);
 
       // menghapus photo jika ada
-      deleteFile(`public/photo/${recipe.rows[0].photo}`);
+      if (recipe.rows[0].photo !== 'food-default.jpg') {
+        deleteFile(`public/photo/${recipe.rows[0].photo}`);
+      }
       // menghapus video dari gd jika ada
       if (recipe.rows[0].video) {
         await deleteGoogleDrive(recipe.rows[0].video_id);
