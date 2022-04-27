@@ -12,7 +12,6 @@ module.exports = {
         sql += 'ORDER BY date ';
       }
       sql += `LIMIT ${paging.limit} OFFSET ${paging.offset}`;
-      console.log(sql);
 
       db.query(sql, [search.trim()], (error, result) => {
         if (error) {
@@ -122,9 +121,9 @@ module.exports = {
         },
       );
     }),
-  countAll: () =>
+  countAll: (search = '') =>
     new Promise((resolve, reject) => {
-      db.query('SELECT COUNT(*) FROM recipe', (error, result) => {
+      db.query('SELECT COUNT(*) FROM recipe WHERE LOWER(title) LIKE \'%\'||LOWER($1)||\'%\'', [search.trim()], (error, result) => {
         if (error) {
           reject(error);
         }
