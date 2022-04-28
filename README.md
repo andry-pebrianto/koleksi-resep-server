@@ -95,6 +95,30 @@ DRIVE_REFRESH_TOKEN=
   - Body: None
   - Token: Required
   - Desc: Get detailed user data based on the entered id
+- PUT | `/user/:id`
+  - Body:
+    - name (required | alphabet | max 50)
+    - phone (required | number | max 13)
+    - photo (max 2mb | jpg, jpeg, png)
+  - Token: Required
+  - Desc: Update user data based on entered id
+- PUT | `/user/:id/password`
+  - Body:
+    - password (min 8 | contain lowercase, uppercase, number, and special character)
+  - Token: Required
+  - Desc: Change password
+- DELETE | `/user/:id`
+  - Body: None
+  - Token: Required
+  - Desc: Delete user data based on the entered id
+- GET | `user/:id/recipe`
+  - Body: None
+  - Token: Required
+  - Desc: Get all recipe data owned by a user
+- PUT | `user/banned/:id`
+  - Body: None
+  - Token: Required
+  - Desc: Banned or Unbanned user
 
 ### /recipe
 
