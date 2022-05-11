@@ -122,7 +122,46 @@ DRIVE_REFRESH_TOKEN=
 
 ### /recipe
 
-Coming Soon
+- GET | `/recipe`
+  - Body: None
+  - Token: Required
+  - Desc: Get all recipe data
+- GET | `/recipe/:id`
+  - Body: None
+  - Token: Required
+  - Desc: Get recipe data details based on the entered id
+- GET | `/recipe/latest`
+  - Body: None
+  - Token: Not required
+  - Desc: Get the latest 5 recipe data
+- POST | `/recipe`
+  - Body:
+    - title (required | alphabet & number | max 50)
+    - ingredients (required)
+    - photo (max 2mb | jpg, jpeg, png)
+    - video (max 50mb | mp4, 3gp)
+  - Token: Required
+  - Desc: Add new recipe data to database
+- PUT | `/recipe/:id`
+  - Body:
+    - title (required | alphabet & number | max 50)
+    - ingredients (required)
+    - photo (max 2mb | jpg, jpeg, png)
+    - video (max 50mb | mp4, 3gp)
+  - Token: Required
+  - Desc: Update recipe data based on entered id
+- DELETE | `/recipe/:id`
+  - Body: None
+  - Token: Required
+  - Desc: Delete recipe data based on the entered id
+- PUT | `/recipe/banned/:id`
+  - Body: None
+  - Token: Required
+  - Desc: Banned or Unbanned recipe
+- GET | `/recipe/:id/comment`
+  - Body: None
+  - Token: Required
+  - Desc: Get all comment data owned by a recipe
 
 ### /comment
 
