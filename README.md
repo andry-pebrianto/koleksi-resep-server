@@ -126,6 +126,10 @@ DRIVE_REFRESH_TOKEN=
   - Body: None
   - Token: Required
   - Desc: Get all recipe data
+  - Query: 
+    - limit (number | default 10)
+    - search (string)
+    - sort (column name | default title)
 - GET | `/recipe/:id`
   - Body: None
   - Token: Required
@@ -165,7 +169,33 @@ DRIVE_REFRESH_TOKEN=
 
 ### /comment
 
-Coming Soon
+- GET | `/comment`
+  - Body: None
+  - Token: Required
+  - Desc: Get all comment data
+- GET | `/comment/:id`
+  - Body: None
+  - Token: Required
+  - Desc: Get comment data details based on the entered id
+- POST | `/comment`
+  - Body:
+    - commentText (required | max 500)
+    - recipeId (required)
+  - Token: Required
+  - Desc: Add new comment data to database
+- PUT | `/comment/:id`
+  - Body:
+    - commentText (required | max 500)
+  - Token: Required
+  - Desc: Update comment data based on entered id
+- DELETE | `/comment/:id`
+  - Body: None
+  - Token: Required
+  - Desc: Delete comment data based on the entered id
+- PUT | `/coomment/banned/:id`
+  - Body: None
+  - Token: Required
+  - Desc: Banned or Unbanned comment
 
 ## Authors
 
