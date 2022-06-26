@@ -139,6 +139,7 @@ DRIVE_REFRESH_TOKEN=
   - Desc: Get all recipe data
   - Query: 
     - limit (number | default 10)
+    - page (number)
     - search (string)
     - sort (column name | default title)
 - GET | `/recipe/:id`
