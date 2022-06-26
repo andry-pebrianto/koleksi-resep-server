@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./readme/logo.png" width="200px" height="200px" />
+  <img src="./readme/logo.svg" />
 </div>
 <h3 align="center">Koleksi Resep API</h3>
 <p align="center">
