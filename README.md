@@ -1,10 +1,17 @@
-<h1 align="center">Koleksi Resep API</h1>
+<div align="center">
+  <img src="./readme/logo.png" width="200px" height="200px" />
+</div>
+<h3 align="center">Koleksi Resep API</h3>
+<p align="center">
+  <a href="https://koleksi-resep.herokuapp.com/">View Backend Demo</a>
+  ·
+  <a href="https://github.com/andry-pebrianto/koleksi-resep-api/issues">Report Bug</a>
+</p>
 
-## Description
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-Koleksi Resep API is a Web Service which will later become the Backend for a food recipe sharing application
-
-## Getting Started
+This is a Restful API repository for Koleksi Resep. This Restful API is built using ExpressJS and PostgreSQL.
 
 ### Technology Used
 
@@ -15,7 +22,9 @@ Koleksi Resep API is a Web Service which will later become the Backend for a foo
 - [Bcrypt](https://www.npmjs.com/package/bcrypt)
 - [Nodemailer](https://nodemailer.com/about/)
 
-### Installing
+## Getting Started
+
+### Installation
 
 - Clone this project with `git clone https://github.com/andry-pebrianto/koleksi-resep-api`
 - Install package required with `npm install`
@@ -52,6 +61,8 @@ DRIVE_REFRESH_TOKEN=
 - Run program with `npm run dev` for development and `npm run start` for production
 
 ## Endpoint List
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/13299472-79161dab-60b5-451a-9e75-f635d682c31b?action=collection%2Ffork&collection-url=entityId%3D13299472-79161dab-60b5-451a-9e75-f635d682c31b%26entityType%3Dcollection%26workspaceId%3Dabfee31e-a51e-46f4-a705-bd3638f6adf7)
 
 ### /auth
 
