@@ -24,7 +24,6 @@ const deleteGoogleDrive = async (id) => {
     return response;
   } catch (error) {
     console.log(error);
-    process.exit(1);
   }
 };
 
