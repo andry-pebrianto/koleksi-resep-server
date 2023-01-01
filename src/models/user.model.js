@@ -31,7 +31,7 @@ module.exports = {
   updateById: (id, body) =>
     new Promise((resolve, reject) => {
       const {
-        name, email, phone, photo = 'user-default.jpg',
+        name, email, phone, photo = 'profile-default.jpg',
       } = body;
 
       db.query(

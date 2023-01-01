@@ -7,11 +7,11 @@ module.exports = {
         level === 1 ? 'AND is_active=1' : ''
       }`;
       if (sort.trim() === 'title') {
-        sql += 'ORDER BY title ';
+        sql += ' ORDER BY title';
       } else {
-        sql += 'ORDER BY date ';
+        sql += ' ORDER BY date';
       }
-      sql += `LIMIT ${paging.limit} OFFSET ${paging.offset}`;
+      sql += ` LIMIT ${paging.limit} OFFSET ${paging.offset}`;
 
       db.query(sql, [search.trim()], (error, result) => {
         if (error) {

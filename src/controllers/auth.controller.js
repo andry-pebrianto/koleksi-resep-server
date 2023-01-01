@@ -187,6 +187,7 @@ module.exports = {
     try {
       const { token } = req.params;
       const user = await authModel.checkEmailToken(token);
+      console.log(user.rows);
 
       if (!user.rowCount) {
         failed(res, {
