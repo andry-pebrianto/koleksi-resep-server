@@ -2,8 +2,6 @@ const express = require('express');
 const validation = require('../validations/auth.validation');
 const runValidation = require('../middlewares/runValidation');
 const { isVerified } = require('../middlewares/authorization');
-const upload = require('../middlewares/upload');
-const photoLimit = require('../middlewares/photoLimit');
 const {
   register,
   login,
@@ -15,7 +13,7 @@ const {
 const router = express.Router();
 
 router
-  .post('/auth/register', upload, photoLimit, validation.register, runValidation, register)
+  .post('/auth/register', validation.register, runValidation, register)
   .get('/auth/activation/:token', activation)
   .post('/auth/login', isVerified, validation.login, runValidation, login)
   .put('/auth/forgot', isVerified, validation.forgot, runValidation, forgot)
