@@ -3,7 +3,7 @@
 exports.shorthands = undefined;
 
 exports.up = (pgm) => {
-  pgm.createTable("recipes", {
+  pgm.createTable("comments", {
     id: {
       type: "uuid",
       notNull: true,
@@ -13,16 +13,9 @@ exports.up = (pgm) => {
       type: "uuid",
       notNull: true,
     },
-    title: {
-      type: "VARCHAR(105)",
+    body: {
+      type: "VARCHAR(505)",
       notNull: true,
-    },
-    ingredients: {
-      type: "TEXT",
-      notNull: true,
-    },
-    video_url: {
-      type: "VARCHAR(205)",
     },
     is_active: {
       type: "INTEGER",
@@ -41,13 +34,13 @@ exports.up = (pgm) => {
   });
 
   pgm.addConstraint(
-    "recipes",
-    "fk-recipes.user_id-users.id",
+    "comments",
+    "fk-comments.user_id-users.id",
     "FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE",
   );
 };
 
 exports.down = (pgm) => {
-  pgm.dropConstraint("recipes", "fk-recipes.user_id-users.id");
-  pgm.dropTable("recipes");
+  pgm.dropConstraint("comments", "fk-comments.user_id-users.id");
+  pgm.dropTable("comments");
 };
