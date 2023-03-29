@@ -13,7 +13,8 @@ module.exports = {
   DB_NAME: process.env.DB_NAME,
   DB_PORT: process.env.DB_PORT,
   // jwt
-  JWT_SECRET: process.env.JWT_SECRET,
+  ACCESS_TOKEN_KEY: process.env.ACCESS_TOKEN_KEY,
+  REFRESH_TOKEN_KEY: process.env.REFRESH_TOKEN_KEY,
   // google
   EMAIL_FROM: process.env.EMAIL_FROM,
   EMAIL_USER: process.env.EMAIL_USER,

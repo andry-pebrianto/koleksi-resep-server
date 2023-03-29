@@ -5,6 +5,7 @@ const { isVerified } = require('../middlewares/authorization');
 const {
   register,
   login,
+  googleAuth,
   activation,
   forgot,
   reset,
@@ -16,6 +17,7 @@ router
   .post('/auth/register', validation.register, runValidation, register)
   .get('/auth/activation/:token', activation)
   .post('/auth/login', isVerified, validation.login, runValidation, login)
+  .post('/auth/google', validation.googleAuth, runValidation, googleAuth)
   .put('/auth/forgot', isVerified, validation.forgot, runValidation, forgot)
   .put('/auth/reset/:token', isVerified, validation.reset, runValidation, reset);
 

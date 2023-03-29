@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const { OAuth2Client } = require("google-auth-library");
 const authModel = require("../models/auth.model");
 const userModel = require("../models/user.model");
 const { success, failed } = require("../utils/createResponse");
@@ -7,7 +8,6 @@ const sendEmail = require("../utils/email/sendEmail");
 const activateAccountEmail = require("../utils/email/activateAccountEmail");
 const resetAccountEmail = require("../utils/email/resetAccountEmail");
 const jwtToken = require("../utils/generateJwtToken");
-const deleteFile = require("../utils/deleteFile");
 const { APP_NAME, EMAIL_FROM, API_URL, CLIENT_URL } = require("../utils/env");
 
 module.exports = {
@@ -16,6 +16,133 @@ module.exports = {
       const { fullName, email, password } = req.body;
 
       const user = await userModel.selectByEmail(email);
+      if (user.rowCount) {
+        failed(res, {
+          code: 409,
+          payload: "Email already exist",
+          message: "Register Failed",
+        });
+        return;
+      }
+
+      const passwordHashed = await bcrypt.hash(password, 10);
+      const token = crypto.randomBytes(30).toString("hex");
+      const insertData = await authModel.register({
+        fullName,
+        email,
+        password: passwordHashed,
+      });
+      await authModel.updateToken(insertData.rows[0].id, token);
+
+      // send email for activate account
+      const templateEmail = {
+        from: `"${APP_NAME}" <${EMAIL_FROM}>`,
+        to: req.body.email.toLowerCase(),
+        subject: "Activate Your Account!",
+        html: activateAccountEmail(`${API_URL}/auth/activation/${token}`),
+      };
+      sendEmail(templateEmail);
+
+      success(res, {
+        code: 201,
+        payload: null,
+        message: "Register Success",
+      });
+    } catch (error) {
+      failed(res, {
+        code: 500,
+        payload: error.message,
+        message: "Internal Server Error",
+      });
+    }
+  },
+  login: async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const user = await authModel.login(email);
+
+      if (user.rowCount) {
+        if (user.rows[0].is_active) {
+          if (!user.rows[0].google_id) {
+            const match = await bcrypt.compare(password, user.rows[0].password);
+
+            if (match) {
+              const refreshToken = await jwtToken.generateRefreshToken({
+                id: user.rows[0].id,
+                level: user.rows[0].level,
+              });
+              const accessToken = await jwtToken.generateAccessToken({
+                id: user.rows[0].id,
+                level: user.rows[0].level,
+              });
+
+              await authModel.deleteRefreshToken(user.rows[0].id);
+              await authModel.insertRefreshToken(user.rows[0].id, refreshToken);
+
+              success(res, {
+                code: 200,
+                payload: null,
+                message: "Login Success",
+                token: {
+                  refreshToken,
+                  accessToken,
+                  id: user.rows[0].id,
+                },
+              });
+              return;
+            }
+          } else {
+            failed(res, {
+              code: 400,
+              payload:
+                "Your email has been linked with google. Please login with google.",
+              message: "Login Failed",
+            });
+            return;
+          }
+        } else {
+          failed(res, {
+            code: 403,
+            payload: "Your account has been banned",
+            message: "Login Failed",
+          });
+          return;
+        }
+      }
+
+      failed(res, {
+        code: 401,
+        payload: "Wrong Email or Password",
+        message: "Login Failed",
+      });
+    } catch (error) {
+      failed(res, {
+        code: 500,
+        payload: error.message,
+        message: "Internal Server Error",
+      });
+    }
+  },
+  googleAuth: async (req, res) => {
+    try {
+      const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+      const response = await client.verifyIdToken({
+        idToken: req.body.tokenId,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+
+      // if google email not verified
+      if (!response.payload.email_verified) {
+        failed(res, {
+          code: 409,
+          payload: "Email not verified",
+          message: "Register Failed",
+        });
+        return;
+      }
+
+      const user = await userModel.selectByEmail(response.payload.email);
       if (user.rowCount) {
         failed(res, {
           code: 409,
@@ -85,56 +212,6 @@ module.exports = {
       </div>`);
     }
   },
-  login: async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      const user = await authModel.login(email);
-
-      // jika user ditemukan
-      if (user.rowCount > 0) {
-        // jika user tidak terbanned
-        if (user.rows[0].is_active) {
-          const match = await bcrypt.compare(password, user.rows[0].password);
-          // jika password benar
-          if (match) {
-            const jwt = await jwtToken({
-              id: user.rows[0].id,
-              level: user.rows[0].level,
-            });
-            success(res, {
-              code: 200,
-              payload: null,
-              message: "Login Success",
-              token: {
-                jwt,
-                id: user.rows[0].id,
-              },
-            });
-            return;
-          }
-        } else {
-          failed(res, {
-            code: 403,
-            payload: "Your account has been banned",
-            message: "Login Failed",
-          });
-          return;
-        }
-      }
-
-      failed(res, {
-        code: 401,
-        payload: "Wrong Email or Password",
-        message: "Login Failed",
-      });
-    } catch (error) {
-      failed(res, {
-        code: 500,
-        payload: error.message,
-        message: "Internal Server Error",
-      });
-    }
-  },
   forgot: async (req, res) => {
     try {
       const user = await userModel.selectByEmail(req.body.email);
@@ -199,23 +276,3 @@ module.exports = {
     }
   },
 };
-
-// const client = new OAuth2Client(
-//   "516125710758-751qls2emclcecv49g20phmppn35c9pe.apps.googleusercontent.com"
-// );
-
-// const response = await client.verifyIdToken({
-//   idToken: tokenId,
-//   audience:
-//     "516125710758-751qls2emclcecv49g20phmppn35c9pe.apps.googleusercontent.com",
-// });
-
-// // if google email not verified
-// if (response.payload.email_verified) {
-//   failed(res, {
-//     code: 409,
-//     payload: "Email not verified",
-//     message: "Register Failed",
-//   });
-//   return;
-// }

@@ -26,6 +26,11 @@ const register = [
   }),
 ];
 
+const googleAuth = [
+  // tokenId
+  check("tokenId", "Google Token ID is required").not().isEmpty(),
+];
+
 const login = [
   // email
   check("email", "Email required").not().isEmpty(),
@@ -56,6 +61,7 @@ const reset = [
 
 module.exports = {
   register,
+  googleAuth,
   login,
   forgot,
   reset,

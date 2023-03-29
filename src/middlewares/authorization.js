@@ -1,7 +1,7 @@
-const userModel = require('../models/user.model');
-const recipeModel = require('../models/recipe.model');
-const commentModel = require('../models/comment.model');
-const { failed } = require('../utils/createResponse');
+const userModel = require("../models/user.model");
+const recipeModel = require("../models/recipe.model");
+const commentModel = require("../models/comment.model");
+const { failed } = require("../utils/createResponse");
 
 module.exports = {
   isVerified: async (req, res, next) => {
@@ -10,20 +10,20 @@ module.exports = {
 
       if (!user.rowCount) {
         next();
-      } else if (user.rows[0].verified === 1) {
+      } else if (user.rows[0].is_verified === 1) {
         next();
       } else {
         failed(res, {
           code: 401,
-          payload: 'Your email is not verified yet',
-          message: 'Unauthorized',
+          payload: "Your email is not verified yet",
+          message: "Unauthorized",
         });
       }
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Internal Server Error',
+        message: "Internal Server Error",
       });
     }
   },
@@ -36,15 +36,15 @@ module.exports = {
       } else {
         failed(res, {
           code: 401,
-          payload: 'You do not have access',
-          message: 'Unauthorized',
+          payload: "You do not have access",
+          message: "Unauthorized",
         });
       }
     } catch (error) {
       failed(res, {
         code: 401,
         payload: error.message,
-        message: 'Internal Server Error',
+        message: "Internal Server Error",
       });
     }
   },
@@ -57,15 +57,15 @@ module.exports = {
       } else {
         failed(res, {
           code: 401,
-          payload: 'You do not have access',
-          message: 'Unauthorized',
+          payload: "You do not have access",
+          message: "Unauthorized",
         });
       }
     } catch (error) {
       failed(res, {
         code: 401,
         payload: error.message,
-        message: 'Internal Server Error',
+        message: "Internal Server Error",
       });
     }
   },
@@ -79,15 +79,15 @@ module.exports = {
       } else {
         failed(res, {
           code: 401,
-          payload: 'You do not have access',
-          message: 'Unauthorized',
+          payload: "You do not have access",
+          message: "Unauthorized",
         });
       }
     } catch (error) {
       failed(res, {
         code: 401,
         payload: error.message,
-        message: 'Internal Server Error',
+        message: "Internal Server Error",
       });
     }
   },
@@ -107,8 +107,8 @@ module.exports = {
         } else {
           failed(res, {
             code: 401,
-            payload: 'You do not have access',
-            message: 'Unauthorized',
+            payload: "You do not have access",
+            message: "Unauthorized",
           });
         }
       }
@@ -116,7 +116,7 @@ module.exports = {
       failed(res, {
         code: 401,
         payload: error.message,
-        message: 'Internal Server Error',
+        message: "Internal Server Error",
       });
     }
   },
@@ -136,8 +136,8 @@ module.exports = {
         } else {
           failed(res, {
             code: 401,
-            payload: 'You do not have access',
-            message: 'Unauthorized',
+            payload: "You do not have access",
+            message: "Unauthorized",
           });
         }
       }
@@ -145,7 +145,7 @@ module.exports = {
       failed(res, {
         code: 401,
         payload: error.message,
-        message: 'Internal Server Error',
+        message: "Internal Server Error",
       });
     }
   },
