@@ -4,11 +4,11 @@ const db = require("../config/db");
 module.exports = {
   register: (body) =>
     new Promise((resolve, reject) => {
-      const { fullName, email, password, photo = "" } = body;
+      const { fullName, email, password } = body;
 
       db.query(
-        "INSERT INTO users (id, full_name, email, password, photo_url) VALUES ($1, $2, $3, $4, $5) RETURNING id",
-        [uuidv4(), fullName, email.toLowerCase(), password, photo],
+        "INSERT INTO users (id, full_name, email, password) VALUES ($1, $2, $3, $4) RETURNING id",
+        [uuidv4(), fullName, email.toLowerCase(), password],
         (error, result) => {
           if (error) {
             reject(error);
@@ -17,11 +17,13 @@ module.exports = {
         }
       );
     }),
-  login: (email) =>
+  registerWithGoogle: (body) =>
     new Promise((resolve, reject) => {
+      const { sub, name, email, picture } = body;
+
       db.query(
-        "SELECT * FROM users WHERE email=$1",
-        [email],
+        "INSERT INTO users (id, full_name, password, email, photo_url, is_verified, google_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id",
+        [uuidv4(), name, "", email, picture, 1, sub],
         (error, result) => {
           if (error) {
             reject(error);

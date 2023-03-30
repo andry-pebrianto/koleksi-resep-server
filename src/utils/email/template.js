@@ -52,7 +52,7 @@ const htmlTemplateTop = `
   <title>Verify Your Account!</title>
 </head>
 
-<body style="background-color: #17a2b8; padding: 20px;">
+<body style="background-color: #FE6244; padding: 20px;">
   <h1 class="auth-title">
     Koleksi Resep
   </h1>

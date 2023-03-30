@@ -59,7 +59,7 @@ module.exports = {
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
-      const user = await authModel.login(email);
+      const user = await userModel.selectByEmail(email);
 
       if (user.rowCount) {
         if (user.rows[0].is_active) {
@@ -95,7 +95,7 @@ module.exports = {
             failed(res, {
               code: 400,
               payload:
-                "Your email has been linked with google. Please login with google.",
+                "Your email has been linked with Google. Please login with Google.",
               message: "Login Failed",
             });
             return;
@@ -125,55 +125,96 @@ module.exports = {
   },
   googleAuth: async (req, res) => {
     try {
-      const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+      const client = new OAuth2Client(
+        "783151137914-l4in83ci6n5v659gq2rh0cntdnhe0f6a.apps.googleusercontent.com"
+      );
 
       const response = await client.verifyIdToken({
         idToken: req.body.tokenId,
-        audience: process.env.GOOGLE_CLIENT_ID,
+        audience:
+          "783151137914-l4in83ci6n5v659gq2rh0cntdnhe0f6a.apps.googleusercontent.com",
       });
 
       // if google email not verified
       if (!response.payload.email_verified) {
         failed(res, {
-          code: 409,
-          payload: "Email not verified",
-          message: "Register Failed",
+          code: 400,
+          payload: "Email not verified by Google.",
+          message: "Login Failed",
         });
         return;
       }
 
       const user = await userModel.selectByEmail(response.payload.email);
+
+      // already registered
       if (user.rowCount) {
-        failed(res, {
-          code: 409,
-          payload: "Email already exist",
-          message: "Register Failed",
-        });
-        return;
+        if (user.rows[0].google_id) {
+          const refreshToken = await jwtToken.generateRefreshToken({
+            id: user.rows[0].id,
+            level: user.rows[0].level,
+          });
+          const accessToken = await jwtToken.generateAccessToken({
+            id: user.rows[0].id,
+            level: user.rows[0].level,
+          });
+
+          await authModel.deleteRefreshToken(user.rows[0].id);
+          await authModel.insertRefreshToken(user.rows[0].id, refreshToken);
+
+          success(res, {
+            code: 200,
+            payload: null,
+            message: "Login With Google Success",
+            token: {
+              refreshToken,
+              accessToken,
+              id: user.rows[0].id,
+            },
+          });
+          return;
+        } else {
+          failed(res, {
+            code: 400,
+            payload:
+              "Your email has not been linked with Google. Please log in with your email and password.",
+            message: "Login Failed",
+          });
+          return;
+        }
       }
 
-      const passwordHashed = await bcrypt.hash(password, 10);
-      const token = crypto.randomBytes(30).toString("hex");
-      const insertData = await authModel.register({
-        fullName,
-        email,
-        password: passwordHashed,
-      });
-      await authModel.updateToken(insertData.rows[0].id, token);
+      // not registered yet
+      const { sub, name, email, picture } = response.payload;
 
-      // send email for activate account
-      const templateEmail = {
-        from: `"${APP_NAME}" <${EMAIL_FROM}>`,
-        to: req.body.email.toLowerCase(),
-        subject: "Activate Your Account!",
-        html: activateAccountEmail(`${API_URL}/auth/activation/${token}`),
-      };
-      sendEmail(templateEmail);
+      const insertData = await authModel.registerWithGoogle({
+        sub,
+        name,
+        email,
+        picture,
+      });
+
+      const refreshToken = await jwtToken.generateRefreshToken({
+        id: insertData.rows[0].id,
+        level: 2,
+      });
+      const accessToken = await jwtToken.generateAccessToken({
+        id: insertData.rows[0].id,
+        level: 2,
+      });
+
+      await authModel.deleteRefreshToken(insertData.rows[0].id);
+      await authModel.insertRefreshToken(insertData.rows[0].id, refreshToken);
 
       success(res, {
         code: 201,
         payload: null,
-        message: "Register Success",
+        message: "Register With Google Success",
+        token: {
+          refreshToken,
+          accessToken,
+          id: insertData.rows[0].id,
+        },
       });
     } catch (error) {
       failed(res, {
@@ -216,8 +257,17 @@ module.exports = {
     try {
       const user = await userModel.selectByEmail(req.body.email);
       if (user.rowCount) {
+        if (user.rows[0].google_id) {
+          failed(res, {
+            code: 400,
+            payload:
+              "Email linked with Google cannot reset password. Please log in with Google.",
+            message: "Forgot Password Failed",
+          });
+          return;
+        }
+
         const token = crypto.randomBytes(30).toString("hex");
-        // update email token
         await authModel.updateToken(user.rows[0].id, token);
 
         // send email for reset password
@@ -247,7 +297,6 @@ module.exports = {
     try {
       const { token } = req.params;
       const user = await authModel.checkEmailToken(token);
-      console.log(user.rows);
 
       if (!user.rowCount) {
         failed(res, {
