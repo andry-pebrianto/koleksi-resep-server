@@ -84,11 +84,37 @@ module.exports = {
         }
       );
     }),
+  checkRefreshToken: (token) =>
+    new Promise((resolve, reject) => {
+      db.query(
+        "SELECT * FROM authentications WHERE token = $1",
+        [token],
+        (error, result) => {
+          if (error) {
+            reject(error);
+          }
+          resolve(result);
+        }
+      );
+    }),
   insertRefreshToken: (userId, token) =>
     new Promise((resolve, reject) => {
       db.query(
         "INSERT INTO authentications (id, user_id, token) VALUES ($1, $2, $3)",
         [uuidv4(), userId, token],
+        (error, result) => {
+          if (error) {
+            reject(error);
+          }
+          resolve(result);
+        }
+      );
+    }),
+  updateRefreshToken: (token) =>
+    new Promise((resolve, reject) => {
+      db.query(
+        "UPDATE authentications SET token=$1 WHERE token = $1",
+        [token],
         (error, result) => {
           if (error) {
             reject(error);

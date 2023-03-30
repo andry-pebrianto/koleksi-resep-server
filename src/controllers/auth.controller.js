@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const authModel = require("../models/auth.model");
 const userModel = require("../models/user.model");
@@ -8,7 +9,13 @@ const sendEmail = require("../utils/email/sendEmail");
 const activateAccountEmail = require("../utils/email/activateAccountEmail");
 const resetAccountEmail = require("../utils/email/resetAccountEmail");
 const jwtToken = require("../utils/generateJwtToken");
-const { APP_NAME, EMAIL_FROM, API_URL, CLIENT_URL } = require("../utils/env");
+const {
+  APP_NAME,
+  EMAIL_FROM,
+  API_URL,
+  CLIENT_URL,
+  REFRESH_TOKEN_KEY,
+} = require("../utils/env");
 
 module.exports = {
   register: async (req, res) => {
@@ -315,6 +322,64 @@ module.exports = {
         code: 200,
         payload: null,
         message: "Reset Password Success",
+      });
+    } catch (error) {
+      failed(res, {
+        code: 500,
+        payload: error.message,
+        message: "Internal Server Error",
+      });
+    }
+  },
+  refreshAccessToken: async (req, res) => {
+    try {
+      const { token } = req.params;
+      const decoded = jwt.verify(token, REFRESH_TOKEN_KEY);
+
+      const refreshToken = await authModel.checkRefreshToken(token);
+      if (!refreshToken.rowCount) {
+        failed(res, {
+          code: 401,
+          payload: "Token Invalid",
+          message: "Unauthorized",
+        });
+        return;
+      }
+
+      const accessToken = await jwtToken.generateAccessToken({
+        id: decoded.id,
+        level: decoded.level,
+      });
+
+      success(res, {
+        code: 200,
+        payload: null,
+        message: "Access Token Updated",
+        token: {
+          accessToken,
+        },
+      });
+    } catch (error) {
+      failed(res, {
+        code: 500,
+        payload: error.message,
+        message: "Internal Server Error",
+      });
+    }
+  },
+  logout: async (req, res) => {
+    try {
+      const { token } = req.params;
+      const refreshToken = await authModel.checkRefreshToken(token);
+
+      if (refreshToken.rowCount) {
+        await authModel.deleteRefreshToken(refreshToken.rows[0].user_id);
+      }
+
+      success(res, {
+        code: 200,
+        payload: null,
+        message: "Logout Success",
       });
     } catch (error) {
       failed(res, {
