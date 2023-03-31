@@ -1,36 +1,38 @@
-const bcrypt = require('bcrypt');
-const authModel = require('../models/auth.model');
-const userModel = require('../models/user.model');
-const recipeModel = require('../models/recipe.model');
-const { success, failed } = require('../utils/createResponse');
-const createPagination = require('../utils/createPagination');
-const deleteFile = require('../utils/deleteFile');
+const bcrypt = require("bcrypt");
+const authModel = require("../models/auth.model");
+const userModel = require("../models/user.model");
+const recipeModel = require("../models/recipe.model");
+const { success, failed } = require("../utils/createResponse");
+const createPagination = require("../utils/createPagination");
+const deleteFile = require("../utils/deleteFile");
 
 module.exports = {
+  // checked
   list: async (req, res) => {
     try {
-      const { page, limit } = req.query;
+      const { search, page, limit } = req.query;
       const count = await userModel.countAll();
       const paging = createPagination(count.rows[0].count, page, limit);
-      const users = await userModel.selectAll(
-        req.APP_DATA.tokenDecoded.level,
+      const users = await userModel.selectAll(req.APP_DATA.tokenDecoded.level, {
         paging,
-      );
+        search,
+      });
 
       success(res, {
         code: 200,
         payload: users.rows,
-        message: 'Select List User Success',
+        message: "Select List User Success",
         pagination: paging.response,
       });
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Internal Server Error',
+        message: "Internal Server Error",
       });
     }
   },
+  // checked
   detail: async (req, res) => {
     try {
       const { id } = req.params;
@@ -41,7 +43,7 @@ module.exports = {
         failed(res, {
           code: 404,
           payload: `User with Id ${id} not found`,
-          message: 'Select Detail User Failed',
+          message: "Select Detail User Failed",
         });
         return;
       }
@@ -49,66 +51,49 @@ module.exports = {
       success(res, {
         code: 200,
         payload: user.rows[0],
-        message: 'Select Detail User Success',
+        message: "Select Detail User Success",
       });
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Internal Server Error',
+        message: "Internal Server Error",
       });
     }
   },
+  // checked
   update: async (req, res) => {
     try {
       const { id } = req.params;
+      const { fullName, phone, birthDate, photo } = req.body;
 
       const user = await userModel.selectById(id);
       // jika user tidak ditemukan
       if (!user.rowCount) {
-        // menghapus photo jika ada
-        if (req.files) {
-          if (req.files.photo) {
-            deleteFile(req.files.photo[0].path);
-          }
-        }
-
         failed(res, {
           code: 404,
           payload: `User with Id ${id} not found`,
-          message: 'Update User Failed',
+          message: "Update User Failed",
         });
         return;
       }
 
-      // jika update user disertai photo
-      let { photo } = user.rows[0];
-      if (req.files) {
-        if (req.files.photo) {
-          // menghapus photo lama
-          if (user.rows[0].photo !== 'profile-default.jpg') {
-            deleteFile(`public/photo/${user.rows[0].photo}`);
-          }
-          // mendapatkan name photo baru
-          photo = req.files.photo[0].filename;
-        }
-      }
-      const { email } = user.rows[0]; // email tidak boleh diubah
-      await userModel.updateById(id, { ...req.body, photo, email });
+      await userModel.updateById(id, { fullName, phone, birthDate, photo });
 
       success(res, {
         code: 200,
         payload: null,
-        message: 'Update User Success',
+        message: "Update User Success",
       });
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Internal Server Error',
+        message: "Internal Server Error",
       });
     }
   },
+  // checked
   updatePassword: async (req, res) => {
     try {
       const { id } = req.params;
@@ -116,17 +101,10 @@ module.exports = {
       const user = await userModel.selectById(id);
       // jika user tidak ditemukan
       if (!user.rowCount) {
-        // menghapus photo jika ada
-        if (req.files) {
-          if (req.files.photo) {
-            deleteFile(req.files.photo[0].path);
-          }
-        }
-
         failed(res, {
           code: 404,
           payload: `User with Id ${id} not found`,
-          message: 'Update Password Failed',
+          message: "Update Password Failed",
         });
         return;
       }
@@ -134,13 +112,13 @@ module.exports = {
       // jika password lama salah
       const match = await bcrypt.compare(
         req.body.oldPassword,
-        user.rows[0].password,
+        user.rows[0].password
       );
       if (!match) {
         failed(res, {
           code: 401,
-          payload: 'Old password wrong',
-          message: 'Update Password Failed',
+          payload: "Old password wrong",
+          message: "Update Password Failed",
         });
         return;
       }
@@ -151,13 +129,13 @@ module.exports = {
       success(res, {
         code: 200,
         payload: null,
-        message: 'Update Password Success',
+        message: "Update Password Success",
       });
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Internal Server Error',
+        message: "Internal Server Error",
       });
     }
   },
@@ -171,27 +149,27 @@ module.exports = {
         failed(res, {
           code: 404,
           payload: `User with Id ${id} not found`,
-          message: 'Delete User Failed',
+          message: "Delete User Failed",
         });
         return;
       }
       await userModel.removeById(id);
 
       // menghapus photo jika ada
-      if (user.rows[0].photo !== 'profile-default.jpg') {
+      if (user.rows[0].photo !== "profile-default.jpg") {
         deleteFile(`public/photo/${user.rows[0].photo}`);
       }
 
       success(res, {
         code: 200,
         payload: null,
-        message: 'Delete User Success',
+        message: "Delete User Success",
       });
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Internal Server Error',
+        message: "Internal Server Error",
       });
     }
   },
@@ -205,7 +183,7 @@ module.exports = {
         failed(res, {
           code: 404,
           payload: `User with Id ${id} not found`,
-          message: 'Banned User Failed',
+          message: "Banned User Failed",
         });
         return;
       }
@@ -216,14 +194,14 @@ module.exports = {
         code: 200,
         payload: null,
         message: `${
-          user.rows[0].is_active ? 'Banned' : 'Unbanned'
+          user.rows[0].is_active ? "Banned" : "Unbanned"
         } User Success`,
       });
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Internal Server Error',
+        message: "Internal Server Error",
       });
     }
   },
@@ -236,13 +214,13 @@ module.exports = {
       success(res, {
         code: 200,
         payload: userRecipes.rows,
-        message: 'Select list recipe by user success',
+        message: "Select list recipe by user success",
       });
     } catch (error) {
       failed(res, {
         code: 500,
         payload: error.message,
-        message: 'Internal Server Error',
+        message: "Internal Server Error",
       });
     }
   },

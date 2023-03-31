@@ -18,6 +18,7 @@
         "implicit-arrow-linebreak": "off",
         "object-curly-newline": "off",
         "no-else-return": "off",
-        "no-lonely-if": "off"
+        "no-lonely-if": "off",
+        "operator-linebreak": "off"
     }
 }

@@ -1,9 +1,18 @@
-const db = require('../config/db');
+const db = require("../config/db");
 
 module.exports = {
-  selectAll: (level, paging) =>
+  selectAll: (level, { paging, search }) =>
     new Promise((resolve, reject) => {
-      db.query(`SELECT * FROM users ${level === 1 ? 'WHERE is_active=1' : ''} LIMIT ${paging.limit} OFFSET ${paging.offset}`, (error, result) => {
+      let query =
+        "SELECT * FROM users WHERE LOWER(full_name) LIKE '%'||LOWER($1)||'%'";
+
+      if (level === 2) {
+        query += " AND is_active=1";
+      }
+
+      query += ` LIMIT ${paging.limit} OFFSET ${paging.offset}`;
+
+      db.query(query, [search || ""], (error, result) => {
         if (error) {
           reject(error);
         }
@@ -12,7 +21,7 @@ module.exports = {
     }),
   selectById: (id) =>
     new Promise((resolve, reject) => {
-      db.query('SELECT * FROM users WHERE id=$1', [id], (error, result) => {
+      db.query("SELECT * FROM users WHERE id=$1", [id], (error, result) => {
         if (error) {
           reject(error);
         }
@@ -21,33 +30,35 @@ module.exports = {
     }),
   selectByEmail: (email) =>
     new Promise((resolve, reject) => {
-      db.query('SELECT * FROM users WHERE email=$1', [email], (error, result) => {
-        if (error) {
-          reject(error);
-        }
-        resolve(result);
-      });
-    }),
-  updateById: (id, body) =>
-    new Promise((resolve, reject) => {
-      const {
-        name, email, phone, photo = 'profile-default.jpg',
-      } = body;
-
       db.query(
-        'UPDATE users SET name=$1, email=$2, phone=$3, photo=$4 WHERE id=$5',
-        [name, email, phone, photo, id],
+        "SELECT * FROM users WHERE email=$1",
+        [email],
         (error, result) => {
           if (error) {
             reject(error);
           }
           resolve(result);
-        },
+        }
+      );
+    }),
+  updateById: (id, body) =>
+    new Promise((resolve, reject) => {
+      const { fullName, phone, birthDate, photo } = body;
+
+      db.query(
+        "UPDATE users SET full_name=$1, phone=$2, birth_date=$3, photo_url=$4 WHERE id=$5",
+        [fullName, phone, birthDate, photo, id],
+        (error, result) => {
+          if (error) {
+            reject(error);
+          }
+          resolve(result);
+        }
       );
     }),
   removeById: (id) =>
     new Promise((resolve, reject) => {
-      db.query('DELETE FROM users WHERE id=$1', [id], (error, result) => {
+      db.query("DELETE FROM users WHERE id=$1", [id], (error, result) => {
         if (error) {
           reject(error);
         }
@@ -56,16 +67,20 @@ module.exports = {
     }),
   bannedById: (id, banned) =>
     new Promise((resolve, reject) => {
-      db.query('UPDATE users SET is_active=$1 WHERE id=$2', [banned, id], (error, result) => {
-        if (error) {
-          reject(error);
+      db.query(
+        "UPDATE users SET is_active=$1 WHERE id=$2",
+        [banned, id],
+        (error, result) => {
+          if (error) {
+            reject(error);
+          }
+          resolve(result);
         }
-        resolve(result);
-      });
+      );
     }),
   countAll: () =>
     new Promise((resolve, reject) => {
-      db.query('SELECT COUNT(*) FROM users', (error, result) => {
+      db.query("SELECT COUNT(*) FROM users", (error, result) => {
         if (error) {
           reject(error);
         }

@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 module.exports = {
-  APP_NAME: process.env.APP_NAME || 'My App',
+  APP_NAME: process.env.APP_NAME || 'Koleksi Resep',
   NODE_ENV: process.env.NODE_ENV || 'development',
   PORT: process.env.PORT || 5000,
   API_URL: process.env.API_URL,
