@@ -21,6 +21,9 @@ exports.up = (pgm) => {
       type: "TEXT",
       notNull: true,
     },
+    photo_url: {
+      type: "VARCHAR(205)",
+    },
     video_url: {
       type: "VARCHAR(205)",
     },

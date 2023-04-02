@@ -44,10 +44,11 @@ module.exports = {
   updateById: (id, body) =>
     new Promise((resolve, reject) => {
       const { fullName, phone, birthDate, photo } = body;
+      const updatedAt = new Date();
 
       db.query(
-        "UPDATE users SET full_name=$1, phone=$2, birth_date=$3, photo_url=$4 WHERE id=$5",
-        [fullName, phone, birthDate, photo, id],
+        "UPDATE users SET full_name=$1, phone=$2, birth_date=$3, photo_url=$4, updated_at=$5 WHERE id=$6",
+        [fullName, phone, birthDate, photo, updatedAt, id],
         (error, result) => {
           if (error) {
             reject(error);
@@ -58,12 +59,16 @@ module.exports = {
     }),
   removeById: (id) =>
     new Promise((resolve, reject) => {
-      db.query("DELETE FROM users WHERE id=$1", [id], (error, result) => {
-        if (error) {
-          reject(error);
+      db.query(
+        "UPDATE users SET is_active=0 WHERE id=$1",
+        [id],
+        (error, result) => {
+          if (error) {
+            reject(error);
+          }
+          resolve(result);
         }
-        resolve(result);
-      });
+      );
     }),
   bannedById: (id, banned) =>
     new Promise((resolve, reject) => {

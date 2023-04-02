@@ -110,7 +110,7 @@ module.exports = {
         } else {
           failed(res, {
             code: 403,
-            payload: "Your account has been banned",
+            payload: "Your account has been banned or deleted",
             message: "Login Failed",
           });
           return;

@@ -99,7 +99,7 @@ module.exports = {
   selectAllRecipeByUser: (id) =>
     new Promise((resolve, reject) => {
       db.query(
-        'SELECT recipe.id, recipe.title, recipe.ingredients, recipe.photo, recipe.date, recipe.is_active, recipe.user_id, users.name, users.email, users.phone FROM recipe INNER JOIN users ON users.id = recipe.user_id WHERE user_id=$1',
+        'SELECT recipes.id, recipes.title, recipes.ingredients, recipes.photo_url, recipes.created_at, recipes.updated_at, recipes.is_active, recipes.user_id, users.full_name, users.email, users.phone FROM recipes INNER JOIN users ON users.id = recipes.user_id WHERE user_id=$1',
         [id],
         (error, result) => {
           if (error) {

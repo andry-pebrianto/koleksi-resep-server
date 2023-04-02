@@ -2,12 +2,10 @@ const bcrypt = require("bcrypt");
 const authModel = require("../models/auth.model");
 const userModel = require("../models/user.model");
 const recipeModel = require("../models/recipe.model");
-const { success, failed } = require("../utils/createResponse");
 const createPagination = require("../utils/createPagination");
-const deleteFile = require("../utils/deleteFile");
+const { success, failed } = require("../utils/createResponse");
 
 module.exports = {
-  // checked
   list: async (req, res) => {
     try {
       const { search, page, limit } = req.query;
@@ -32,7 +30,6 @@ module.exports = {
       });
     }
   },
-  // checked
   detail: async (req, res) => {
     try {
       const { id } = req.params;
@@ -61,7 +58,6 @@ module.exports = {
       });
     }
   },
-  // checked
   update: async (req, res) => {
     try {
       const { id } = req.params;
@@ -93,7 +89,6 @@ module.exports = {
       });
     }
   },
-  // checked
   updatePassword: async (req, res) => {
     try {
       const { id } = req.params;
@@ -154,11 +149,6 @@ module.exports = {
         return;
       }
       await userModel.removeById(id);
-
-      // menghapus photo jika ada
-      if (user.rows[0].photo !== "profile-default.jpg") {
-        deleteFile(`public/photo/${user.rows[0].photo}`);
-      }
 
       success(res, {
         code: 200,
