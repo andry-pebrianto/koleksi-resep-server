@@ -19,6 +19,9 @@
         "object-curly-newline": "off",
         "no-else-return": "off",
         "no-lonely-if": "off",
-        "operator-linebreak": "off"
+        "operator-linebreak": "off",
+        "prefer-template": "off",
+        "function-paren-newline": "off",
+        "indent": "off"
     }
 }

@@ -2,8 +2,6 @@ const express = require('express');
 const jwtAuth = require('../middlewares/jwtAuth');
 const validation = require('../validations/recipe.validation');
 const runValidation = require('../middlewares/runValidation');
-const upload = require('../middlewares/upload');
-const photoLimit = require('../middlewares/photoLimit');
 const { onlyAdmin, onlyUser, recipeOwner } = require('../middlewares/authorization');
 const {
   list,
@@ -12,7 +10,6 @@ const {
   update,
   remove,
   banned,
-  listComment,
   latest,
 } = require('../controllers/recipe.controller');
 
@@ -26,14 +23,12 @@ router
   // semua role
   .get('/recipe/:id', jwtAuth, detail)
   // hanya user
-  .post('/recipe', jwtAuth, onlyUser, upload, photoLimit, validation.insert, runValidation, insert)
+  .post('/recipe', jwtAuth, onlyUser, validation.insert, runValidation, insert)
   // hanya user dan pemilik
-  .put('/recipe/:id', jwtAuth, onlyUser, recipeOwner, upload, photoLimit, validation.insert, runValidation, update)
+  .put('/recipe/:id', jwtAuth, onlyUser, recipeOwner, validation.insert, runValidation, update)
   // hanya user dan pemilik
   .delete('/recipe/:id', jwtAuth, onlyUser, recipeOwner, remove)
   // hanya admin
-  .put('/recipe/banned/:id', jwtAuth, onlyAdmin, banned)
-  // semua role
-  .get('/recipe/:id/comment', jwtAuth, listComment);
+  .put('/recipe/banned/:id', jwtAuth, onlyAdmin, banned);
 
 module.exports = router;

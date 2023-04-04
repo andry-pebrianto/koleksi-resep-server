@@ -40,6 +40,7 @@
     "node-pg-migrate": "^6.2.2",
     "nodemailer": "^6.7.3",
     "pg": "^8.7.3",
+    "pg-promise": "^11.4.3",
     "uuid": "^8.3.2",
     "xss-clean": "^0.1.1"
   },

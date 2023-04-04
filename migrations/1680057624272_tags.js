@@ -12,6 +12,7 @@ exports.up = (pgm) => {
     name: {
       type: "VARCHAR(55)",
       notNull: true,
+      unique: true,
     },
   });
 };

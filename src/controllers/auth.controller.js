@@ -15,6 +15,7 @@ const {
   API_URL,
   CLIENT_URL,
   REFRESH_TOKEN_KEY,
+  GOOGLE_CLIENT_ID,
 } = require("../utils/env");
 
 module.exports = {
@@ -132,14 +133,11 @@ module.exports = {
   },
   googleAuth: async (req, res) => {
     try {
-      const client = new OAuth2Client(
-        "783151137914-l4in83ci6n5v659gq2rh0cntdnhe0f6a.apps.googleusercontent.com"
-      );
+      const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
       const response = await client.verifyIdToken({
         idToken: req.body.tokenId,
-        audience:
-          "783151137914-l4in83ci6n5v659gq2rh0cntdnhe0f6a.apps.googleusercontent.com",
+        audience: GOOGLE_CLIENT_ID,
       });
 
       // if google email not verified
