@@ -22,4 +22,6 @@ module.exports = {
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   REDIRECT_URI: process.env.REDIRECT_URI,
   GMAIL_REFRESH_TOKEN: process.env.GMAIL_REFRESH_TOKEN,
+  // aws
+  AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME,
 };
