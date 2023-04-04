@@ -1,5 +1,6 @@
 const recipeModel = require("../models/recipe.model");
 const tagModel = require("../models/tag.model");
+const commentModel = require("../models/comment.model");
 const { success, failed } = require("../utils/createResponse");
 const createPagination = require("../utils/createPagination");
 
@@ -222,6 +223,24 @@ module.exports = {
         code: 500,
         payload: error.message,
         message: "Internal Server Error",
+      });
+    }
+  },
+  listComment: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const recipeComments = await commentModel.selectAllCommentByRecipe(id);
+
+      success(res, {
+        code: 200,
+        payload: recipeComments.rows,
+        message: 'Select List Comment By Recipe Success',
+      });
+    } catch (error) {
+      failed(res, {
+        code: 500,
+        payload: error.message,
+        message: 'Internal Server Error',
       });
     }
   },

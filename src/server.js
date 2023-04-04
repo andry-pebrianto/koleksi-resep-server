@@ -26,7 +26,7 @@ app.get("/", (req, res) => res.send(`${APP_NAME} API - ${NODE_ENV[0].toUpperCase
 app.use(require("./router/auth.route"));
 app.use(require("./router/user.route"));
 app.use(require("./router/recipe.route"));
-// app.use(require("./router/comment.route"));
+app.use(require("./router/comment.route"));
 // 404 router
 app.use((req, res) => {
   failed(res, {

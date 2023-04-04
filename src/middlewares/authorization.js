@@ -4,7 +4,6 @@ const commentModel = require("../models/comment.model");
 const { failed } = require("../utils/createResponse");
 
 module.exports = {
-  // checked
   isVerified: async (req, res, next) => {
     try {
       const user = await userModel.selectByEmail(req.body.email);
@@ -28,7 +27,6 @@ module.exports = {
       });
     }
   },
-  // checked
   onlyAdmin: async (req, res, next) => {
     try {
       const user = await userModel.selectById(req.APP_DATA.tokenDecoded.id);
@@ -50,7 +48,6 @@ module.exports = {
       });
     }
   },
-  // checked
   onlyUser: async (req, res, next) => {
     try {
       const user = await userModel.selectById(req.APP_DATA.tokenDecoded.id);
@@ -72,7 +69,6 @@ module.exports = {
       });
     }
   },
-  // checked
   myself: async (req, res, next) => {
     try {
       const idUser = req.APP_DATA.tokenDecoded.id;

@@ -1,18 +1,10 @@
-const db = require('../config/db');
+const { v4: uuidv4 } = require("uuid");
+const db = require("../config/db");
 
 module.exports = {
-  selectAll: (level, paging) =>
-    new Promise((resolve, reject) => {
-      db.query(`SELECT * FROM comment ${level === 1 ? 'WHERE is_active=1' : ''} LIMIT ${paging.limit} OFFSET ${paging.offset}`, (error, result) => {
-        if (error) {
-          reject(error);
-        }
-        resolve(result);
-      });
-    }),
   selectById: (id) =>
     new Promise((resolve, reject) => {
-      db.query('SELECT * FROM comment WHERE id=$1', [id], (error, result) => {
+      db.query("SELECT * FROM comments WHERE id=$1", [id], (error, result) => {
         if (error) {
           reject(error);
         }
@@ -21,48 +13,38 @@ module.exports = {
     }),
   store: (body) =>
     new Promise((resolve, reject) => {
-      const {
-        id, recipeId, commentText, userId,
-      } = body;
+      const { recipeId, commentText, userId } = body;
 
       db.query(
-        'INSERT INTO comment (id, recipe_id, comment_text, user_id) VALUES ($1, $2, $3, $4)',
-        [id, recipeId, commentText, userId],
+        "INSERT INTO comments (id, recipe_id, body, user_id) VALUES ($1, $2, $3, $4)",
+        [uuidv4(), recipeId, commentText, userId],
         (error, result) => {
           if (error) {
             reject(error);
           }
           resolve(result);
-        },
+        }
       );
     }),
   updateById: (id, body) =>
     new Promise((resolve, reject) => {
       const { commentText } = body;
+      const updatedAt = new Date();
 
       db.query(
-        'UPDATE comment SET comment_text=$1 WHERE id=$2',
-        [commentText, id],
+        "UPDATE comments SET body=$1, updated_at=$2 WHERE id=$3",
+        [commentText, updatedAt, id],
         (error, result) => {
           if (error) {
             reject(error);
           }
           resolve(result);
-        },
+        }
       );
     }),
   removeById: (id) =>
     new Promise((resolve, reject) => {
-      db.query('DELETE FROM comment WHERE id=$1', [id], (error, result) => {
-        if (error) {
-          reject(error);
-        }
-        resolve(result);
-      });
-    }),
-  bannedById: (id, banned) =>
-    new Promise((resolve, reject) => {
-      db.query('UPDATE comment SET is_active=$1 WHERE id=$2', [banned, id], (error, result) => {
+      db.query("DELETE FROM comments WHERE id=$1", [id], (error, result) => {
         if (error) {
           reject(error);
         }
@@ -71,16 +53,20 @@ module.exports = {
     }),
   selectAllCommentByRecipe: (id) =>
     new Promise((resolve, reject) => {
-      db.query('SELECT comment.id, comment.comment_text, comment.user_id, comment.recipe_id, users.name, users.photo FROM comment INNER JOIN users ON comment.user_id = users.id WHERE recipe_id=$1', [id], (error, result) => {
-        if (error) {
-          reject(error);
+      db.query(
+        "SELECT comments.id, comments.body, comments.user_id, comments.recipe_id, users.full_name, users.photo_url FROM comments INNER JOIN users ON comments.user_id = users.id WHERE recipe_id=$1",
+        [id],
+        (error, result) => {
+          if (error) {
+            reject(error);
+          }
+          resolve(result);
         }
-        resolve(result);
-      });
+      );
     }),
   countAll: () =>
     new Promise((resolve, reject) => {
-      db.query('SELECT COUNT(*) FROM comment', (error, result) => {
+      db.query("SELECT COUNT(*) FROM comments", (error, result) => {
         if (error) {
           reject(error);
         }

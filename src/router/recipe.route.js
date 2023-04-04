@@ -10,6 +10,7 @@ const {
   update,
   remove,
   banned,
+  listComment,
   latest,
 } = require('../controllers/recipe.controller');
 
@@ -29,6 +30,8 @@ router
   // hanya user dan pemilik
   .delete('/recipe/:id', jwtAuth, onlyUser, recipeOwner, remove)
   // hanya admin
-  .put('/recipe/banned/:id', jwtAuth, onlyAdmin, banned);
+  .put('/recipe/banned/:id', jwtAuth, onlyAdmin, banned)
+  // semua role
+  .get('/recipe/:id/comment', jwtAuth, listComment);
 
 module.exports = router;
