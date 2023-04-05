@@ -196,15 +196,15 @@ module.exports = {
     }
   },
   listRecipe: async (req, res) => {
-    const { id } = req.params;
-
     try {
+      const { id } = req.params;
+
       const userRecipes = await recipeModel.selectAllRecipeByUser(id);
 
       success(res, {
         code: 200,
         payload: userRecipes.rows,
-        message: "Select list recipe by user success",
+        message: "Select List Recipe By User Success",
       });
     } catch (error) {
       failed(res, {

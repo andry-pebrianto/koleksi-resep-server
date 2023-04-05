@@ -62,7 +62,7 @@ DRIVE_REFRESH_TOKEN=
 
 ## Endpoint List
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/13299472-79161dab-60b5-451a-9e75-f635d682c31b?action=collection%2Ffork&collection-url=entityId%3D13299472-79161dab-60b5-451a-9e75-f635d682c31b%26entityType%3Dcollection%26workspaceId%3Dabfee31e-a51e-46f4-a705-bd3638f6adf7)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/13299472-ec1eb813-6223-4446-9308-16157093fa8b?action=collection%2Ffork&collection-url=entityId%3D13299472-ec1eb813-6223-4446-9308-16157093fa8b%26entityType%3Dcollection%26workspaceId%3Da3c91d80-a923-40e7-b2c6-2dfe902a86a7)
 
 ### /auth
 

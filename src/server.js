@@ -27,6 +27,7 @@ app.use(require("./router/auth.route"));
 app.use(require("./router/user.route"));
 app.use(require("./router/recipe.route"));
 app.use(require("./router/comment.route"));
+app.use(require("./router/tag.route"));
 app.use(require("./router/upload.route"));
 // 404 router
 app.use((req, res) => {
