@@ -2,7 +2,7 @@ const express = require("express");
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const cors = require("cors");
-const { APP_NAME, NODE_ENV, PORT } = require("./utils/env");
+const { APP_NAME, NODE_ENV, HOST, PORT } = require("./utils/env");
 const { failed } = require("./utils/createResponse");
 
 // deklarasi express
@@ -39,8 +39,8 @@ app.use((req, res) => {
 });
 
 // running server
-app.listen(PORT, () => {
+app.listen(PORT, HOST, () => {
   console.log(`Server started on port ${PORT} with ${NODE_ENV} environment`);
-  console.log(`Visit http://localhost:${PORT}`);
+  console.log(`Visit http://${HOST}:${PORT}`);
   console.log("Developed by Andry Pebrianto");
 });
