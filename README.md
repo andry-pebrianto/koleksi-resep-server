@@ -70,16 +70,16 @@ AWS_BUCKET_NAME=
 
 - Run program with `npm run dev` for development and `npm run start` for production
 
+## Endpoint List
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/13299472-ec1eb813-6223-4446-9308-16157093fa8b?action=collection%2Ffork&collection-url=entityId%3D13299472-ec1eb813-6223-4446-9308-16157093fa8b%26entityType%3Dcollection%26workspaceId%3Da3c91d80-a923-40e7-b2c6-2dfe902a86a7)
+
+
 <!-- RELATED PROJECT -->
 ## Related Project
 
 - [Koleksi Resep Client](https://github.com/andry-pebrianto/koleksi-resep-client)
 - [Koleksi Resep Demo](https://koleksi-resep.netlify.app/)
-
-## Endpoint List
-
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/13299472-ec1eb813-6223-4446-9308-16157093fa8b?action=collection%2Ffork&collection-url=entityId%3D13299472-ec1eb813-6223-4446-9308-16157093fa8b%26entityType%3Dcollection%26workspaceId%3Da3c91d80-a923-40e7-b2c6-2dfe902a86a7)
-
 
 ## Authors
 
