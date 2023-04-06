@@ -3,7 +3,7 @@
 </div>
 <h3 align="center">Koleksi Resep API</h3>
 <p align="center">
-  <a href="https://koleksi-resep.herokuapp.com/">View API Demo</a>
+  <a href="http://3.1.222.47:5000">View API Demo</a>
   ·
   <a href="https://github.com/andry-pebrianto/koleksi-resep-api/issues">Report Bug</a>
 </p>
