@@ -13,9 +13,9 @@ const update = [
   check("birthDate", "Birth Date not valid").optional().isDate(),
   // phone
   check("phone", "Phone only can contains number").optional().isNumeric(),
-  check("phone", "Phone maximum length is 13 characters")
+  check("phone", "Phone minimun length is 10 and maximum length is 13 characters")
     .optional()
-    .isLength({ max: 13 }),
+    .isLength({ min: 10, max: 13 }),
 ];
 
 const password = [
