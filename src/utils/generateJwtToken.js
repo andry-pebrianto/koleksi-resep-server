@@ -11,7 +11,7 @@ const generateRefreshToken = async (payload) => {
 
 const generateAccessToken = async (payload) => {
   const token = jwt.sign(payload, ACCESS_TOKEN_KEY, {
-    expiresIn: 1500,
+    expiresIn: 15,
   });
 
   return token;
