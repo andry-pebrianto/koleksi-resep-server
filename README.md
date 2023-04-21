@@ -76,7 +76,7 @@ AWS_BUCKET_NAME=
 
 
 <!-- RELATED PROJECT -->
-## Related Project
+## Related Project 
 
 - [Koleksi Resep Client](https://github.com/andry-pebrianto/koleksi-resep-client)
 - [Koleksi Resep Demo](https://koleksi-resep.netlify.app/)
