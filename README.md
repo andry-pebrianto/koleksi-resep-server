@@ -3,7 +3,7 @@
 </div>
 <h3 align="center">Koleksi Resep API</h3>
 <p align="center">
-  <a href="http://3.1.222.47:5000">View API Demo</a>
+  <a href="https://koleksi-resep-api.onrender.com">View API Demo</a>
   ·
   <a href="https://github.com/andry-pebrianto/koleksi-resep-api/issues">Report Bug</a>
 </p>
@@ -76,7 +76,7 @@ AWS_BUCKET_NAME=
 
 
 <!-- RELATED PROJECT -->
-## Related Project
+## Related Project 
 
 - [Koleksi Resep Client](https://github.com/andry-pebrianto/koleksi-resep-client)
 - [Koleksi Resep Demo](https://koleksi-resep.netlify.app/)
