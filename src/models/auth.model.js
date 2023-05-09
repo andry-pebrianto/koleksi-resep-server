@@ -136,4 +136,17 @@ module.exports = {
         }
       );
     }),
+  deleteRefreshTokenByToken: (token) =>
+    new Promise((resolve, reject) => {
+      db.query(
+        "DELETE FROM authentications WHERE token = $1",
+        [token],
+        (error, result) => {
+          if (error) {
+            reject(error);
+          }
+          resolve(result);
+        }
+      );
+    }),
 };

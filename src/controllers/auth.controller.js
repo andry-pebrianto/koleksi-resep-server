@@ -330,8 +330,9 @@ module.exports = {
     }
   },
   refreshAccessToken: async (req, res) => {
+    const { token } = req.params;
+
     try {
-      const { token } = req.params;
       const decoded = jwt.verify(token, REFRESH_TOKEN_KEY);
 
       const refreshToken = await authModel.checkRefreshToken(token);
@@ -358,6 +359,8 @@ module.exports = {
         },
       });
     } catch (error) {
+      await authModel.deleteRefreshTokenByToken(token);
+
       failed(res, {
         code: 500,
         payload: error.message,
