@@ -22,14 +22,15 @@ This is a Restful API repository for Koleksi Resep. This Restful API is built us
 - [Google Auth Library](https://www.npmjs.com/package/google-auth-library)
 - [Bcrypt](https://www.npmjs.com/package/bcrypt)
 - [Nodemailer](https://nodemailer.com/about/)
-- [AWS SDK](https://aws.amazon.com/id/sdk-for-javascript/)
+- [Cloudinary](https://cloudinary.com/)
+- [Neon PostgreSQL](https://neon.tech/)
 
 ## Getting Started
 
 ### Installation
 
 - Clone this project with `git clone https://github.com/andry-pebrianto/koleksi-resep-api.git
-- Install package required with `npm install`
+- Install package required with `yarn`
 - Setting .env
 
 ```bash
@@ -58,22 +59,17 @@ GOOGLE_CLIENT_SECRET=
 REDIRECT_URI=
 GMAIL_REFRESH_TOKEN=
 
-# aws
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-AWS_BUCKET_NAME=
+# cloudinary
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+CLOUDINARY_CLOUD_NAME=
 ```
 
-- Migrate database using `npm run migrate up`
+- Migrate database using `yarn run migrate up`
 
 ### Executing program
 
-- Run program with `npm run dev` for development and `npm run start` for production
-
-## Endpoint List
-
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/13299472-ec1eb813-6223-4446-9308-16157093fa8b?action=collection%2Ffork&collection-url=entityId%3D13299472-ec1eb813-6223-4446-9308-16157093fa8b%26entityType%3Dcollection%26workspaceId%3Da3c91d80-a923-40e7-b2c6-2dfe902a86a7)
-
+- Run program with `yarn run dev` for development and `yarn run start` for production
 
 <!-- RELATED PROJECT -->
 ## Related Project 
