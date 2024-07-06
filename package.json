@@ -27,6 +27,7 @@
   "dependencies": {
     "aws-sdk": "^2.1343.0",
     "bcrypt": "^5.0.1",
+    "cloudinary": "^2.2.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.0.0",

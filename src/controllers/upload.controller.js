@@ -1,6 +1,6 @@
 const { success, failed } = require("../utils/createResponse");
 const deleteFile = require("../utils/deleteFile");
-const uploadToAwsS3 = require("../utils/uploadToAwsS3");
+const uploadToCloudinary = require("../utils/uploadToCloudinary");
 
 module.exports = {
   uploadToAws: async (req, res) => {
@@ -11,12 +11,12 @@ module.exports = {
       if (req.files) {
         // upload photo
         if (req.files.photo) {
-          photo = await uploadToAwsS3(req.files.photo[0]);
+          photo = await uploadToCloudinary(req.files.photo[0]);
           deleteFile(req.files.photo[0].path);
         }
         // upload video
         if (req.files.video) {
-          video = await uploadToAwsS3(req.files.video[0]);
+          video = await uploadToCloudinary(req.files.video[0]);
           deleteFile(req.files.video[0].path);
         }
       }
@@ -24,8 +24,8 @@ module.exports = {
       success(res, {
         code: 200,
         payload: {
-          photo,
-          video,
+          photo: photo?.secure_url,
+          video: video?.secure_url,
         },
         message: "Upload Success",
       });

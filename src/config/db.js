@@ -1,4 +1,4 @@
-const { Pool } = require('pg');
+const { Pool } = require("pg");
 const {
   NODE_ENV,
   DB_HOST,
@@ -6,7 +6,7 @@ const {
   DB_PASSWORD,
   DB_NAME,
   DB_PORT,
-} = require('../utils/env');
+} = require("../utils/env");
 
 const config = {
   host: DB_HOST,
@@ -14,9 +14,10 @@ const config = {
   password: DB_PASSWORD,
   database: DB_NAME,
   port: DB_PORT,
+  ssl: { sslmode: "require" }, // required for neon
 };
 
-if (NODE_ENV === 'production') {
+if (NODE_ENV === "prod") {
   config.ssl = {
     rejectUnauthorized: false,
   };
@@ -29,7 +30,7 @@ db.connect((err) => {
     console.log(err.message);
     process.exit(1);
   }
-  console.log('Database berhasil terhubung.');
+  console.log("Database berhasil terhubung.");
 });
 
 module.exports = db;
