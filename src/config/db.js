@@ -14,7 +14,6 @@ const config = {
   password: DB_PASSWORD,
   database: DB_NAME,
   port: DB_PORT,
-  ssl: { sslmode: "require" }, // required for neon
 };
 
 if (NODE_ENV === "prod") {
