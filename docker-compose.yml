@@ -10,7 +10,7 @@ services:
       - 3003
     env_file:
       - .env
-    command: sh -c "npm run migrate:up && npm run start"
+    command: sh -c "npm run migrate && npm run start"
     networks:
       - global
 
