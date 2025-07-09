@@ -30,7 +30,7 @@ This is a Restful API repository for Koleksi Resep. This Restful API is built us
 ### Installation
 
 - Clone this project with `git clone https://github.com/andry-pebrianto/koleksi-resep-api.git
-- Install package required with `yarn`
+- Install package required with `npm`
 - Setting .env
 
 ```bash
@@ -46,6 +46,7 @@ PGHOST=
 PGPASSWORD=
 PGDATABASE=
 PGPORT=
+PGSSLMODE=
 
 # jwt
 ACCESS_TOKEN_KEY=
