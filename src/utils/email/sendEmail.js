@@ -2,7 +2,7 @@ require("dotenv").config();
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { Resend } = require("resend");
 
-const resend = new Resend("re_Yoz8D1kd_DRHgQHfq99yKNRRppAiFis6V");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async (dataEmail) => {
   try {
