@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(
   helmet({
-    crossOriginEmbedderPolicy: false, 
+    crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: false,
   }),
 );
