@@ -3,8 +3,6 @@
 </div>
 <h3 align="center">Koleksi Resep API</h3>
 <p align="center">
-  <a href="https://koleksi-resep-api.onrender.com">View API Demo</a>
-  ·
   <a href="https://github.com/andry-pebrianto/koleksi-resep-api/issues">Report Bug</a>
 </p>
 
