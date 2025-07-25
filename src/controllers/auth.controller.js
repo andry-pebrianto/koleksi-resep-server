@@ -51,7 +51,8 @@ module.exports = {
         subject: "Activate Your Account!",
         html: activateAccountEmail(`${API_URL}/auth/activation/${token}`),
       };
-      resend.emails.send(templateEmail);
+      const result = await resend.emails.send(templateEmail);
+      console.log(result);
 
       success(res, {
         code: 201,
@@ -284,7 +285,8 @@ module.exports = {
           subject: "Reset Your Password!",
           html: resetAccountEmail(`${CLIENT_URL}/auth/reset/${token}`),
         };
-        resend.emails.send(templateEmail);
+        const result = await resend.emails.send(templateEmail);
+        console.log(result);
       }
 
       success(res, {
