@@ -16,9 +16,11 @@ const {
   CLIENT_URL,
   REFRESH_TOKEN_KEY,
   GOOGLE_CLIENT_ID,
+  RESEND_API_KEY,
+  EMAIL_FROM,
 } = require("../utils/env");
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(RESEND_API_KEY);
 
 module.exports = {
   register: async (req, res) => {
@@ -46,7 +48,7 @@ module.exports = {
 
       // send email for activate account
       const templateEmail = {
-        from: `${APP_NAME} <onboarding@resend.dev>`,
+        from: `${APP_NAME} <${EMAIL_FROM}>`,
         to: [req.body.email.toLowerCase()],
         subject: "Activate Your Account!",
         html: activateAccountEmail(`${API_URL}/auth/activation/${token}`),
@@ -280,7 +282,7 @@ module.exports = {
 
         // send email for reset password
         const templateEmail = {
-          from: `${APP_NAME} <onboarding@resend.dev>`,
+          from: `${APP_NAME} <${EMAIL_FROM}>`,
           to: req.body.email.toLowerCase(),
           subject: "Reset Your Password!",
           html: resetAccountEmail(`${CLIENT_URL}/auth/reset/${token}`),
