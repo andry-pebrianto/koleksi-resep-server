@@ -2,21 +2,23 @@ const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { Resend } = require("resend");
 const authModel = require("../models/auth.model");
 const userModel = require("../models/user.model");
 const { success, failed } = require("../utils/createResponse");
-const sendEmail = require("../utils/email/sendEmail");
 const activateAccountEmail = require("../utils/email/activateAccountEmail");
 const resetAccountEmail = require("../utils/email/resetAccountEmail");
 const jwtToken = require("../utils/generateJwtToken");
 const {
   APP_NAME,
-  EMAIL_FROM,
   API_URL,
   CLIENT_URL,
   REFRESH_TOKEN_KEY,
   GOOGLE_CLIENT_ID,
 } = require("../utils/env");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 module.exports = {
   register: async (req, res) => {
@@ -44,12 +46,12 @@ module.exports = {
 
       // send email for activate account
       const templateEmail = {
-        from: `"${APP_NAME}" <${EMAIL_FROM}>`,
-        to: req.body.email.toLowerCase(),
+        from: `${APP_NAME} <onboarding@resend.dev>`,
+        to: [req.body.email.toLowerCase()],
         subject: "Activate Your Account!",
         html: activateAccountEmail(`${API_URL}/auth/activation/${token}`),
       };
-      sendEmail(templateEmail);
+      resend.emails.send(templateEmail);
 
       success(res, {
         code: 201,
@@ -277,12 +279,12 @@ module.exports = {
 
         // send email for reset password
         const templateEmail = {
-          from: `"${APP_NAME}" <${EMAIL_FROM}>`,
+          from: `${APP_NAME} <onboarding@resend.dev>`,
           to: req.body.email.toLowerCase(),
           subject: "Reset Your Password!",
           html: resetAccountEmail(`${CLIENT_URL}/auth/reset/${token}`),
         };
-        sendEmail(templateEmail);
+        resend.emails.send(templateEmail);
       }
 
       success(res, {
