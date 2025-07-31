@@ -4,12 +4,16 @@ services:
   koleksi-resep-server:
     build:
       context: .
-    container_name: koleksi-resep-server-container
+    container_name: koleksi-resep-server
     restart: always
     expose:
-      - 3003
+      - 3001
     env_file:
       - .env
+    environment:
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
     command: sh -c "npm run migrate up && npm run start"
     networks:
       - global

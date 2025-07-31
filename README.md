@@ -51,6 +51,9 @@ CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
 CLOUDINARY_CLOUD_NAME=
 RESEND_API_KEY=
+VIRTUAL_HOST=
+LETSENCRYPT_HOST=
+LETSENCRYPT_EMAIL=
 ```
 
 - Migrate database using `npm run migrate up`
@@ -63,7 +66,7 @@ RESEND_API_KEY=
 ## Related Project 
 
 - [Koleksi Resep Client](https://github.com/andry-pebrianto/koleksi-resep-client)
-- [Koleksi Resep Demo](https://koleksi-resep.netlify.app/)
+- [Koleksi Resep Demo](https://koleksiresep.andrypebrianto.com)
 
 ## Authors
 
