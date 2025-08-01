@@ -1,3 +1,4 @@
+const v8 = require("v8");
 const express = require("express");
 const helmet = require("helmet");
 const xss = require("xss-clean");
@@ -14,14 +15,16 @@ app.use(
   helmet({
     crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: false,
-  }),
+  })
 );
 app.use(xss());
 app.use(cors());
 app.use(express.static("public"));
 
 // root router
-app.get("/", (req, res) => res.send(`${APP_NAME} API - ${NODE_ENV[0].toUpperCase() + NODE_ENV.slice(1)}`));
+app.get("/", (req, res) =>
+  res.send(`${APP_NAME} API - ${NODE_ENV[0].toUpperCase() + NODE_ENV.slice(1)}`)
+);
 // main router
 app.use(require("./router/auth.route"));
 app.use(require("./router/user.route"));
@@ -43,4 +46,9 @@ app.listen(PORT, () => {
   console.log(`Server started on port ${PORT} with ${NODE_ENV} environment`);
   console.log(`Visit http://localhost:${PORT}`);
   console.log("Developed by Andry Pebrianto");
+  console.log(
+    "Max old space size:",
+    v8.getHeapStatistics().heap_size_limit / 1024 / 1024,
+    "MB"
+  );
 });
