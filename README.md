@@ -54,6 +54,7 @@ RESEND_API_KEY=
 VIRTUAL_HOST=
 LETSENCRYPT_HOST=
 LETSENCRYPT_EMAIL=
+MAX_OLD_SPACE_SIZE=
 ```
 
 - Migrate database using `npm run migrate up`
